@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
 
         title: Text(widget.title),
-        backgroundColor: mainColor,
+        backgroundColor: primaryColor,
       ),
       body: Center(
 
@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-        backgroundColor: mainColor,
+        backgroundColor: primaryColor,
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
