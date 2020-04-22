@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('You'),
+            title: Text('For You'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
@@ -82,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
         showUnselectedLabels: true,
         unselectedItemColor: Colors.black,
         selectedItemColor: selectedColors[_selectedIndex],
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
