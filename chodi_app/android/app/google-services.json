@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "731009655889",
+    "firebase_url": "https://chodi-663f2.firebaseio.com",
+    "project_id": "chodi-663f2",
+    "storage_bucket": "chodi-663f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731009655889:android:05eab53bb04f08dd5a0470",
+        "android_client_info": {
+          "package_name": "com.chodiapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731009655889-9vab2squm2f4upprq7qk0p036qj79thv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPxeBXr7hMrfO-CRIQGXftyO_uUjjfhQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731009655889-9vab2squm2f4upprq7qk0p036qj79thv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "731009655889-2m8laubhjvu0brcm6obstcl2or1165ek.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chodiapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
 
-        title: Text('Flutter Demo'),
+        title: Text('CHODI'),
         backgroundColor: primaryColor,
       ),
       body: Center(
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         backgroundColor: primaryColor,
-        iconSize: 20.0,
+        iconSize:15.0,
         currentIndex: _selectedIndex,
         //selectedItemColor: Colors.black,
         onTap: _onItemTapped,
