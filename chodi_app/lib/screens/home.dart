@@ -13,7 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
-      'Index 0: For you page',
+      'Index 0: Impact page',
       style: optionStyle,
     ),
     Text(
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       style: optionStyle,
     ),
     Text(
-      'Index 2: search page',
+      'Index 2: For you page',
       style: optionStyle,
     ),
     Text(
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       style: optionStyle,
     ),
     Text(
-      'Index 4: profile page',
+      'Index 4: Notifications',
       style: optionStyle,
     ),
   ];
@@ -53,25 +53,26 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
+
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('For You'),
+            icon: Icon(Icons.person),
+            title: Text('Impact',style: TextStyle(fontSize: 12),),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
-            title: Text('Events'),
+            title: Text('Events',style: TextStyle(fontSize: 12),),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Search'),
+            icon: Icon(Icons.home),
+            title: Text('For You',style: TextStyle(fontSize: 12),),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
-            title: Text('Messages'),
+            title: Text('Messages',style: TextStyle(fontSize: 12),),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text('Profile'),
+            icon: Icon(Icons.notifications),
+            title: Text('Notifications',style: TextStyle(fontSize: 12),),
           ),
         ],
         backgroundColor: primaryColor,
