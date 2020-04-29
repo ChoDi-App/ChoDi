@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/AppColors.dart';
 
-class HomeScreen extends StatefulWidget {
+class NewUserScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _NewUserScreenState createState() => _NewUserScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _NewUserScreenState extends State<NewUserScreen> {
 
   List<Color> selectedColors = [Colors.yellow, Colors.orange,Colors.red,Colors.blue,Colors.green];
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
