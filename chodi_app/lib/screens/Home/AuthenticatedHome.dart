@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/AppColors.dart';
+import 'package:chodiapp/screens/Home/TabPages/EventsPage.dart';
+import 'package:chodiapp/screens/Home/TabPages/ForYouPage.dart';
+import 'package:chodiapp/screens/Home/TabPages/ImpactPage.dart';
+import 'package:chodiapp/screens/Home/TabPages/MessagesPage.dart';
+import 'package:chodiapp/screens/Home/TabPages/NotificationsPage.dart';
+import 'package:chodiapp/Services/Auth.dart';
 
-class HomeScreen extends StatefulWidget {
+class AuthenticatedHomeScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _AuthenticatedHomeScreenState createState() => _AuthenticatedHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
 
   List<Color> selectedColors = [Colors.yellow, Colors.orange,Colors.red,Colors.blue,Colors.green];
   int _selectedIndex = 2;
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Impact page',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: events page',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: For you page',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: messages page',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 4: Notifications',
-      style: optionStyle,
-    ),
+  List<Widget> _widgetOptions = <Widget>[
+    ImpactPage(),
+    EventsPage(),
+    ForYouPage(),
+    MessagesPage(),
+    NotificationsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -39,11 +29,16 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
   }
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: _auth.signOut
+        ),
 
         title: Text('CHODI'),
         backgroundColor: primaryColor,

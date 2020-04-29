@@ -1,43 +1,39 @@
+import 'package:chodiapp/screens/Authenticate/SignInPage.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/AppColors.dart';
 
-class NewUserScreen extends StatefulWidget {
+class NonAuthenticatedHomeScreen extends StatefulWidget {
   @override
-  _NewUserScreenState createState() => _NewUserScreenState();
+  _NonAuthenticatedHomeScreenState createState() => _NonAuthenticatedHomeScreenState();
 }
 
-class _NewUserScreenState extends State<NewUserScreen> {
+class _NonAuthenticatedHomeScreenState extends State<NonAuthenticatedHomeScreen> {
 
   List<Color> selectedColors = [Colors.yellow, Colors.orange,Colors.red,Colors.blue,Colors.green];
   int _selectedIndex = 2;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Impact page',
-      style: optionStyle,
+  List<Widget> _widgetOptions = <Widget>[
+    SignInPage(),
+    SignInPage(),
+    Column(
+      children: <Widget>[
+        Text(
+          'Index 2: For you page',
+          style: optionStyle,
+        ),
+        Text("NOT SIGNED IN",
+        style: optionStyle,)
+      ],
     ),
-    Text(
-      'Index 1: events page',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: For you page',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: messages page',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 4: Notifications',
-      style: optionStyle,
-    ),
+    SignInPage(),
+    SignInPage()
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+
   }
 
   @override

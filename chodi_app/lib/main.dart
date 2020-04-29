@@ -1,11 +1,9 @@
 import 'package:chodiapp/AuthWidgetBuilder.dart';
-import 'package:chodiapp/screens/Home/AuthenticatedHome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:chodiapp/Services/Auth.dart';
 import 'AuthWidgetBuilder.dart';
-import 'constants/AppColors.dart';
-// testing git
+import 'package:chodiapp/screens/wrapper.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,7 +24,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: HomeScreen()
+            home: Wrapper(userSnapshot: userSnapshot)
           );
         }
       ),
