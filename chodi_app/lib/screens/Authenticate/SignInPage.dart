@@ -41,7 +41,7 @@ class _SignInPageState extends State<SignInPage> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 30.0,),
-                  Text("Enter your email and password for signing in. Thanks",
+                  Text("To use these features please sign in or sign up. Thanks.",
                   style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 17.0,color: Colors.grey)),
                   SizedBox(height: 50.0,),
                   Column(
