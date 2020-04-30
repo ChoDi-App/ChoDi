@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:chodiapp/Services/Auth.dart';
 import 'AuthWidgetBuilder.dart';
 import 'package:chodiapp/screens/wrapper.dart';
+import 'package:chodiapp/screens/Authenticate/SignUpPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
 
             home: Wrapper(userSnapshot: userSnapshot),
             routes: <String, WidgetBuilder>{
-              'signInScreen' : (BuildContext context) => new SignInPage()
+              'signInScreen' : (BuildContext context) => new SignInPage(),
+              'signUpScreen' : (BuildContext context) => new SignUpPage()
         },
           );
         }

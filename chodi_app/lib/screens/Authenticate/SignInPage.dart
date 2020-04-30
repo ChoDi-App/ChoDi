@@ -3,7 +3,6 @@ import 'package:chodiapp/Services/Auth.dart';
 import 'package:chodiapp/Shared/Loading.dart';
 import 'package:chodiapp/constants/TextStyles.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 class SignInPage extends StatefulWidget {
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -17,6 +16,25 @@ class _SignInPageState extends State<SignInPage> {
 
   String email = "";
   String password = "";
+
+  String _validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
+  }
+  String _validatePassword(String value){
+    Pattern pattern = r'^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})';
+    RegExp regExp = new RegExp(pattern);
+    if (!regExp.hasMatch(value))
+      return "Enter Stronger Password";
+    else
+      return null;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +72,7 @@ class _SignInPageState extends State<SignInPage> {
                       Card(
                         elevation: 10.0,
                         child: TextFormField(
+                          validator: _validateEmail,
                           decoration: textInputDecoration.copyWith(hintText: "example@gmail.com",),
                           onChanged: (val) {
                             setState(() {email = val;});
@@ -73,7 +92,12 @@ class _SignInPageState extends State<SignInPage> {
                       Card(
                         elevation: 10.0,
                         child: TextFormField(
+                          validator: _validatePassword,
                           decoration: textInputDecoration.copyWith(hintText: ".............."),
+                          obscureText: true,
+                          onChanged: (val){
+                            setState(() {password = val;});
+                          },
                         ),
                       )
                     ],
@@ -81,12 +105,15 @@ class _SignInPageState extends State<SignInPage> {
                   SizedBox(height: 50,),
                   FlatButton(
                     onPressed: () async{
-                      setState(() {loading = true;});
-                      dynamic result = await _auth.signInAnon();
-                      if (result == null){
-                        print("couldn't sign in ");
-                        setState(() {loading = false;});
+                      if(_formKey.currentState.validate()){
+                        setState(() {loading = true;});
+                        dynamic result = await _auth.signInAnon();
+                        if (result == null){
+                          print("couldn't sign in ");
+                          setState(() {loading = false;});
+                        }
                       }
+
                     },
                     child: Text("Log In",
                       style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,color: Colors.black,fontSize: 22 ),),
@@ -114,6 +141,19 @@ class _SignInPageState extends State<SignInPage> {
                         )
                       ],
                     ),
+                  ),
+                  SizedBox(height: 40,),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text("Don't Have an Account?",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 15),),
+                      FlatButton(
+                        child: Text("Sign Up",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w400,fontSize: 17,color: Colors.blue),),
+                        onPressed: (){
+                          Navigator.of(context).pushNamed('signUpScreen');
+                        },
+                      )
+                    ],
                   )
 
 
