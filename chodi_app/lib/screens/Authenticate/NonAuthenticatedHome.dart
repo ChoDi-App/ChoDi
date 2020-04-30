@@ -13,8 +13,8 @@ class _NonAuthenticatedHomeScreenState extends State<NonAuthenticatedHomeScreen>
   int _selectedIndex = 2;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
-    SignInPage(),
-    SignInPage(),
+    Text("placeholder"),
+    Text("placeholder"),
     Column(
       children: <Widget>[
         Text(
@@ -25,14 +25,19 @@ class _NonAuthenticatedHomeScreenState extends State<NonAuthenticatedHomeScreen>
         style: optionStyle,)
       ],
     ),
-    SignInPage(),
-    SignInPage()
+    Text("placeholder"),
+    Text("placeholder")
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 2){
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+    else{
+      Navigator.of(context).pushNamed('signInScreen');
+    }
 
   }
 

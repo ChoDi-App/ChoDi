@@ -1,4 +1,5 @@
 import 'package:chodiapp/AuthWidgetBuilder.dart';
+import 'package:chodiapp/screens/Authenticate/SignInPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:chodiapp/Services/Auth.dart';
@@ -21,10 +22,11 @@ class MyApp extends StatelessWidget {
       ],
       child: AuthWidgetBuilder(builder: (context, userSnapshot) {
         return MaterialApp(
-            theme: ThemeData(
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            home: Wrapper(userSnapshot: userSnapshot)
+
+            home: Wrapper(userSnapshot: userSnapshot),
+            routes: <String, WidgetBuilder>{
+              'signInScreen' : (BuildContext context) => new SignInPage()
+        },
           );
         }
       ),
