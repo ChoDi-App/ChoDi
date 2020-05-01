@@ -26,7 +26,6 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           )
         ],
-        backgroundColor: primaryColor ,
         title: Text("Sign Up",style: GoogleFonts.ubuntu(fontSize: 25.0, fontWeight: FontWeight.w300,)),
       ),
       body: SingleChildScrollView(

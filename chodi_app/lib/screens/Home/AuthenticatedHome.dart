@@ -1,3 +1,4 @@
+import 'package:chodiapp/Shared/Loading.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/AppColors.dart';
 import 'package:chodiapp/screens/Home/TabPages/EventsPage.dart';
@@ -13,7 +14,7 @@ class AuthenticatedHomeScreen extends StatefulWidget {
 }
 
 class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
-
+  bool loading =false;
   List<Color> selectedColors = [Colors.yellow, Colors.orange,Colors.red,Colors.blue,Colors.green];
   int _selectedIndex = 2;
   List<Widget> _widgetOptions = <Widget>[
@@ -33,11 +34,17 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading? Loading(): Scaffold(
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(Icons.menu),
-            onPressed: _auth.signOut
+            onPressed: () async{
+              setState(() {
+                loading = true;
+              });
+              await _auth.signOut();
+
+            }
         ),
 
         title: Text('CHODI'),
