@@ -32,6 +32,7 @@ dependencies:
   firebase_auth: ^0.15.5+3
   cloud_firestore: ^0.13.4+2
   google_fonts: ^1.0.0
+  smart_select: ^3.0.3
 
 dev_dependencies:
   flutter_test:

@@ -1,19 +1,19 @@
 import 'dart:math';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/Services/Auth.dart';
 import 'package:chodiapp/Shared/Loading.dart';
 import 'package:chodiapp/constants/TextStyles.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:chodiapp/Models/User.dart';
+
 class SignInPage extends StatefulWidget {
   @override
   _SignInPageState createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final AuthService _auth = AuthService();
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -38,6 +38,16 @@ class _SignInPageState extends State<SignInPage> {
     else
       return null;
   }
+  Future<User> _signInWithEmailAndPassword(BuildContext context, String email, String password) async{
+    try{
+      final auth = Provider.of<AuthService>(context,listen: false);
+      return await auth.signInWithEmailAndPassword(email, password);
+
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
 
 
   @override
@@ -46,6 +56,10 @@ class _SignInPageState extends State<SignInPage> {
       child: CupertinoPageScaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: true,
+        navigationBar: CupertinoNavigationBar(
+          middle: Text("Sign In", style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 25),),
+          border: Border(bottom: BorderSide.none),
+        ) ,
 //      appBar: AppBar(
 //        backgroundColor: Colors.transparent,
 //        title: Text("Sign In",
@@ -64,27 +78,17 @@ class _SignInPageState extends State<SignInPage> {
               padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
               child: SingleChildScrollView(
                 child: Container(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height ,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(
-                              onPressed: (){
-                                Navigator.pop(context);
-                              },
-                              icon: Transform.rotate(angle: pi/4, child: Icon(Icons.add,size: 30,),),
-                            ),
-                          ),
-                          Text("Sign In", style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 28),),
-                        ],
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50),
+                        child: Text("To use these features please sign in or sign up. Thanks.",
+                        style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 17.0,color: Colors.grey)),
                       ),
-                      Text("To use these features please sign in or sign up. Thanks.",
-                      style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 17.0,color: Colors.grey)),
                       Column(
                         children: <Widget>[
                           Align(
@@ -128,9 +132,9 @@ class _SignInPageState extends State<SignInPage> {
                         onPressed: () async{
                           if(_formKey.currentState.validate()){
                             setState(() {loading = true;});
-                            dynamic result = await _auth.signInAnon();
+                            User result = await _signInWithEmailAndPassword(context, email, password);
                             if (result == null){
-                              print("couldn't sign in ");
+                              print("couldn't sign in with thos credentials");
                               setState(() {loading = false;});
                             }
                           }
