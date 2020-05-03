@@ -59,7 +59,6 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                 SizedBox(height: 20.0,),
                 InkWell(
                   onTap: (){
-                    choices.add("Resources");
                   },
                   child: Card(
                     elevation: 8.0,
