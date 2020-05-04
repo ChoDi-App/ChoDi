@@ -16,19 +16,16 @@ class _SignUpPageState extends State<SignUpPage> {
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           border: Border(bottom: BorderSide.none),
+          middle: Text("I am a(n)",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 28),),
         ),
-        child: Container(
-          padding: EdgeInsets.fromLTRB(30, 30, 30, 10.0),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-
-              Text("I am a(n)",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 28),),
-              Material(
-                child: InkWell(
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                InkWell(
                   onTap: (){
                     Navigator.push(context,MaterialPageRoute(builder: (context){
                       return IndividualSignUpPage();
@@ -48,9 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              ),
-              Material(
-                child: InkWell(
+                InkWell(
                   splashColor: Colors.black,
                   onTap: (){print("clicked");},
                   child: Card(
@@ -66,9 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              ),
-              Material(
-                child: InkWell(
+                InkWell(
                   onTap: (){},
                   splashColor: Colors.black,
                   child: Card(
@@ -84,8 +77,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

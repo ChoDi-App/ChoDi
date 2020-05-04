@@ -142,7 +142,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                             Container(
                               padding: EdgeInsets.all(8.0),
-                              child: Text("Continue with Google",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize:22,color: Colors.white ),),
+                              child: Text("Continue with Google",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize:15,color: Colors.white ),),
                             )
                           ],
                         ),
@@ -150,9 +150,9 @@ class _SignInPageState extends State<SignInPage> {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Text("Don't Have an Account?",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 15),),
+                          Text("Don't Have an Account?",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 12),),
                           FlatButton(
-                            child: Text("Sign Up",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w400,fontSize: 17,color: Colors.blue),),
+                            child: Text("Sign Up",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w400,fontSize: 15,color: Colors.blue),),
                             onPressed: (){
                               Navigator.of(context).pushNamed('signUpScreen');
                             },

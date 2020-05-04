@@ -1,6 +1,11 @@
+import 'package:chodiapp/Models/User.dart';
+import 'package:chodiapp/Services/Auth.dart';
+import 'package:chodiapp/Services/Database.dart';
+import 'package:chodiapp/Shared/Loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_select/smart_select.dart';
 import 'package:chodiapp/constants/TextStyles.dart';
 class IndividualSignUpPage extends StatefulWidget {
@@ -12,6 +17,7 @@ class IndividualSignUpPage extends StatefulWidget {
 class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
 
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   List<String> userResources = [];
   List<String> userInterest = [];
@@ -21,6 +27,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
   String cityState = "";
   String phoneNumber = "";
   String ageRange= "Age-Age";
+
 
   bool agreedToTerms = false;
 
@@ -56,13 +63,27 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
     else
       return null;
   }
+  Future<User> _registerIndividualUser(BuildContext context, String email, String password,String name, String cityState, String phoneNumber, String ageRange,List<String> userResources,List<String> userInterest ) async{
+    try{
+      final auth = Provider.of<AuthService>(context,listen: false);
+
+      User user = await auth.registerWithEmailAndPassword(email, password);
+      await DatabaseService(uid: user.uid).createNewIndividualUser(name,cityState,phoneNumber,ageRange,userResources,userInterest);
+      return user;
+
+
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
 
 
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: CupertinoPageScaffold(
+      child: loading? Loading(): CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           border: Border(
             bottom: BorderSide.none
@@ -194,7 +215,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                                   child: Container(
                                     height:  MediaQuery.of(context).size.height / 3,
                                     child: CupertinoPicker(
-                                      magnification: 1.5,
+                                      magnification: 1.2,
                                       backgroundColor: Colors.white,
                                       children: <Widget>[
                                         Text("Under 18"),
@@ -236,20 +257,26 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                                 });
                               },
                             ),
-                            Text("I accept Terms of Use and Privacy Policy",style: GoogleFonts.ubuntu(fontSize: 12,fontWeight: FontWeight.w100,color: Colors.grey),)
+                            Text("I accept Terms of Use and Privacy Policy",style: GoogleFonts.ubuntu(fontSize: 10,fontWeight: FontWeight.w100,color: Colors.grey),)
                           ],
                         ),
                       ),
                       FlatButton(
                         child: Text("Apply", style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 25, color: Colors.blue),),
-                        onPressed: (){
+                        onPressed: () async{
                           if (_formKey.currentState.validate()){
                             if(userInterest.isNotEmpty && userResources.isNotEmpty){
                               if (ageRange != "Age-Age"){
                                 if (agreedToTerms){
-                                  print(userResources);
-                                  print(userInterest);
-                                  print("perform regerstration thru fire base");
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  dynamic result = _registerIndividualUser(context, email, password, name, cityState, phoneNumber, ageRange, userResources, userInterest);
+                                  if (result == null){
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                  }
                                 }
                                 if(agreedToTerms == false){
                                   print("Please Agree to Terms");
