@@ -1,7 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chodiapp/Models/User.dart';
 
-class AuthService{
+abstract class AuthBase {
+  Stream<User> get user;
+  Future<User> signInAnon();
+  Future<User> registerWithEmailAndPassword(String email, String password);
+  Future<User> signInWithEmailAndPassword(String email, String password);
+  Future<void> signOut();
+
+}
+
+class AuthService implements AuthBase{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 

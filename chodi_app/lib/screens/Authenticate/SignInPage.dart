@@ -21,23 +21,8 @@ class _SignInPageState extends State<SignInPage> {
   String email = "";
   String password = "";
 
-  String _validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
-  }
-  String _validatePassword(String value){
-    Pattern pattern = r'^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})';
-    RegExp regExp = new RegExp(pattern);
-    if (!regExp.hasMatch(value))
-      return "Enter Stronger Password";
-    else
-      return null;
-  }
+
+
   Future<User> _signInWithEmailAndPassword(BuildContext context, String email, String password) async{
     try{
       final auth = Provider.of<AuthService>(context,listen: false);
@@ -99,7 +84,6 @@ class _SignInPageState extends State<SignInPage> {
                           Card(
                             elevation: 10.0,
                             child: TextFormField(
-                              validator: _validateEmail,
                               decoration: textInputDecoration.copyWith(hintText: "example@gmail.com",),
                               onChanged: (val) {
                                 setState(() {email = val;});
@@ -118,7 +102,6 @@ class _SignInPageState extends State<SignInPage> {
                           Card(
                             elevation: 10.0,
                             child: TextFormField(
-                              validator: _validatePassword,
                               decoration: textInputDecoration.copyWith(hintText: ".............."),
                               obscureText: true,
                               onChanged: (val){
@@ -130,14 +113,13 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       FlatButton(
                         onPressed: () async{
-                          if(_formKey.currentState.validate()){
                             setState(() {loading = true;});
                             User result = await _signInWithEmailAndPassword(context, email, password);
                             if (result == null){
                               print("couldn't sign in with thos credentials");
                               setState(() {loading = false;});
                             }
-                          }
+
 
                         },
                         child: Text("Log In",
