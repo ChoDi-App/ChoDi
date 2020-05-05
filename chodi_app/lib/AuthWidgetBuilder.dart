@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Services/Auth.dart';
 import 'package:chodiapp/Models/User.dart';
+import 'Services/Database.dart';
 
 
 class AuthWidgetBuilder extends StatelessWidget{
@@ -20,7 +21,13 @@ class AuthWidgetBuilder extends StatelessWidget{
         if (user != null){
           return MultiProvider(
             providers: [
-              Provider<User>.value(value: user)
+              Provider<User>.value(value: user),
+              Provider<DatabaseService>(
+                create: (_)=> DatabaseService(),
+              ),
+              StreamProvider<UserData>.value(value: DatabaseService(uid: user.uid).userData)
+
+              //StreamProvider<User>.value(value: DatabaseService(uid: user.uid)
             ],
             child: builder(context, snapshot),
           );

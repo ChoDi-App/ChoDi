@@ -1,5 +1,6 @@
 import 'package:chodiapp/AuthWidgetBuilder.dart';
 import 'package:chodiapp/screens/Authenticate/SignInPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:chodiapp/Services/Auth.dart';
