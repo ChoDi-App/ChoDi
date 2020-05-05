@@ -33,6 +33,16 @@ class _SignInPageState extends State<SignInPage> {
       return null;
     }
   }
+  Future<User> _signInWithGoogle() async{
+    try{
+      final auth = Provider.of<AuthService>(context,listen: false);
+      return await auth.signInWithGoogle();
+
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
 
 
   @override
@@ -129,7 +139,20 @@ class _SignInPageState extends State<SignInPage> {
                       RaisedButton(
                         color: Color.fromRGBO(78, 174, 255,10),
                         padding: EdgeInsets.all(8.0),
-                        onPressed: (){},
+                        onPressed:() async{
+                          setState(() {
+                            loading = true;
+                          });
+                          User result = await _signInWithGoogle();
+                          if(result == null){
+                            print("Couldn't sign in with those credentials");
+                            setState(() {
+                              loading = false;
+                            });
+                          }
+
+
+                        },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[

@@ -1,5 +1,6 @@
 import 'package:chodiapp/screens/Home/AuthenticatedHome.dart';
 import 'package:chodiapp/screens/Authenticate/NonAuthenticatedHome.dart';
+import 'package:chodiapp/screens/WelcomeWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/Shared/Loading.dart';
 import 'package:chodiapp/Models/User.dart';
@@ -10,7 +11,7 @@ class Wrapper extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     if (userSnapshot.connectionState == ConnectionState.active){
-      return userSnapshot.hasData ? AuthenticatedHomeScreen() : NonAuthenticatedHomeScreen();
+      return userSnapshot.hasData ? WelcomeWrapper() : NonAuthenticatedHomeScreen();
     }
     return Loading();
 

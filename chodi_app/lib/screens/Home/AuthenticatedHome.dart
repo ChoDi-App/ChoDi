@@ -1,3 +1,4 @@
+import 'package:chodiapp/Models/User.dart';
 import 'package:chodiapp/Shared/Loading.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/AppColors.dart';
@@ -7,6 +8,7 @@ import 'package:chodiapp/screens/Home/TabPages/ImpactPage.dart';
 import 'package:chodiapp/screens/Home/TabPages/MessagesPage.dart';
 import 'package:chodiapp/screens/Home/TabPages/NotificationsPage.dart';
 import 'package:chodiapp/Services/Auth.dart';
+import 'package:provider/provider.dart';
 
 class AuthenticatedHomeScreen extends StatefulWidget {
   @override
@@ -32,9 +34,11 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
   }
   final AuthService _auth = AuthService();
 
+
+
   @override
   Widget build(BuildContext context) {
-    return loading? Loading(): Scaffold(
+    return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(Icons.menu),
