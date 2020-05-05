@@ -14,4 +14,17 @@ class UserData{
   final List<dynamic> userResources;
   final List<dynamic> userInterest;
   UserData({this. userId,this.name,this.cityState,this.phoneNumber,this.ageRange,this.userResources,this.userInterest});
+
+  factory UserData.fromMap(Map data){
+    data = data ?? {};
+    return UserData(
+      userId : data["userId"] ?? "",
+      name: data["name"] ?? "" ,
+      cityState: data["cityState"] ?? "",
+      phoneNumber: data["phoneNumber"] ?? "",
+      ageRange :data["ageRange"] ?? "",
+      userResources: data["userResources"] ?? [],
+      userInterest: data["userInterest"] ?? [],
+    );
+  }
 }
