@@ -1,3 +1,4 @@
+import 'package:chodiapp/Models/non_profits.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Services/Auth.dart';
@@ -25,7 +26,8 @@ class AuthWidgetBuilder extends StatelessWidget{
               Provider<DatabaseService>(
                 create: (_)=> DatabaseService(),
               ),
-              StreamProvider<UserData>.value(value: DatabaseService(uid: user.uid).userData)
+              StreamProvider<UserData>.value(value: DatabaseService(uid: user.uid).userData),
+              StreamProvider<List<NonProfitsData>>.value(value: DatabaseService().nonProfitData)
 
               //StreamProvider<User>.value(value: DatabaseService(uid: user.uid)
             ],

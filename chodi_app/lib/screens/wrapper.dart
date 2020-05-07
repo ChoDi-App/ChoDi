@@ -1,4 +1,3 @@
-import 'package:chodiapp/screens/Home/AuthenticatedHome.dart';
 import 'package:chodiapp/screens/Authenticate/NonAuthenticatedHome.dart';
 import 'package:chodiapp/screens/WelcomeWrapper.dart';
 import 'package:flutter/material.dart';

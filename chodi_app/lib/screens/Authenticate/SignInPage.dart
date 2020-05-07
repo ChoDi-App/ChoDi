@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/Services/Auth.dart';
 import 'package:chodiapp/Shared/Loading.dart';

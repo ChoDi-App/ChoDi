@@ -1,6 +1,5 @@
 import 'package:chodiapp/Services/Database.dart';
 import 'package:flutter/material.dart';
-import 'package:chodiapp/Services/Auth.dart';
 import 'package:chodiapp/Shared/Loading.dart';
 import 'package:chodiapp/constants/TextStyles.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,7 +46,6 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
 
   Future _registerIndividualUser(BuildContext context, String email, String password,String name, String cityState, String phoneNumber, String ageRange,List<String> userResources,List<String> userInterest ) async{
     try{
-      final auth = Provider.of<AuthService>(context,listen: false);
       User currentUser = Provider.of<User>(context, listen: false);
       await DatabaseService(uid: currentUser.uid).updateNewUser(name,cityState,phoneNumber,ageRange,userResources,userInterest);
 
@@ -161,7 +159,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         color: Colors.black,
                       ),
                       FlatButton(
-                        child: Text("${ageRange}",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
+                        child: Text("$ageRange",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
                         onPressed: (){
                           showModalBottomSheet(
                               context: context,
@@ -223,7 +221,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                             if(userInterest.isNotEmpty && userResources.isNotEmpty){
                               if (ageRange != "Age-Age"){
                                 if (agreedToTerms){
-                                  dynamic result = _registerIndividualUser(context, email, password, name, cityState, phoneNumber, ageRange, userResources, userInterest);
+                                  await _registerIndividualUser(context, email, password, name, cityState, phoneNumber, ageRange, userResources, userInterest);
                                 }
                                 if(agreedToTerms == false){
                                   print("Please Agree to Terms");
