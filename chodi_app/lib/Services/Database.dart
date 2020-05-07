@@ -1,4 +1,5 @@
 import 'package:chodiapp/Models/User.dart';
+import 'package:chodiapp/Models/non_profits.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
@@ -8,6 +9,7 @@ class DatabaseService{
 
 
   final userCollection = Firestore.instance.collection("users");
+  final nonProfitCollection = Firestore.instance.collection("non-profit");
 
   Future createNewIndividualUser( String name, String cityState, String phoneNumber , String ageRange, List<String> userResources, List<String> userInterest) async{
     return await userCollection.document(uid).setData({
@@ -34,10 +36,22 @@ class DatabaseService{
     });
   }
 
+  List<NonProfitsData> _nonProfitListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc){
+      return NonProfitsData.fromMap(doc.data);
+      }
+    ).toList();
+  }
+
 
   Stream<UserData> get userData{
     return userCollection.document(uid).snapshots()
         .map((snap) => UserData.fromMap(snap.data));
+  }
+
+  Stream<List<NonProfitsData>> get nonProfitData{
+    return nonProfitCollection.snapshots()
+        .map(_nonProfitListFromSnapshot);
   }
 
 

@@ -206,7 +206,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         color: Colors.black,
                       ),
                       FlatButton(
-                        child: Text("${ageRange}",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
+                        child: Text("$ageRange",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
                         onPressed: (){
                           showModalBottomSheet(
                               context: context,
