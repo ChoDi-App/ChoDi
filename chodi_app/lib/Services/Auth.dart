@@ -1,6 +1,6 @@
 import 'package:chodiapp/Services/Database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:chodiapp/Models/User.dart';
+import 'package:chodiapp/models/User.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

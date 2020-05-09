@@ -1,5 +1,5 @@
-import 'package:chodiapp/Models/User.dart';
-import 'package:chodiapp/Models/non_profits.dart';
+import 'package:chodiapp/models/User.dart';
+import 'package:chodiapp/models/non_profits.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'non_profit_tile.dart';

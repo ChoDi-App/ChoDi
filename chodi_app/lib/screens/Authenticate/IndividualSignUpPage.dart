@@ -1,4 +1,4 @@
-import 'package:chodiapp/Models/User.dart';
+import 'package:chodiapp/models/User.dart';
 import 'package:chodiapp/Services/Auth.dart';
 import 'package:chodiapp/Services/Database.dart';
 import 'package:chodiapp/Shared/Loading.dart';

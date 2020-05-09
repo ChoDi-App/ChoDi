@@ -1,4 +1,4 @@
-import 'package:chodiapp/Models/non_profits.dart';
+import 'package:chodiapp/models/non_profits.dart';
 import 'package:chodiapp/constants/AppColors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

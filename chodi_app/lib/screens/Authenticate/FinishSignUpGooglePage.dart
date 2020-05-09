@@ -5,7 +5,7 @@ import 'package:chodiapp/constants/TextStyles.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:chodiapp/Models/User.dart';
+import 'package:chodiapp/models/User.dart';
 import 'package:smart_select/smart_select.dart';
 
 class FinishSignUpGooglePage extends StatefulWidget {
