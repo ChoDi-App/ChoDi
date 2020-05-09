@@ -1,4 +1,3 @@
-import 'package:chodiapp/screens/Authenticate/SignInPage.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/AppColors.dart';
 
