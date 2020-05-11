@@ -1,7 +1,8 @@
 
+import 'package:chodiapp/screens/Authenticate/non_profit_sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:chodiapp/screens/Authenticate/IndividualSignUpPage.dart';
+import 'package:chodiapp/screens/Authenticate/individual_sign_up_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -47,7 +48,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 InkWell(
                   splashColor: Colors.black,
-                  onTap: (){print("clicked");},
+                  onTap: (){
+                    Navigator.push(context,MaterialPageRoute(builder: (context){
+                      return NonProfitSignUpPage();
+                    }));
+                  },
                   child: Card(
                     elevation: 8.0,
                     child: Container(

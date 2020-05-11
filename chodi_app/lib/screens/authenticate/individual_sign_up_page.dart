@@ -1,32 +1,29 @@
-import 'package:chodiapp/Services/Database.dart';
+import 'package:chodiapp/Models/user.dart';
+import 'package:chodiapp/Services/auth.dart';
+import 'package:chodiapp/Services/firestore.dart';
+import 'package:chodiapp/Shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:chodiapp/Shared/Loading.dart';
-import 'package:chodiapp/constants/TextStyles.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:chodiapp/Models/User.dart';
 import 'package:smart_select/smart_select.dart';
+import 'package:chodiapp/constants/constants.dart';
+class IndividualSignUpPage extends StatefulWidget {
 
-class FinishSignUpGooglePage extends StatefulWidget {
   @override
-  _FinishSignUpGooglePageState createState() => _FinishSignUpGooglePageState();
+  _IndividualSignUpPageState createState() => _IndividualSignUpPageState();
 }
 
-class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
+class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
 
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  List<String> userResources = [];
-  List<String> userInterest = [];
-  String name = "";
+  UserData userData = UserData();
   String email= "";
-  String password = "";
-  String cityState = "";
-  String phoneNumber = "";
-  String ageRange= "Age-Age";
-
+  String password= "";
+  List<dynamic> userResources = [];
+  List<dynamic> userInterest = [];
 
   bool agreedToTerms = false;
 
@@ -44,10 +41,31 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
     SmartSelectOption<String>(value: "animals", title: "Animals"),
   ];
 
-  Future _registerIndividualUser(BuildContext context, String email, String password,String name, String cityState, String phoneNumber, String ageRange,List<String> userResources,List<String> userInterest ) async{
+  String _validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
+  }
+
+  String _validatePassword(String value){
+    Pattern pattern = r'^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})';
+    RegExp regExp = new RegExp(pattern);
+    if (!regExp.hasMatch(value))
+      return "Enter Stronger Password";
+    else
+      return null;
+  }
+  Future<User> _registerIndividualUser(BuildContext context, String email, String password, UserData userData ) async{
     try{
-      User currentUser = Provider.of<User>(context, listen: false);
-      await DatabaseService(uid: currentUser.uid).updateNewUser(name,cityState,phoneNumber,ageRange,userResources,userInterest);
+      final auth = Provider.of<AuthService>(context,listen: false);
+
+      User user = await auth.registerWithEmailAndPassword(email, password);
+      await FirestoreService(uid: user.uid).createIndividualUser(userData);
+      return user;
 
     }catch(e){
       print(e.toString());
@@ -57,16 +75,15 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
 
 
 
-
   @override
   Widget build(BuildContext context) {
     return Material(
       child: loading? Loading(): CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           border: Border(
-              bottom: BorderSide.none
+            bottom: BorderSide.none
           ),
-          middle: Text("Please Finish Sign Up",style: GoogleFonts.ubuntu(fontSize: 25.0, fontWeight: FontWeight.w300,)),
+          middle: Text("Sign Up",style: GoogleFonts.ubuntu(fontSize: 25.0, fontWeight: FontWeight.w300,)),
         ),
         child: GestureDetector(
           onTap: (){
@@ -89,7 +106,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         thickness: 1.0,
                         color: Colors.black,
                       ),
-                      SmartSelect<String>.multiple(
+                      SmartSelect<dynamic>.multiple(
                           value: userResources,
                           title: "I have: ",
                           options: resourcesOptions ,
@@ -105,7 +122,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         thickness: 1.0,
                         color: Colors.black,
                       ),
-                      SmartSelect<String>.multiple(
+                      SmartSelect<dynamic>.multiple(
                           value: userInterest,
                           title: "I am interested in: ",
                           options: interestOptions ,
@@ -123,7 +140,32 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                           validator: (val)=> val.isEmpty? 'Enter a Name ':null,
                           decoration: textInputDecoration.copyWith(hintText: "Name",),
                           onChanged: (val) {
-                            setState(() {name = val;});
+                            setState(() {userData.name = val;});
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 30,),
+                      Text("Email Address",style: GoogleFonts.ubuntu(fontSize: 22,fontWeight: FontWeight.w100),),
+                      Card(
+                        elevation: 10.0,
+                        child: TextFormField(
+                          validator: _validateEmail,
+                          decoration: textInputDecoration.copyWith(hintText: "example@gmail.com",),
+                          onChanged: (val) {
+                            setState(() {email = val;});
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 30,),
+                      Text("Password",style: GoogleFonts.ubuntu(fontSize: 22,fontWeight: FontWeight.w100),),
+                      Card(
+                        elevation: 10.0,
+                        child: TextFormField(
+                          validator: _validatePassword,
+                          decoration: textInputDecoration.copyWith(hintText: ".............."),
+                          obscureText: true,
+                          onChanged: (val){
+                            setState(() {password = val;});
                           },
                         ),
                       ),
@@ -135,7 +177,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                           validator: (val)=> val.isEmpty? 'Enter a City and State ':null,
                           decoration: textInputDecoration.copyWith(hintText: "Los Angeles, CA"),
                           onChanged: (val){
-                            setState(() {cityState = val;});
+                            setState(() {userData.cityState = val;});
                           },
                         ),
                       ),
@@ -147,7 +189,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                           validator: (val)=> val.isEmpty? 'Enter a Number ':null,
                           decoration: textInputDecoration.copyWith(hintText: "+387 623 1234"),
                           onChanged: (val){
-                            setState(() {phoneNumber = val;});
+                            setState(() {userData.phoneNumber = val;});
                           },
                         ),
                       ),
@@ -159,7 +201,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         color: Colors.black,
                       ),
                       FlatButton(
-                        child: Text("$ageRange",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
+                        child: Text("${userData.ageRange ?? "Select Age Range"}",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
                         onPressed: (){
                           showModalBottomSheet(
                               context: context,
@@ -183,7 +225,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                       looping: false,
                                       onSelectedItemChanged: (int index){
                                         setState(() {
-                                          ageRange = listOfAgeRange[index];
+                                          userData.ageRange = listOfAgeRange[index];
                                         });
                                       },
                                     ),
@@ -215,40 +257,38 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         ),
                       ),
                       FlatButton(
-                        child: Text("Finish", style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 25, color: Colors.blue),),
+                        child: Text("Apply", style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 25, color: Colors.blue),),
                         onPressed: () async{
                           if (_formKey.currentState.validate()){
                             if(userInterest.isNotEmpty && userResources.isNotEmpty){
-                              if (ageRange != "Age-Age"){
+                              userData.userInterest = userInterest;
+                              userData.userResources = userResources;
+                              if (userData.ageRange != "Age-Age"){
                                 if (agreedToTerms){
-                                  await _registerIndividualUser(context, email, password, name, cityState, phoneNumber, ageRange, userResources, userInterest);
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  dynamic result = _registerIndividualUser(context, email, password, userData);
+                                  if (result == null){
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                  }
                                 }
                                 if(agreedToTerms == false){
                                   print("Please Agree to Terms");
                                 }
                               }
-                              if (ageRange == "Age-Age"){
+                              if (userData.ageRange == "Age-Age"){
                                 print("Please Select an Age Range");
-
                               }
                             }
                             if (userInterest.isEmpty || userResources.isEmpty){
                               print("Please fill select and interest and or donations");
-
                             }
                           }
                         },
                       )
-
-
-
-
-
-
-
-
-
-
                     ],
                   ),
                 ),

@@ -1,6 +1,5 @@
-import 'package:chodiapp/Models/non_profits.dart';
-import 'package:chodiapp/constants/AppColors.dart';
-import 'package:flutter/gestures.dart';
+import 'package:chodiapp/Models/non_profit.dart';
+import 'package:chodiapp/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -9,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 class NonProfitInfoPage extends StatelessWidget {
   NonProfitInfoPage({@required this.nonProfit});
 
-  NonProfitsData nonProfit;
+  NonProfit nonProfit;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class NonProfitInfoPage extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            nonProfit.orgName,
+                            nonProfit.name,
                             style: GoogleFonts.ubuntu(
                                 fontSize: 22, fontWeight: FontWeight.w300),
                             textAlign: TextAlign.left,
@@ -52,7 +51,7 @@ class NonProfitInfoPage extends StatelessWidget {
                         )
                       ],
                     ),
-                    Text(nonProfit.contactNumber),
+                    Text(nonProfit.nonProfitContact.number),
                     SizedBox(height: 8),
                     Row(
                       children: <Widget>[
@@ -72,7 +71,7 @@ class NonProfitInfoPage extends StatelessWidget {
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  Text("Location: ${nonProfit.city}")
+                                  Text("Location: ${nonProfit.address.city}")
                                 ],
                               ),
                               Row(
@@ -90,7 +89,7 @@ class NonProfitInfoPage extends StatelessWidget {
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  Text("Year Founded: ${nonProfit.founded}")
+                                  Text("Year Founded: ${nonProfit.yearFounded}")
                                 ],
                               ),
                               Row(
@@ -99,7 +98,7 @@ class NonProfitInfoPage extends StatelessWidget {
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  Text("Size: ${nonProfit.orgSize}")
+                                  Text("Size: ${nonProfit.size}")
                                 ],
                               )
                             ],

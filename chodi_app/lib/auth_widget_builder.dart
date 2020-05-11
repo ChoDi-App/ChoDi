@@ -1,9 +1,9 @@
-import 'package:chodiapp/Models/non_profits.dart';
+import 'package:chodiapp/Models/non_profit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Services/Auth.dart';
-import 'package:chodiapp/Models/User.dart';
-import 'Services/Database.dart';
+import 'Services/auth.dart';
+import 'package:chodiapp/Models/user.dart';
+import 'Services/firestore.dart';
 
 
 class AuthWidgetBuilder extends StatelessWidget{
@@ -23,11 +23,11 @@ class AuthWidgetBuilder extends StatelessWidget{
           return MultiProvider(
             providers: [
               Provider<User>.value(value: user),
-              Provider<DatabaseService>(
-                create: (_)=> DatabaseService(),
+              Provider<FirestoreService>(
+                create: (_)=> FirestoreService(),
               ),
-              StreamProvider<UserData>.value(value: DatabaseService(uid: user.uid).userData),
-              StreamProvider<List<NonProfitsData>>.value(value: DatabaseService().nonProfitData)
+              StreamProvider<UserData>.value(value: FirestoreService(uid: user.uid).userData),
+              StreamProvider<List<NonProfit>>.value(value: FirestoreService().nonProfitData)
 
               //StreamProvider<User>.value(value: DatabaseService(uid: user.uid)
             ],

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:chodiapp/Services/Auth.dart';
-import 'package:chodiapp/Shared/Loading.dart';
-import 'package:chodiapp/constants/TextStyles.dart';
+import 'package:chodiapp/Services/auth.dart';
+import 'package:chodiapp/Shared/loading.dart';
+import 'package:chodiapp/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:chodiapp/Models/User.dart';
+import 'package:chodiapp/Models/user.dart';
 
 class SignInPage extends StatefulWidget {
   @override

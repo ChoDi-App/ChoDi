@@ -1,33 +1,28 @@
-import 'package:chodiapp/Models/User.dart';
-import 'package:chodiapp/Services/Auth.dart';
-import 'package:chodiapp/Services/Database.dart';
-import 'package:chodiapp/Shared/Loading.dart';
+import 'package:chodiapp/Services/firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:chodiapp/Shared/loading.dart';
+import 'package:chodiapp/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:chodiapp/Models/user.dart';
 import 'package:smart_select/smart_select.dart';
-import 'package:chodiapp/constants/TextStyles.dart';
-class IndividualSignUpPage extends StatefulWidget {
 
+class FinishSignUpGooglePage extends StatefulWidget {
   @override
-  _IndividualSignUpPageState createState() => _IndividualSignUpPageState();
+  _FinishSignUpGooglePageState createState() => _FinishSignUpGooglePageState();
 }
 
-class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
+class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
 
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  List<String> userResources = [];
-  List<String> userInterest = [];
-  String name = "";
+  UserData userData = UserData();
   String email= "";
-  String password = "";
-  String cityState = "";
-  String phoneNumber = "";
-  String ageRange= "Age-Age";
-
+  String password= "";
+  List<dynamic> userResources = [];
+  List<dynamic> userInterest = [];
 
   bool agreedToTerms = false;
 
@@ -45,32 +40,10 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
     SmartSelectOption<String>(value: "animals", title: "Animals"),
   ];
 
-  String _validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
-  }
-
-  String _validatePassword(String value){
-    Pattern pattern = r'^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})';
-    RegExp regExp = new RegExp(pattern);
-    if (!regExp.hasMatch(value))
-      return "Enter Stronger Password";
-    else
-      return null;
-  }
-  Future<User> _registerIndividualUser(BuildContext context, String email, String password,String name, String cityState, String phoneNumber, String ageRange,List<String> userResources,List<String> userInterest ) async{
+  Future _registerIndividualUser(BuildContext context, UserData userData) async{
     try{
-      final auth = Provider.of<AuthService>(context,listen: false);
-
-      User user = await auth.registerWithEmailAndPassword(email, password);
-      await DatabaseService(uid: user.uid).createNewIndividualUser(name,cityState,phoneNumber,ageRange,userResources,userInterest);
-      return user;
-
+      User currentUser = Provider.of<User>(context, listen: false);
+      await FirestoreService(uid: currentUser.uid).updateIndividualUser(userData);
 
     }catch(e){
       print(e.toString());
@@ -78,17 +51,15 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Material(
       child: loading? Loading(): CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           border: Border(
-            bottom: BorderSide.none
+              bottom: BorderSide.none
           ),
-          middle: Text("Sign Up",style: GoogleFonts.ubuntu(fontSize: 25.0, fontWeight: FontWeight.w300,)),
+          middle: Text("Please Finish Sign Up",style: GoogleFonts.ubuntu(fontSize: 25.0, fontWeight: FontWeight.w300,)),
         ),
         child: GestureDetector(
           onTap: (){
@@ -111,7 +82,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         thickness: 1.0,
                         color: Colors.black,
                       ),
-                      SmartSelect<String>.multiple(
+                      SmartSelect<dynamic>.multiple(
                           value: userResources,
                           title: "I have: ",
                           options: resourcesOptions ,
@@ -127,7 +98,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         thickness: 1.0,
                         color: Colors.black,
                       ),
-                      SmartSelect<String>.multiple(
+                      SmartSelect<dynamic>.multiple(
                           value: userInterest,
                           title: "I am interested in: ",
                           options: interestOptions ,
@@ -145,32 +116,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                           validator: (val)=> val.isEmpty? 'Enter a Name ':null,
                           decoration: textInputDecoration.copyWith(hintText: "Name",),
                           onChanged: (val) {
-                            setState(() {name = val;});
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 30,),
-                      Text("Email Address",style: GoogleFonts.ubuntu(fontSize: 22,fontWeight: FontWeight.w100),),
-                      Card(
-                        elevation: 10.0,
-                        child: TextFormField(
-                          validator: _validateEmail,
-                          decoration: textInputDecoration.copyWith(hintText: "example@gmail.com",),
-                          onChanged: (val) {
-                            setState(() {email = val;});
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 30,),
-                      Text("Password",style: GoogleFonts.ubuntu(fontSize: 22,fontWeight: FontWeight.w100),),
-                      Card(
-                        elevation: 10.0,
-                        child: TextFormField(
-                          validator: _validatePassword,
-                          decoration: textInputDecoration.copyWith(hintText: ".............."),
-                          obscureText: true,
-                          onChanged: (val){
-                            setState(() {password = val;});
+                            setState(() {userData.name = val;});
                           },
                         ),
                       ),
@@ -182,7 +128,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                           validator: (val)=> val.isEmpty? 'Enter a City and State ':null,
                           decoration: textInputDecoration.copyWith(hintText: "Los Angeles, CA"),
                           onChanged: (val){
-                            setState(() {cityState = val;});
+                            setState(() {userData.cityState = val;});
                           },
                         ),
                       ),
@@ -194,7 +140,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                           validator: (val)=> val.isEmpty? 'Enter a Number ':null,
                           decoration: textInputDecoration.copyWith(hintText: "+387 623 1234"),
                           onChanged: (val){
-                            setState(() {phoneNumber = val;});
+                            setState(() {userData.phoneNumber = val;});
                           },
                         ),
                       ),
@@ -206,7 +152,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         color: Colors.black,
                       ),
                       FlatButton(
-                        child: Text("$ageRange",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
+                        child: Text("${userData.ageRange ?? "Select Age Range"}",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
                         onPressed: (){
                           showModalBottomSheet(
                               context: context,
@@ -230,7 +176,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                                       looping: false,
                                       onSelectedItemChanged: (int index){
                                         setState(() {
-                                          ageRange = listOfAgeRange[index];
+                                          userData.ageRange = listOfAgeRange[index];
                                         });
                                       },
                                     ),
@@ -262,48 +208,30 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         ),
                       ),
                       FlatButton(
-                        child: Text("Apply", style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 25, color: Colors.blue),),
+                        child: Text("Finish", style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 25, color: Colors.blue),),
                         onPressed: () async{
                           if (_formKey.currentState.validate()){
                             if(userInterest.isNotEmpty && userResources.isNotEmpty){
-                              if (ageRange != "Age-Age"){
+                              userData.userInterest = userInterest;
+                              userData.userResources = userResources;
+                              if (userData.ageRange != "Age-Age"){
                                 if (agreedToTerms){
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  dynamic result = _registerIndividualUser(context, email, password, name, cityState, phoneNumber, ageRange, userResources, userInterest);
-                                  if (result == null){
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                  }
+                                  await _registerIndividualUser(context, userData);
                                 }
                                 if(agreedToTerms == false){
                                   print("Please Agree to Terms");
                                 }
                               }
-                              if (ageRange == "Age-Age"){
+                              if (userData.ageRange == "Age-Age"){
                                 print("Please Select an Age Range");
-
                               }
                             }
                             if (userInterest.isEmpty || userResources.isEmpty){
                               print("Please fill select and interest and or donations");
-
                             }
                           }
                         },
                       )
-
-
-
-
-
-
-
-
-
-
                     ],
                   ),
                 ),

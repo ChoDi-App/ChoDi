@@ -1,5 +1,5 @@
+import 'package:chodiapp/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:chodiapp/constants/AppColors.dart';
 
 class NonAuthenticatedHomeScreen extends StatefulWidget {
   @override
