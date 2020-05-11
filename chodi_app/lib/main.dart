@@ -1,4 +1,5 @@
 import 'package:chodiapp/auth_widget_builder.dart';
+import 'package:chodiapp/screens/Authenticate/non_authenticated_home.dart';
 import 'package:chodiapp/screens/Authenticate/sign_in_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
             home: Wrapper(userSnapshot: userSnapshot),
             routes: <String, WidgetBuilder>{
               'signInScreen' : (BuildContext context) => new SignInPage(),
-              'signUpScreen' : (BuildContext context) => new SignUpPage()
+              'signUpScreen' : (BuildContext context) => new SignUpPage(),
         },
           );
         }

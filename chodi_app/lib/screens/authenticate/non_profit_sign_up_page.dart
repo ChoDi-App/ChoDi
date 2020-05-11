@@ -258,7 +258,32 @@ class _NonProfitSignUpPageState extends State<NonProfitSignUpPage> {
                             nonProfit.category = categories;
                             nonProfit.address = address;
                             nonProfit.nonProfitContact = nonProfitContact;
-                            _registerNonProfit(context, nonProfit);
+                            var result = await  _registerNonProfit(context, nonProfit);
+                            if (result != null){
+                              showDialog(
+                                  context: context, 
+                                  child: AlertDialog(
+                                    title: Text("Thank You for Registering"),
+                                    content: SingleChildScrollView(
+                                      child: ListBody(
+                                        children: <Widget>[
+                                          Text("Please wait to be approved by admin check email")
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child:  Text("Approve"),
+                                        onPressed: () {
+                                          Navigator.of(context).popUntil((route) => route.isFirst);
+                                        },
+                                      )
+                                    ],
+                                  )
+                              );
+                            }
+
+
                           }
                         },
                       )
