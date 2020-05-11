@@ -1,6 +1,6 @@
-import 'package:chodiapp/Services/Database.dart';
+import 'package:chodiapp/Services/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:chodiapp/models/User.dart';
+import 'package:chodiapp/Models/user.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -11,7 +11,6 @@ abstract class AuthBase {
   Future<User> signInWithEmailAndPassword(String email, String password);
   Future<void> signOut();
   Future<User> signInWithGoogle();
-
 }
 
 class AuthService implements AuthBase{
@@ -23,9 +22,7 @@ class AuthService implements AuthBase{
     return (user != null ? User(uid: user.uid) : null);
   }
 
-
   // auth changed user stream
-
   Stream<User> get user {
     return _auth.onAuthStateChanged
     //.map((FirebaseUser user) => _userFromFirebaseUser(user));
@@ -68,7 +65,11 @@ class AuthService implements AuthBase{
           ),
         );
         if (authResult.additionalUserInfo.isNewUser){
-          await DatabaseService(uid: authResult.user.uid).createNewIndividualUser("New User", "", "", "", [], []);
+          UserData newUser = UserData();
+          newUser.name = "New User";
+          newUser.userResources = [];
+          newUser.userInterest = [];
+          await FirestoreService(uid: authResult.user.uid).createIndividualUser(newUser);
           return _userFromFirebaseUser(authResult.user);
         }
         return _userFromFirebaseUser(authResult.user);
@@ -84,15 +85,11 @@ class AuthService implements AuthBase{
         message: "sign in aborted ny user",
       );
     }
-
-
   }
-
 
   // signout
   Future<void> signOut() async {
     return await _auth.signOut();
-
   }
 
 }

@@ -1,11 +1,11 @@
-import 'package:chodiapp/Services/Database.dart';
+import 'package:chodiapp/Services/firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:chodiapp/Shared/Loading.dart';
-import 'package:chodiapp/constants/TextStyles.dart';
+import 'package:chodiapp/Shared/loading.dart';
+import 'package:chodiapp/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:chodiapp/models/User.dart';
+import 'package:chodiapp/Models/user.dart';
 import 'package:smart_select/smart_select.dart';
 
 class FinishSignUpGooglePage extends StatefulWidget {
@@ -18,15 +18,11 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  List<String> userResources = [];
-  List<String> userInterest = [];
-  String name = "";
+  UserData userData = UserData();
   String email= "";
-  String password = "";
-  String cityState = "";
-  String phoneNumber = "";
-  String ageRange= "Age-Age";
-
+  String password= "";
+  List<dynamic> userResources = [];
+  List<dynamic> userInterest = [];
 
   bool agreedToTerms = false;
 
@@ -44,19 +40,16 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
     SmartSelectOption<String>(value: "animals", title: "Animals"),
   ];
 
-  Future _registerIndividualUser(BuildContext context, String email, String password,String name, String cityState, String phoneNumber, String ageRange,List<String> userResources,List<String> userInterest ) async{
+  Future _registerIndividualUser(BuildContext context, UserData userData) async{
     try{
       User currentUser = Provider.of<User>(context, listen: false);
-      await DatabaseService(uid: currentUser.uid).updateNewUser(name,cityState,phoneNumber,ageRange,userResources,userInterest);
+      await FirestoreService(uid: currentUser.uid).updateIndividualUser(userData);
 
     }catch(e){
       print(e.toString());
       return null;
     }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +82,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         thickness: 1.0,
                         color: Colors.black,
                       ),
-                      SmartSelect<String>.multiple(
+                      SmartSelect<dynamic>.multiple(
                           value: userResources,
                           title: "I have: ",
                           options: resourcesOptions ,
@@ -105,7 +98,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         thickness: 1.0,
                         color: Colors.black,
                       ),
-                      SmartSelect<String>.multiple(
+                      SmartSelect<dynamic>.multiple(
                           value: userInterest,
                           title: "I am interested in: ",
                           options: interestOptions ,
@@ -123,7 +116,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                           validator: (val)=> val.isEmpty? 'Enter a Name ':null,
                           decoration: textInputDecoration.copyWith(hintText: "Name",),
                           onChanged: (val) {
-                            setState(() {name = val;});
+                            setState(() {userData.name = val;});
                           },
                         ),
                       ),
@@ -135,7 +128,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                           validator: (val)=> val.isEmpty? 'Enter a City and State ':null,
                           decoration: textInputDecoration.copyWith(hintText: "Los Angeles, CA"),
                           onChanged: (val){
-                            setState(() {cityState = val;});
+                            setState(() {userData.cityState = val;});
                           },
                         ),
                       ),
@@ -147,7 +140,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                           validator: (val)=> val.isEmpty? 'Enter a Number ':null,
                           decoration: textInputDecoration.copyWith(hintText: "+387 623 1234"),
                           onChanged: (val){
-                            setState(() {phoneNumber = val;});
+                            setState(() {userData.phoneNumber = val;});
                           },
                         ),
                       ),
@@ -159,7 +152,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         color: Colors.black,
                       ),
                       FlatButton(
-                        child: Text("$ageRange",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
+                        child: Text("${userData.ageRange ?? "Select Age Range"}",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
                         onPressed: (){
                           showModalBottomSheet(
                               context: context,
@@ -183,7 +176,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                       looping: false,
                                       onSelectedItemChanged: (int index){
                                         setState(() {
-                                          ageRange = listOfAgeRange[index];
+                                          userData.ageRange = listOfAgeRange[index];
                                         });
                                       },
                                     ),
@@ -219,36 +212,26 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         onPressed: () async{
                           if (_formKey.currentState.validate()){
                             if(userInterest.isNotEmpty && userResources.isNotEmpty){
-                              if (ageRange != "Age-Age"){
+                              userData.userInterest = userInterest;
+                              userData.userResources = userResources;
+                              if (userData.ageRange != "Age-Age"){
                                 if (agreedToTerms){
-                                  await _registerIndividualUser(context, email, password, name, cityState, phoneNumber, ageRange, userResources, userInterest);
+                                  await _registerIndividualUser(context, userData);
                                 }
                                 if(agreedToTerms == false){
                                   print("Please Agree to Terms");
                                 }
                               }
-                              if (ageRange == "Age-Age"){
+                              if (userData.ageRange == "Age-Age"){
                                 print("Please Select an Age Range");
-
                               }
                             }
                             if (userInterest.isEmpty || userResources.isEmpty){
                               print("Please fill select and interest and or donations");
-
                             }
                           }
                         },
                       )
-
-
-
-
-
-
-
-
-
-
                     ],
                   ),
                 ),

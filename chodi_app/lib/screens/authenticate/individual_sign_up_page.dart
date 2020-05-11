@@ -1,13 +1,13 @@
-import 'package:chodiapp/models/User.dart';
-import 'package:chodiapp/Services/Auth.dart';
-import 'package:chodiapp/Services/Database.dart';
-import 'package:chodiapp/Shared/Loading.dart';
+import 'package:chodiapp/Models/user.dart';
+import 'package:chodiapp/Services/auth.dart';
+import 'package:chodiapp/Services/firestore.dart';
+import 'package:chodiapp/Shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_select/smart_select.dart';
-import 'package:chodiapp/constants/TextStyles.dart';
+import 'package:chodiapp/constants/constants.dart';
 class IndividualSignUpPage extends StatefulWidget {
 
   @override
@@ -19,15 +19,11 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  List<String> userResources = [];
-  List<String> userInterest = [];
-  String name = "";
+  UserData userData = UserData();
   String email= "";
-  String password = "";
-  String cityState = "";
-  String phoneNumber = "";
-  String ageRange= "Age-Age";
-
+  String password= "";
+  List<dynamic> userResources = [];
+  List<dynamic> userInterest = [];
 
   bool agreedToTerms = false;
 
@@ -63,14 +59,13 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
     else
       return null;
   }
-  Future<User> _registerIndividualUser(BuildContext context, String email, String password,String name, String cityState, String phoneNumber, String ageRange,List<String> userResources,List<String> userInterest ) async{
+  Future<User> _registerIndividualUser(BuildContext context, String email, String password, UserData userData ) async{
     try{
       final auth = Provider.of<AuthService>(context,listen: false);
 
       User user = await auth.registerWithEmailAndPassword(email, password);
-      await DatabaseService(uid: user.uid).createNewIndividualUser(name,cityState,phoneNumber,ageRange,userResources,userInterest);
+      await FirestoreService(uid: user.uid).createIndividualUser(userData);
       return user;
-
 
     }catch(e){
       print(e.toString());
@@ -111,7 +106,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         thickness: 1.0,
                         color: Colors.black,
                       ),
-                      SmartSelect<String>.multiple(
+                      SmartSelect<dynamic>.multiple(
                           value: userResources,
                           title: "I have: ",
                           options: resourcesOptions ,
@@ -127,7 +122,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         thickness: 1.0,
                         color: Colors.black,
                       ),
-                      SmartSelect<String>.multiple(
+                      SmartSelect<dynamic>.multiple(
                           value: userInterest,
                           title: "I am interested in: ",
                           options: interestOptions ,
@@ -145,7 +140,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                           validator: (val)=> val.isEmpty? 'Enter a Name ':null,
                           decoration: textInputDecoration.copyWith(hintText: "Name",),
                           onChanged: (val) {
-                            setState(() {name = val;});
+                            setState(() {userData.name = val;});
                           },
                         ),
                       ),
@@ -182,7 +177,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                           validator: (val)=> val.isEmpty? 'Enter a City and State ':null,
                           decoration: textInputDecoration.copyWith(hintText: "Los Angeles, CA"),
                           onChanged: (val){
-                            setState(() {cityState = val;});
+                            setState(() {userData.cityState = val;});
                           },
                         ),
                       ),
@@ -194,7 +189,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                           validator: (val)=> val.isEmpty? 'Enter a Number ':null,
                           decoration: textInputDecoration.copyWith(hintText: "+387 623 1234"),
                           onChanged: (val){
-                            setState(() {phoneNumber = val;});
+                            setState(() {userData.phoneNumber = val;});
                           },
                         ),
                       ),
@@ -206,7 +201,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         color: Colors.black,
                       ),
                       FlatButton(
-                        child: Text("$ageRange",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
+                        child: Text("${userData.ageRange ?? "Select Age Range"}",style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.blue),),
                         onPressed: (){
                           showModalBottomSheet(
                               context: context,
@@ -230,7 +225,7 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                                       looping: false,
                                       onSelectedItemChanged: (int index){
                                         setState(() {
-                                          ageRange = listOfAgeRange[index];
+                                          userData.ageRange = listOfAgeRange[index];
                                         });
                                       },
                                     ),
@@ -266,12 +261,14 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                         onPressed: () async{
                           if (_formKey.currentState.validate()){
                             if(userInterest.isNotEmpty && userResources.isNotEmpty){
-                              if (ageRange != "Age-Age"){
+                              userData.userInterest = userInterest;
+                              userData.userResources = userResources;
+                              if (userData.ageRange != "Age-Age"){
                                 if (agreedToTerms){
                                   setState(() {
                                     loading = true;
                                   });
-                                  dynamic result = _registerIndividualUser(context, email, password, name, cityState, phoneNumber, ageRange, userResources, userInterest);
+                                  dynamic result = _registerIndividualUser(context, email, password, userData);
                                   if (result == null){
                                     setState(() {
                                       loading = false;
@@ -282,28 +279,16 @@ class _IndividualSignUpPageState extends State<IndividualSignUpPage> {
                                   print("Please Agree to Terms");
                                 }
                               }
-                              if (ageRange == "Age-Age"){
+                              if (userData.ageRange == "Age-Age"){
                                 print("Please Select an Age Range");
-
                               }
                             }
                             if (userInterest.isEmpty || userResources.isEmpty){
                               print("Please fill select and interest and or donations");
-
                             }
                           }
                         },
                       )
-
-
-
-
-
-
-
-
-
-
                     ],
                   ),
                 ),

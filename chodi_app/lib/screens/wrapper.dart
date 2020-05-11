@@ -1,8 +1,8 @@
-import 'package:chodiapp/screens/Authenticate/NonAuthenticatedHome.dart';
-import 'package:chodiapp/screens/WelcomeWrapper.dart';
+import 'package:chodiapp/screens/Authenticate/non_authenticated_home.dart';
+import 'package:chodiapp/screens/welcome_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:chodiapp/Shared/Loading.dart';
-import 'package:chodiapp/models/User.dart';
+import 'package:chodiapp/Shared/loading.dart';
+import 'package:chodiapp/Models/user.dart';
 
 class Wrapper extends StatelessWidget{
   const Wrapper({Key key, @required this.userSnapshot}) : super(key: key);

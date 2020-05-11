@@ -23,11 +23,11 @@ class AuthWidgetBuilder extends StatelessWidget{
           return MultiProvider(
             providers: [
               Provider<User>.value(value: user),
-              Provider<DatabaseService>(
-                create: (_)=> DatabaseService(),
+              Provider<FirestoreService>(
+                create: (_)=> FirestoreService(),
               ),
-              StreamProvider<UserData>.value(value: DatabaseService(uid: user.uid).userData),
-              StreamProvider<List<NonProfitsData>>.value(value: DatabaseService().nonProfitData)
+              StreamProvider<UserData>.value(value: FirestoreService(uid: user.uid).userData),
+              StreamProvider<List<NonProfit>>.value(value: FirestoreService().nonProfitData)
 
               //StreamProvider<User>.value(value: DatabaseService(uid: user.uid)
             ],

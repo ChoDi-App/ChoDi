@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:chodiapp/constants/TextStyles.dart';
+import 'package:chodiapp/constants/constants.dart';
 
 
 class EventsPage extends StatefulWidget {

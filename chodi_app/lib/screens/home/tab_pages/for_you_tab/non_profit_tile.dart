@@ -1,11 +1,11 @@
-import 'package:chodiapp/models/non_profits.dart';
+import 'package:chodiapp/Models/non_profit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'NonProftInfoPage.dart';
 
 class NonProfitTile extends StatelessWidget {
-  NonProfitsData nonProfit;
+  NonProfit nonProfit;
 
   NonProfitTile({@required this.nonProfit});
 
@@ -26,7 +26,7 @@ class NonProfitTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text(nonProfit.orgName, style: GoogleFonts.ubuntu(
+                Text(nonProfit.name, style: GoogleFonts.ubuntu(
                     fontSize: 20, fontWeight: FontWeight.w200),),
               ],
             ),

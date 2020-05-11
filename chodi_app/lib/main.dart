@@ -1,12 +1,12 @@
-import 'package:chodiapp/AuthWidgetBuilder.dart';
-import 'package:chodiapp/screens/Authenticate/SignInPage.dart';
+import 'package:chodiapp/auth_widget_builder.dart';
+import 'package:chodiapp/screens/Authenticate/sign_in_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:chodiapp/Services/Auth.dart';
-import 'AuthWidgetBuilder.dart';
+import 'package:chodiapp/Services/auth.dart';
+import 'auth_widget_builder.dart';
 import 'package:chodiapp/screens/wrapper.dart';
-import 'package:chodiapp/screens/Authenticate/SignUpPage.dart';
+import 'package:chodiapp/screens/Authenticate/sign_up_page.dart';
 
 void main() {
   runApp(MyApp());
