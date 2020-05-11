@@ -10,7 +10,6 @@ class ForYouPage extends StatefulWidget {
 }
 
 
-
 class _ForYouPageState extends State<ForYouPage> {
   @override
   Widget build(BuildContext context) {
