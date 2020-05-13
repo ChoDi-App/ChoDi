@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_image/firebase_image.dart';
 
 class NonProfitInfoPage extends StatelessWidget {
   NonProfitInfoPage({@required this.nonProfit});
@@ -55,14 +56,19 @@ class NonProfitInfoPage extends StatelessWidget {
                     SizedBox(height: 8),
                     Row(
                       children: <Widget>[
-                        Icon(
-                          Icons.business,
-                          size: 100,
+                        Expanded(
+                          flex:1,
+                          child: FadeInImage(
+                            fit: BoxFit.cover,
+                            placeholder: AssetImage('images/loadingImage.gif'),
+                            image: FirebaseImage(nonProfit.imageURI),
+                          ),
                         ),
                         SizedBox(
                           width: 8,
                         ),
                         Expanded(
+                          flex: 2,
                           child: Column(
                             children: <Widget>[
                               Row(

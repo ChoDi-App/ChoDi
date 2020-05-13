@@ -20,6 +20,7 @@ class NonProfit {
   String name;
   String size;
   String website;
+  String imageURI;
 
   NonProfit({
     this.address,
@@ -33,6 +34,7 @@ class NonProfit {
     this.name,
     this.size,
     this.website,
+    this.imageURI,
   });
 
   factory NonProfit.fromMap(Map<String, dynamic> json) => NonProfit(
@@ -47,6 +49,7 @@ class NonProfit {
     name: json["name"],
     size: json["size"],
     website: json["website"],
+    imageURI: json['imageURI'],
   );
 
   Map<String, dynamic> toMap() => {
@@ -61,6 +64,7 @@ class NonProfit {
     "name": name,
     "size": size,
     "website": website,
+    "imageURI": imageURI,
   };
 }
 

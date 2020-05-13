@@ -159,6 +159,16 @@ class _NonProfitSignUpPageState extends State<NonProfitSignUpPage> {
                           },
                         ),
                       ),
+                      Card(
+                        elevation: 10.0,
+                        child: TextFormField(
+                          validator: (val)=> val.isEmpty? 'Enter image URI from firestore':null,
+                          decoration: textInputDecoration.copyWith(hintText: "THIS IS TEMP IMAGE UPLOAD HERE",),
+                          onChanged: (val) {
+                            setState(() {nonProfit.imageURI = val;});
+                          },
+                        ),
+                      ),
                       SizedBox(height: 20,),
                       Text("Categories",style: GoogleFonts.ubuntu(fontSize: 22,fontWeight: FontWeight.w100),),
                       SmartSelect<dynamic>.multiple(

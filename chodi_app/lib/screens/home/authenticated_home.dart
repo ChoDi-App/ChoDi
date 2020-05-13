@@ -6,7 +6,6 @@ import 'package:chodiapp/screens/Home/tab_pages/impact_page.dart';
 import 'package:chodiapp/screens/Home/tab_pages/messages_page.dart';
 import 'package:chodiapp/screens/Home/tab_pages/notifications_page.dart';
 import 'package:flutter/material.dart';
-
 import 'package:chodiapp/Services/auth.dart';
 
 class AuthenticatedHomeScreen extends StatefulWidget {

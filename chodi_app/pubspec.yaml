@@ -36,6 +36,7 @@ dependencies:
   google_sign_in: ^4.4.4
   flutter_linkify: ^3.1.2
   url_launcher: ^5.4.5
+  firebase_image: ^0.1.6
 
 dev_dependencies:
   flutter_test:
