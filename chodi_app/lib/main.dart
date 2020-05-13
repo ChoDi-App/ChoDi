@@ -1,6 +1,7 @@
 import 'package:chodiapp/auth_widget_builder.dart';
 import 'package:chodiapp/screens/Authenticate/non_authenticated_home.dart';
 import 'package:chodiapp/screens/Authenticate/sign_in_page.dart';
+import 'package:chodiapp/screens/Home/tab_pages/search_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
             routes: <String, WidgetBuilder>{
               'signInScreen' : (BuildContext context) => new SignInPage(),
               'signUpScreen' : (BuildContext context) => new SignUpPage(),
+              'searchPage' : (BuildContext context) => new SearchPage(),
         },
           );
         }

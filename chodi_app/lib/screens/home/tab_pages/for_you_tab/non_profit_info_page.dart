@@ -161,7 +161,7 @@ class NonProfitInfoPage extends StatelessWidget {
                                 throw 'Could not luanch $url';
                               }
                             },
-                            text: "https://${nonProfit.website}",
+                            text: nonProfit.website,
                             style: GoogleFonts.ubuntu(fontSize: 15),
                           )
                         ],

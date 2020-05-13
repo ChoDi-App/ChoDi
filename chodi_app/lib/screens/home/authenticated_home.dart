@@ -49,6 +49,14 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
 
             }
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: (){
+              Navigator.of(context).pushNamed('searchPage');
+            },
+          )
+        ],
 
         title: Text('CHODI'),
         backgroundColor: primaryColor,
