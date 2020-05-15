@@ -1,5 +1,5 @@
-import 'package:chodiapp/Models/user.dart';
-import 'package:chodiapp/Models/non_profit.dart';
+import 'package:chodiapp/models/user.dart';
+import 'package:chodiapp/models/non_profit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService{

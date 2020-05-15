@@ -5,7 +5,7 @@ import 'package:chodiapp/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:chodiapp/Models/user.dart';
+import 'package:chodiapp/models/user.dart';
 
 class SignInPage extends StatefulWidget {
   @override

@@ -1,4 +1,4 @@
-import 'package:chodiapp/Models/non_profit.dart';
+import 'package:chodiapp/models/non_profit.dart';
 import 'package:chodiapp/Services/firestore.dart';
 import 'package:chodiapp/Shared/loading.dart';
 import 'package:flutter/material.dart';

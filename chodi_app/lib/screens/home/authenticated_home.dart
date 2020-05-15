@@ -7,6 +7,7 @@ import 'package:chodiapp/screens/Home/tab_pages/messages_page.dart';
 import 'package:chodiapp/screens/Home/tab_pages/notifications_page.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/Services/auth.dart';
+import 'package:provider/provider.dart';
 
 class AuthenticatedHomeScreen extends StatefulWidget {
   @override
@@ -30,12 +31,13 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
       _selectedIndex = index;
     });
   }
-  final AuthService _auth = AuthService();
+
 
 
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = Provider.of<AuthService>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

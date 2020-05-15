@@ -1,4 +1,4 @@
-import 'package:chodiapp/Models/user.dart';
+import 'package:chodiapp/models/user.dart';
 import 'package:chodiapp/Shared/loading.dart';
 import 'package:chodiapp/screens/Authenticate/finish_sign_up_google_page.dart';
 import 'package:chodiapp/screens/Home/authenticated_home.dart';
