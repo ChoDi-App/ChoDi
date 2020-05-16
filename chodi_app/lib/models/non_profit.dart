@@ -31,7 +31,7 @@ class NonProfit {
     this.financials,
     this.yearFounded,
     this.missionVision,
-    this.name,
+    this.name = "",
     this.size,
     this.website,
     this.imageURI,

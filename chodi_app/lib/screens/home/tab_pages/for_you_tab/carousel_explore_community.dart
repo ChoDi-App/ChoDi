@@ -21,29 +21,6 @@ class _CarouselExploreCommunityState extends State<CarouselExploreCommunity> {
   Widget build(BuildContext context) {
     List<NonProfit> nonProfitsData = Provider.of<List<NonProfit>>(context);
 
-    final List<Widget> imageSliders = nonProfitsData
-        .map((item) => Container(
-              child: Container(
-                margin: EdgeInsets.all(5.0),
-                child: Card(
-                  child: Text("Hi"),
-                ),
-              ),
-            ))
-        .toList();
-
-//    ClipRRect(
-//        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-//        child: Stack(
-//          children: <Widget>[
-//            FadeInImage(
-//              fit: BoxFit.cover,
-//              placeholder: AssetImage('images/loadingImage.gif'),
-//              image: FirebaseImage(item.imageURI ??
-//                  "gs://chodi-663f2.appspot.com/nonprofitlogos/loadingImage.gif"),
-//            ),
-//          ],
-//        )),
     return Column(
       children: <Widget>[
         Padding(
@@ -68,7 +45,7 @@ class _CarouselExploreCommunityState extends State<CarouselExploreCommunity> {
           ),
         ),
         Container(
-          height: 200.0,
+          height: 225.0,
           margin: EdgeInsets.symmetric(vertical: 20.0),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

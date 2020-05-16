@@ -1,4 +1,5 @@
 import 'package:chodiapp/models/non_profit.dart';
+import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,8 +26,19 @@ class NonProfitCard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
-                Text(nonProfit.name, style: GoogleFonts.ubuntu(
-                    fontSize: 20, fontWeight: FontWeight.w200),),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: FadeInImage(
+                      fit: BoxFit.cover,
+                      placeholder: AssetImage('images/loadingImage.gif'),
+                      image: FirebaseImage(nonProfit.imageURI ??
+                          "gs://chodi-663f2.appspot.com/nonprofitlogos/loadingImage.gif"),
+                    ),
+                  ),
+                ),
+                Divider(),
+                Text(nonProfit.name,style: GoogleFonts.ubuntu(fontSize: 12),),
               ],
             ),
           )
