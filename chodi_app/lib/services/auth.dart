@@ -51,6 +51,8 @@ class AuthService implements AuthBase{
     FirebaseUser user = result.user;
     return _userFromFirebaseUser(user);
   }
+
+
   Future <User> signInWithGoogle() async{
     final googleSignIn = GoogleSignIn();
     final googleAccount = await googleSignIn.signIn();
