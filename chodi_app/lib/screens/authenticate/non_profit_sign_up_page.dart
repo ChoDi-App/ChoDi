@@ -292,8 +292,6 @@ class _NonProfitSignUpPageState extends State<NonProfitSignUpPage> {
                                   )
                               );
                             }
-
-
                           }
                         },
                       )

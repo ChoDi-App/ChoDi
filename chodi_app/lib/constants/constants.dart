@@ -22,3 +22,5 @@ const textInputDecoration = InputDecoration(
 );
 
 const primaryColor = Color.fromRGBO(186, 185, 185, 100.0);
+const appBarColor = Color(0xFFBAB9B9);
+const backgroundColor = Color(0xFFE4E4E4);

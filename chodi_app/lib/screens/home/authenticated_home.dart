@@ -34,8 +34,6 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
   }
 
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,8 +58,21 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
           )
         ],
 
-        title: Text('CHODI'),
-        backgroundColor: primaryColor,
+        title: Center(
+          child: RichText(
+              text: new TextSpan(
+                  style: new TextStyle(fontSize: 24.0, fontWeight: FontWeight.w800, letterSpacing: 1.0),
+                  children: <TextSpan>[
+                    new TextSpan(text: "C", style: new TextStyle(color: Colors.yellow)),
+                    new TextSpan(text: "H", style: new TextStyle(color: Colors.orange)),
+                    new TextSpan(text: "O", style: new TextStyle(color: Colors.red)),
+                    new TextSpan(text: "D", style: new TextStyle(color: Colors.blue)),
+                    new TextSpan(text: "I", style: new TextStyle(color: Colors.green)),
+                  ]
+              )
+          ),
+        ),
+        backgroundColor: appBarColor,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -90,7 +101,7 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
             title: Text('Notifications',style: TextStyle(fontSize: 12),),
           ),
         ],
-        backgroundColor: primaryColor,
+        backgroundColor: appBarColor,
         iconSize:15.0,
         currentIndex: _selectedIndex,
         //selectedItemColor: Colors.black,
