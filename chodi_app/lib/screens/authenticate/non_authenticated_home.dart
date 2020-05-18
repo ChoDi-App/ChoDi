@@ -1,4 +1,5 @@
 import 'package:chodiapp/constants/constants.dart';
+import 'package:chodiapp/screens/Home/tab_pages/for_you_tab/for_you_page.dart';
 import 'package:flutter/material.dart';
 
 class NonAuthenticatedHomeScreen extends StatefulWidget {
@@ -14,16 +15,7 @@ class _NonAuthenticatedHomeScreenState extends State<NonAuthenticatedHomeScreen>
   List<Widget> _widgetOptions = <Widget>[
     Text("placeholder"),
     Text("placeholder"),
-    Column(
-      children: <Widget>[
-        Text(
-          'Index 2: For you page',
-          style: optionStyle,
-        ),
-        Text("NOT SIGNED IN",
-        style: optionStyle,)
-      ],
-    ),
+    ForYouPage(),
     Text("placeholder"),
     Text("placeholder")
   ];
@@ -44,6 +36,14 @@ class _NonAuthenticatedHomeScreenState extends State<NonAuthenticatedHomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.white,),
+            onPressed: (){
+              Navigator.of(context).pushNamed('signInScreen');
+            },
+          )
+        ],
 
         title: Text('CHODI'),
         backgroundColor: primaryColor,

@@ -27,7 +27,6 @@ class AuthWidgetBuilder extends StatelessWidget{
                 create: (_)=> FirestoreService(),
               ),
               StreamProvider<UserData>.value(value: FirestoreService(uid: user.uid).userData),
-              StreamProvider<List<NonProfit>>.value(value: FirestoreService().nonProfitData,initialData: [NonProfit(),NonProfit(),NonProfit()],)
 
               //StreamProvider<User>.value(value: DatabaseService(uid: user.uid)
             ],

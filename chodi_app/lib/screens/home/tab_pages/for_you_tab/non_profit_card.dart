@@ -1,7 +1,10 @@
+import 'package:chodiapp/Services/auth.dart';
 import 'package:chodiapp/models/non_profit.dart';
+import 'package:chodiapp/models/user.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'non_profit_info_page.dart';
 
@@ -13,12 +16,18 @@ class NonProfitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = Provider.of<User>(context);
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        if (currentUser == null){
+          Navigator.of(context).pushNamed('signInScreen');
+        }else{
+          Navigator.push(
             context,
             MaterialPageRoute( builder: (context) => NonProfitInfoPage(nonProfit: nonProfit)),
-        );
+          );
+        }
+
       },
       child: Card(
           elevation: 5.0,

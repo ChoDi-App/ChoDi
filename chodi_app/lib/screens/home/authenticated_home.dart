@@ -1,5 +1,6 @@
 
 import 'package:chodiapp/constants/constants.dart';
+import 'package:chodiapp/screens/Home/side_menu.dart';
 import 'package:chodiapp/screens/Home/tab_pages/events_page.dart';
 import 'package:chodiapp/screens/Home/tab_pages/for_you_tab/for_you_page.dart';
 import 'package:chodiapp/screens/Home/tab_pages/impact_page.dart';
@@ -37,19 +38,19 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService _auth = Provider.of<AuthService>(context);
     return Scaffold(
+      drawer: SideMenu(),
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () async{
-              setState(() {
-                loading = true;
-              });
-              await _auth.signOut();
-
-            }
-        ),
+//        leading: IconButton(
+//            icon: Icon(Icons.menu),
+//            onPressed: () async{
+//              setState(() {
+//                loading = true;
+//              });
+//              await _auth.signOut();
+//
+//            }
+//        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
