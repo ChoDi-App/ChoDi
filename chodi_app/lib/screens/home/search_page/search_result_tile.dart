@@ -110,11 +110,15 @@ class _SearchResultTileState extends State<SearchResultTile> {
                   ],
                 )
               ),
-              IconButton(
-                padding: EdgeInsets.all(0),
-                icon: Icon(Icons.favorite_border),
-                onPressed: () {
-                },
+              Container(
+                child: IconButton(
+                  padding: EdgeInsets.all(0),
+                  icon: Icon(Icons.favorite_border, color: Colors.black38,),
+                  onPressed: () {
+                  },
+                ),
+                width: 20,
+                height: 20,
               )
             ],
           ),
