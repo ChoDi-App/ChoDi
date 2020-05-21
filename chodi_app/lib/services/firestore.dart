@@ -6,7 +6,7 @@ class FirestoreService{
   FirestoreService({this.uid});
   final String uid;
   final userCollection = Firestore.instance.collection("users");
-  final nonProfitCollection = Firestore.instance.collection("nonProfits");
+  final nonProfitCollection = Firestore.instance.collection("notApprovedNonProfits");
 
   Future createIndividualUser(UserData userData) async{
     return await userCollection.document(uid).setData(userData.toMap(uid));
@@ -30,6 +30,8 @@ class FirestoreService{
       }
     ).toList();
   }
+  
+
 
   Stream<UserData> get userData{
     return userCollection.document(uid).snapshots()
