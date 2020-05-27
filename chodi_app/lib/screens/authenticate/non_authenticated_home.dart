@@ -11,7 +11,6 @@ class _NonAuthenticatedHomeScreenState extends State<NonAuthenticatedHomeScreen>
 
   List<Color> selectedColors = [Colors.yellow, Colors.orange,Colors.red,Colors.blue,Colors.green];
   int _selectedIndex = 2;
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
     Text("placeholder"),
     Text("placeholder"),

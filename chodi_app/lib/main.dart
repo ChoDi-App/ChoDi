@@ -1,5 +1,4 @@
 import 'package:chodiapp/auth_widget_builder.dart';
-import 'package:chodiapp/screens/Authenticate/non_authenticated_home.dart';
 import 'package:chodiapp/screens/Authenticate/sign_in_page.dart';
 import 'package:chodiapp/screens/Home/search_page/search_page.dart';
 import 'package:flutter/cupertino.dart';
