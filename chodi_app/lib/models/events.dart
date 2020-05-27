@@ -1,26 +1,9 @@
 
+
+
+
 class Events{
   String ein;
-  List<dynamic> events;
-
-  Events({
-    this.ein,
-    this.events
-  });
-  factory Events.fromMap(Map<String, dynamic> json) => Events(
-    ein: json["ein"],
-    events: List<dynamic>.from(json["events"].map((x) => x)),
-  );
-
-  Map<String, dynamic> toMap() => {
-    "ein" : ein,
-    "events" : List<dynamic>.from(events.map((x) => x)),
-  };
-
-}
-
-
-class Event{
   String eventName;
   String eventURL;
   EventDate eventDate;
@@ -28,7 +11,8 @@ class Event{
   String category;
   String eventContactEmail;
 
-  Event({
+  Events({
+    this.ein,
     this.eventName,
     this.eventURL,
     this.eventDate,
@@ -36,7 +20,8 @@ class Event{
     this.category,
     this.eventContactEmail
 });
-  factory Event.fromMap(Map<String, dynamic> json) => Event(
+  factory Events.fromMap(Map<String, dynamic> json) => Events(
+    ein: json["ein"],
     eventName: json["eventName"],
     eventURL: json["eventURL"],
     eventDate: EventDate.fromMap(json["eventDate"]),
@@ -47,6 +32,7 @@ class Event{
   );
 
   Map<String, dynamic> toMap() => {
+    "ein" : ein,
     "eventName" : eventName,
     "eventURL" : eventURL,
     "eventDate" : eventDate.toMap(),
@@ -60,23 +46,27 @@ class Event{
 }
 
 class EventDate{
-  String date;
+  String startDate;
+  String endDate;
   String startTime;
   String endTime;
 
   EventDate({
-    this.date,
+    this.startDate,
+    this.endDate,
     this.startTime,
     this.endTime
 });
   factory EventDate.fromMap(Map<String, dynamic> json) => EventDate(
-    date: json["date"],
+    startDate: json["startDate"],
+    endDate: json["endDate"],
     startTime: json["startTime"],
     endTime: json["endTime"],
   );
 
   Map<String, dynamic> toMap() => {
-    "date": date,
+    "startDate": startDate,
+    "endDate" : endDate,
     "startTime" : startTime,
     "endTime" : endTime
   };

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'Services/auth.dart';
 import 'package:chodiapp/models/user.dart';
 import 'Services/firestore.dart';
+import 'models/events.dart';
 
 
 class AuthWidgetBuilder extends StatelessWidget{
@@ -26,6 +27,10 @@ class AuthWidgetBuilder extends StatelessWidget{
                 create: (_)=> FirestoreService(),
               ),
               StreamProvider<UserData>.value(value: FirestoreService(uid: user.uid).userData),
+              StreamProvider<List<Events>>.value(value: FirestoreService().eventsData,
+                initialData: [],
+              catchError: (_,__)=> [],),
+
 
               //StreamProvider<User>.value(value: DatabaseService(uid: user.uid)
             ],
