@@ -10,6 +10,7 @@ class Events{
   String location;
   String category;
   String eventContactEmail;
+  String imageURI;
 
   Events({
     this.ein,
@@ -18,7 +19,8 @@ class Events{
     this.eventDate,
     this.location,
     this.category,
-    this.eventContactEmail
+    this.eventContactEmail,
+    this.imageURI
 });
   factory Events.fromMap(Map<String, dynamic> json) => Events(
     ein: json["ein"],
@@ -27,7 +29,8 @@ class Events{
     eventDate: EventDate.fromMap(json["eventDate"]),
     location: json["location"],
     category: json["category"],
-    eventContactEmail: json["eventContactEmail"]
+    eventContactEmail: json["eventContactEmail"],
+    imageURI: json["imageURI"]
 
   );
 
@@ -38,7 +41,8 @@ class Events{
     "eventDate" : eventDate.toMap(),
     "location" : location,
     "category" : category,
-    "eventContactEmail" : eventContactEmail
+    "eventContactEmail" : eventContactEmail,
+    "imageURI" : imageURI
 
   };
 
