@@ -27,7 +27,10 @@ class MyApp extends StatelessWidget {
         Provider<AuthService>(
           create: (_)=> AuthService(),
         ),
-        StreamProvider<List<NonProfit>>.value(value: FirestoreService().nonProfitData,initialData: [NonProfit(),NonProfit(),NonProfit()],),
+        StreamProvider<List<NonProfit>>.value(
+          value: FirestoreService().nonProfitData,
+          initialData: [NonProfit(),NonProfit(),NonProfit()],
+        ),
         StreamProvider<User>.value(value: AuthService().user),
       ],
       child: AuthWidgetBuilder(builder: (context, userSnapshot) {

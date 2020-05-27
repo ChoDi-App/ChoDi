@@ -18,7 +18,7 @@ class _CarouselFeaturedState extends State<CarouselFeatured> {
 
   @override
   Widget build(BuildContext context) {
-    List<NonProfit> nonProfitsData = Provider.of<List<NonProfit>>(context);
+    List<NonProfit> nonProfitsData = Provider.of<List<NonProfit>>(context) ?? [NonProfit(),NonProfit(),NonProfit()];
 
     List<NonProfit> featuredList = [
       nonProfitsData[0],

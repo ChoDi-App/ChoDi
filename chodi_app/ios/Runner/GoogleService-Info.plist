@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>731009655889-2m8laubhjvu0brcm6obstcl2or1165ek.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.731009655889-2m8laubhjvu0brcm6obstcl2or1165ek</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>731009655889-74s384gqoo0p4m7ec9j436n3rhbantrc.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyADSDW7PPPMO3EBTGK7LW7ohHDaPSl7e1Q</string>
+	<key>GCM_SENDER_ID</key>
+	<string>731009655889</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.chodiapp</string>
+	<key>PROJECT_ID</key>
+	<string>chodi-663f2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>chodi-663f2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:731009655889:ios:76f713ee113edc385a0470</string>
+	<key>DATABASE_URL</key>
+	<string>https://chodi-663f2.firebaseio.com</string>
+</dict>
+</plist>
