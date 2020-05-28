@@ -4,6 +4,8 @@ import 'package:chodiapp/screens/Home/search_page/search_result_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'filter_result.dart';
+
 class SearchPage extends StatefulWidget {
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -12,9 +14,19 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchQueryController = TextEditingController();
   String searchQuery = "";
+  List<NonProfit> listNonProfits = new List<NonProfit>();
+  List<NonProfit> filteredNonProfits = new List<NonProfit>();
+
+  @override
+  void initState() {
+    filteredNonProfits.addAll(listNonProfits);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    listNonProfits = Provider.of<List<NonProfit>>(context);
+
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -29,7 +41,7 @@ class _SearchPageState extends State<SearchPage> {
             height: 5,
             color: backgroundColor,
           ),
-          _buildListResults()
+          _buildListResults(filteredNonProfits)
         ],
       ),
     );
@@ -45,7 +57,9 @@ class _SearchPageState extends State<SearchPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
                     side: BorderSide(color: Colors.black38)),
-                onPressed: () {},
+                onPressed: () {
+                  _editFilterBottomSheet(context);
+                },
                 child: Text(
                   "See All Filters",
                   style: TextStyle(fontSize: 14, color: Colors.black38),
@@ -68,17 +82,16 @@ class _SearchPageState extends State<SearchPage> {
         ));
   }
 
-  Widget _buildListResults() {
-    List<NonProfit> nonProfitsData = Provider.of<List<NonProfit>>(context);
+  Widget _buildListResults(List<NonProfit> results) {
 
     return Flexible(
         child: ListView.builder(
-            itemCount: nonProfitsData.length,
+            itemCount: results.length,
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               return SearchResultTile(
-                nonProfit: nonProfitsData[index],
+                nonProfit: results[index],
               );
             }));
   }
@@ -94,7 +107,10 @@ class _SearchPageState extends State<SearchPage> {
           hintStyle: TextStyle(color: Colors.black38),
         ),
         style: TextStyle(color: Colors.black54, fontSize: 16.0),
-        onChanged: (query) => updateSearchQuery,
+        onChanged: (query) {
+          searchQuery = query;
+          updateSearchResults();
+        },
       ),
       padding: EdgeInsets.only(left: 10, right: 10),
       height: 38,
@@ -111,40 +127,62 @@ class _SearchPageState extends State<SearchPage> {
       IconButton(
         icon: const Icon(Icons.clear),
         onPressed: () {
-          if (_searchQueryController == null ||
-              _searchQueryController.text.isEmpty) {
-            Navigator.pop(context);
-            return;
-          }
+//          if (_searchQueryController == null ||
+//              _searchQueryController.text.isEmpty) {
+//            Navigator.pop(context);
+//            return;
+//          }
           _clearSearchQuery();
         },
       ),
     ];
   }
 
-  void _startSearch() {
-    ModalRoute.of(context)
-        .addLocalHistoryEntry(LocalHistoryEntry(onRemove: _stopSearching));
+  void updateSearchResults() {
+    List<NonProfit> temp = new List<NonProfit>();
 
-    setState(() {});
+    if (searchQuery.isNotEmpty) {
+      listNonProfits.forEach((nonProfit) {
+        if (nonProfit.name.contains(new RegExp(searchQuery, caseSensitive: false)) |
+        nonProfit.missionVision.contains(new RegExp(searchQuery, caseSensitive: false)) |
+        nonProfit.cause.contains(new RegExp(searchQuery, caseSensitive: false)) |
+        nonProfit.category.contains(new RegExp(searchQuery, caseSensitive: false)) |
+        nonProfit.address.city.contains(new RegExp(searchQuery, caseSensitive: false)) |
+        nonProfit.address.state.contains(new RegExp(searchQuery, caseSensitive: false))){
+          temp.add(nonProfit);
+        }
+      });
+      setState(() {
+        filteredNonProfits.clear();
+        filteredNonProfits.addAll(temp);
+      });
+
+    } else {
+      temp = listNonProfits;
+      setState(() {
+        filteredNonProfits.clear();
+        filteredNonProfits.addAll(listNonProfits);
+      });
+    }
   }
 
-  void updateSearchQuery(String newQuery) {
-    setState(() {
-      searchQuery = newQuery;
-    });
-  }
-
-  void _stopSearching() {
-    _clearSearchQuery();
-
-    setState(() {});
-  }
 
   void _clearSearchQuery() {
     setState(() {
       _searchQueryController.clear();
-      updateSearchQuery("");
+      filteredNonProfits.clear();
+      filteredNonProfits.addAll(listNonProfits);
     });
   }
+
+  void _editFilterBottomSheet (context) {
+    showModalBottomSheet(context: context, builder: (BuildContext bc) {
+      return Container(
+        height: MediaQuery.of(context).size.height * .60,
+        child: FilterResult()
+      );
+    });
+  }
+
 }
+
