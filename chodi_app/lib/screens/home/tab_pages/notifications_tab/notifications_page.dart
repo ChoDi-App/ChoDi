@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/constants.dart';
 
-class MessagesPage extends StatefulWidget {
+class NotificationsPage extends StatefulWidget {
   @override
-  _MessagesPageState createState() => _MessagesPageState();
+  _NotificationsPageState createState() => _NotificationsPageState();
 }
 
-class _MessagesPageState extends State<MessagesPage> {
+class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        'Index 3: Messages Page SIGNED IN',
+        'COMING SOON',
         style: optionStyle,
       ),
     );

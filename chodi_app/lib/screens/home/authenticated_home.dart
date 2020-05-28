@@ -1,14 +1,12 @@
 
 import 'package:chodiapp/constants/constants.dart';
 import 'package:chodiapp/screens/Home/side_menu.dart';
-import 'package:chodiapp/screens/Home/tab_pages/events_page.dart';
 import 'package:chodiapp/screens/Home/tab_pages/for_you_tab/for_you_page.dart';
-import 'package:chodiapp/screens/Home/tab_pages/impact_page.dart';
-import 'package:chodiapp/screens/Home/tab_pages/messages_page.dart';
-import 'package:chodiapp/screens/Home/tab_pages/notifications_page.dart';
 import 'package:flutter/material.dart';
-import 'package:chodiapp/Services/auth.dart';
-import 'package:provider/provider.dart';
+import 'tab_pages/events_tab/events_page.dart';
+import 'tab_pages/impact_tab/impact_page.dart';
+import 'tab_pages/messages_tab/messages_page.dart';
+import 'tab_pages/notifications_tab/notifications_page.dart';
 
 class AuthenticatedHomeScreen extends StatefulWidget {
   @override

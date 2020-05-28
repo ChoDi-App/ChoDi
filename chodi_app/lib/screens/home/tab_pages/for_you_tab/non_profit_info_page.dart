@@ -1,6 +1,7 @@
 import 'package:chodiapp/models/non_profit.dart';
 import 'package:chodiapp/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -86,7 +87,11 @@ class NonProfitInfoPage extends StatelessWidget {
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  Text("Category: ${nonProfit.category}")
+                                  Expanded(
+                                    child: Text("Categories: ${nonProfit.category.map((e) => e.toString())}",
+                                      softWrap: true,
+                                    overflow: TextOverflow.clip,),
+                                  )
                                 ],
                               ),
                               Row(
@@ -169,7 +174,8 @@ class NonProfitInfoPage extends StatelessWidget {
                             },
                             text: nonProfit.website,
                             style: GoogleFonts.ubuntu(fontSize: 15),
-                          )
+                          ),
+
                         ],
                       ),
                     ),

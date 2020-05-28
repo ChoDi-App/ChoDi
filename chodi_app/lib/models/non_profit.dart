@@ -3,6 +3,7 @@
 //     final nonProfit = nonProfitFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 NonProfit nonProfitFromJson(String str) => NonProfit.fromMap(json.decode(str));
 
@@ -21,6 +22,7 @@ class NonProfit {
   String size;
   String website;
   String imageURI;
+  DocumentReference events;
 
   NonProfit({
     this.address,
@@ -35,6 +37,7 @@ class NonProfit {
     this.size,
     this.website,
     this.imageURI,
+    this.events
   });
 
   factory NonProfit.fromMap(Map<String, dynamic> json) => NonProfit(
@@ -50,6 +53,7 @@ class NonProfit {
     size: json["size"],
     website: json["website"],
     imageURI: json['imageURI'],
+    events: json["events"]
   );
 
   Map<String, dynamic> toMap() => {
@@ -65,6 +69,7 @@ class NonProfit {
     "size": size,
     "website": website,
     "imageURI": imageURI,
+    "events" : events
   };
 }
 

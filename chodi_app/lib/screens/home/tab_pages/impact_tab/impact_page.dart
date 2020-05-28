@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/constants.dart';
 
-
-class EventsPage extends StatefulWidget {
+class ImpactPage extends StatefulWidget {
   @override
-  _EventsPageState createState() => _EventsPageState();
+  _ImpactPageState createState() => _ImpactPageState();
 }
 
-class _EventsPageState extends State<EventsPage> {
+class _ImpactPageState extends State<ImpactPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        'Index 1: events page SIGNED IN ',
+        'COMING SOON',
         style: optionStyle,
       ),
     );

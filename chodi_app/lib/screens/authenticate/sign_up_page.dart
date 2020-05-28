@@ -1,5 +1,5 @@
-
 import 'package:chodiapp/screens/Authenticate/non_profit_sign_up_page.dart';
+import 'package:chodiapp/screens/authenticate/multi_step_sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:chodiapp/screens/Authenticate/individual_sign_up_page.dart';
@@ -17,7 +17,11 @@ class _SignUpPageState extends State<SignUpPage> {
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           border: Border(bottom: BorderSide.none),
-          middle: Text("I am a(n)",style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100,fontSize: 28),),
+          middle: Text(
+            "I am a(n)",
+            style:
+                GoogleFonts.ubuntu(fontWeight: FontWeight.w100, fontSize: 28),
+          ),
         ),
         child: SafeArea(
           child: Center(
@@ -27,9 +31,10 @@ class _SignUpPageState extends State<SignUpPage> {
               //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 InkWell(
-                  onTap: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (context){
-                      return IndividualSignUpPage();
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return MultiStepSignUpPage();
                     }));
                   },
                   splashColor: Colors.black,
@@ -39,8 +44,19 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: EdgeInsets.all(20.0),
                       child: Column(
                         children: <Widget>[
-                          Icon(Icons.people,size: 100,),
-                          Text("Individual")
+                          ImageIcon(
+                            AssetImage(
+                              "images/individual.png",
+                            ),
+                            size: 100,
+                            color: Color.fromRGBO(0, 26, 255, 0.63),
+                          ),
+                          SizedBox(height: 8.0,),
+                          Text(
+                            "Individual",
+                            style: GoogleFonts.ubuntu(
+                                fontWeight: FontWeight.w400, fontSize: 18),
+                          )
                         ],
                       ),
                     ),
@@ -48,8 +64,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 InkWell(
                   splashColor: Colors.black,
-                  onTap: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (context){
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return NonProfitSignUpPage();
                     }));
                   },
@@ -59,15 +76,26 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: EdgeInsets.all(20.0),
                       child: Column(
                         children: <Widget>[
-                          Icon(Icons.money_off,size: 100,),
-                          Text("Non-Profit")
+                          ImageIcon(
+                            AssetImage(
+                              "images/nonprofit.png",
+                            ),
+                            size: 100,
+                            color: Color.fromRGBO(255, 255, 0, 1.0),
+                          ),
+                          SizedBox(height: 8.0,),
+                          Text(
+                            "Non-Profit",
+                            style: GoogleFonts.ubuntu(
+                                fontWeight: FontWeight.w400, fontSize: 18),
+                          )
                         ],
                       ),
                     ),
                   ),
                 ),
                 InkWell(
-                  onTap: (){},
+                  onTap: () {},
                   splashColor: Colors.black,
                   child: Card(
                     elevation: 8.0,
@@ -75,8 +103,17 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: EdgeInsets.all(20.0),
                       child: Column(
                         children: <Widget>[
-                          Icon(Icons.business,size: 100,),
-                          Text("Corporation")
+                          Icon(
+                            Icons.business,
+                            size: 100,
+                            color: Color.fromRGBO(74, 201, 91, 1.0),
+                          ),
+                          SizedBox(height: 8.0,),
+                          Text(
+                            "Corporation",
+                            style: GoogleFonts.ubuntu(
+                                fontWeight: FontWeight.w400, fontSize: 18),
+                          )
                         ],
                       ),
                     ),
@@ -90,9 +127,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-
-
-
-
-
-

@@ -38,6 +38,7 @@ dependencies:
   url_launcher: ^5.4.5
   firebase_image: ^0.1.6
   carousel_slider: ^2.1.0
+  multi_page_form: ^1.0.4
 
 dev_dependencies:
   flutter_test:
