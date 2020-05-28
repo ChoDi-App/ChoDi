@@ -43,8 +43,19 @@ class _NonAuthenticatedHomeScreenState extends State<NonAuthenticatedHomeScreen>
             },
           )
         ],
-
-        title: Text('CHODI'),
+        centerTitle: true,
+        title: RichText(
+            text: new TextSpan(
+                style: new TextStyle(fontSize: 24.0, fontWeight: FontWeight.w800, letterSpacing: 1.0),
+                children: <TextSpan>[
+                  new TextSpan(text: "C", style: new TextStyle(color: Colors.yellow)),
+                  new TextSpan(text: "H", style: new TextStyle(color: Colors.orange)),
+                  new TextSpan(text: "O", style: new TextStyle(color: Colors.red)),
+                  new TextSpan(text: "D", style: new TextStyle(color: Colors.blue)),
+                  new TextSpan(text: "I", style: new TextStyle(color: Colors.green)),
+                ]
+            )
+        ),
         backgroundColor: primaryColor,
       ),
       body: Center(

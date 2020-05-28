@@ -11,7 +11,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        'Index 4: Notifications Page SIGNED IN',
+        'COMING SOON',
         style: optionStyle,
       ),
     );

@@ -11,7 +11,7 @@ class _MessagesPageState extends State<MessagesPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        'Index 3: Messages Page SIGNED IN',
+        'COMING SOON',
         style: optionStyle,
       ),
     );

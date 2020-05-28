@@ -22,7 +22,6 @@ class AuthWidgetBuilder extends StatelessWidget{
         if (user != null){
           return MultiProvider(
             providers: [
-              Provider<User>.value(value: user),
               Provider<FirestoreService>(
                 create: (_)=> FirestoreService(),
               ),

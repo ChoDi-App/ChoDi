@@ -1,24 +1,25 @@
-import 'package:chodiapp/Services/firestore.dart';
-import 'package:chodiapp/services/auth.dart';
-import 'package:flutter/material.dart';
-import 'package:chodiapp/Shared/loading.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:chodiapp/constants/constants.dart';
 import 'package:chodiapp/models/user.dart';
+import 'package:chodiapp/services/auth.dart';
+import 'package:chodiapp/services/firestore.dart';
+import 'package:chodiapp/shared/loading.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:multi_page_form/multi_page_form.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_select/smart_select.dart';
 
-import 'multi_step_sign_up_page.dart';
-
-class FinishSignUpGooglePage extends StatefulWidget {
+class MultiStepSignUpPage extends StatefulWidget {
   @override
-  _FinishSignUpGooglePageState createState() => _FinishSignUpGooglePageState();
+  _MultiStepSignUpPageState createState() => _MultiStepSignUpPageState();
 }
 
-class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
+class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
 
-  UserData userData = UserData( userResources: [], userInterest: []);
+  UserData userData = UserData(userResources: [], userInterest: []);
   String email = "";
   String password = "";
   List<dynamic> userResources = [];
@@ -49,15 +50,15 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
     "animals"
   ];
   Map<String, Color> donationsColorsMap = {
-    "time" : Color.fromRGBO(0, 26, 255, .63),
-    "money" : Color.fromRGBO(255, 255, 0, 1.0),
-    "resources" : Color.fromRGBO(74, 201, 19, 1.0),
+    "time": Color.fromRGBO(0, 26, 255, .63),
+    "money": Color.fromRGBO(255, 255, 0, 1.0),
+    "resources": Color.fromRGBO(74, 201, 19, 1.0),
   };
   Map<String, Color> interestsColorsMap = {
-    "human-rights" : Color.fromRGBO(0, 26, 255, .63),
-    "policy" : Color.fromRGBO(255, 255, 0, 1.0),
-    "environment" : Color.fromRGBO(74, 201, 19, 1.0),
-    "animals" : Color.fromRGBO(242, 122, 84, 1.0)
+    "human-rights": Color.fromRGBO(0, 26, 255, .63),
+    "policy": Color.fromRGBO(255, 255, 0, 1.0),
+    "environment": Color.fromRGBO(74, 201, 19, 1.0),
+    "animals": Color.fromRGBO(242, 122, 84, 1.0)
   };
 
   StepperType stepperType = StepperType.vertical;
@@ -86,8 +87,9 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
   Future<User> _registerIndividualUser(BuildContext context, String email,
       String password, UserData userData) async {
     try {
-      User user = Provider.of<User>(context, listen: false);
-      await FirestoreService(uid: user.uid).updateIndividualUser(userData);
+      User user = await AuthService().registerWithEmailAndPassword(
+          email, password);
+      await FirestoreService(uid: user.uid).createIndividualUser(userData);
       return user;
     } catch (e) {
       print(e.toString());
@@ -123,7 +125,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
         navigationBar: CupertinoNavigationBar(
           border: Border(bottom: BorderSide.none),
           middle: Text(
-            "Finish Sign Up",
+            "Sign Up",
             style: GoogleFonts.ubuntu(
               fontSize: 25.0,
               fontWeight: FontWeight.w300,
@@ -156,7 +158,8 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                       child: Center(
                         child: AlertDialog(
                           title: new Text("Done"),
-                          content: Text("Thank you please submit sign up form."),
+                          content: Text(
+                              "Thank you please submit sign up form."),
                           actions: [
                             FlatButton(
                               child: Text("NO"),
@@ -168,7 +171,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                             ),
                             FlatButton(
                               child: Text("YES"),
-                              onPressed: () async{
+                              onPressed: () async {
                                 if (_formKey.currentState.validate()) {
                                   if (userData.userInterest.isNotEmpty &&
                                       userData.userResources.isNotEmpty) {
@@ -177,10 +180,18 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                         setState(() {
                                           loading = true;
                                         });
-                                        dynamic result =
-                                        _registerIndividualUser(context,
-                                            email, password, userData);
-                                        if (result == null) {
+                                        try {
+                                          dynamic result =
+                                          _registerIndividualUser(context,
+                                              email, password, userData);
+                                          if (result == null){
+                                            setState(() {
+                                              loading = false;
+                                            });
+                                          }
+                                        }
+                                        catch (e) {
+                                          print(e.toString());
                                           setState(() {
                                             loading = false;
                                           });
@@ -189,15 +200,17 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                       if (agreedToTerms == false) {
                                         print("Please Agree to Terms");
                                         showDialog(context: context,
-                                            builder: (BuildContext context){
+                                            builder: (BuildContext context) {
                                               return AlertDialog(
                                                 title: Text("Notice"),
-                                                content: Text("Please make sure to accept terms of use and privacy policy "),
+                                                content: Text(
+                                                    "Please make sure to accept terms of use and privacy policy "),
                                                 actions: [
                                                   FlatButton(
                                                     child: Text("OK"),
-                                                    onPressed: (){
-                                                      Navigator.of(context).pop();
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
                                                       setState(() {
                                                         complete = false;
                                                       });
@@ -211,14 +224,15 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                     if (userData.ageRange == null) {
                                       print("Please Select an Age Range");
                                       showDialog(context: context,
-                                          builder: (BuildContext context){
+                                          builder: (BuildContext context) {
                                             return AlertDialog(
                                               title: Text("Notice"),
-                                              content: Text("Please make sure you select an age range to continue"),
+                                              content: Text(
+                                                  "Please make sure you select an age range to continue"),
                                               actions: [
                                                 FlatButton(
                                                   child: Text("OK"),
-                                                  onPressed: (){
+                                                  onPressed: () {
                                                     Navigator.of(context).pop();
                                                     setState(() {
                                                       complete = false;
@@ -235,14 +249,15 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                     print(
                                         "Please fill select and interest and or donations");
                                     showDialog(context: context,
-                                        builder: (BuildContext context){
+                                        builder: (BuildContext context) {
                                           return AlertDialog(
                                             title: Text("Notice"),
-                                            content: Text("Please make sure you select what you can provide and your interests, must select at a least one option of each to continue."),
+                                            content: Text(
+                                                "Please make sure you select what you can provide and your interests, must select at a least one option of each to continue."),
                                             actions: [
                                               FlatButton(
                                                 child: Text("OK"),
-                                                onPressed: (){
+                                                onPressed: () {
                                                   Navigator.of(context).pop();
                                                   setState(() {
                                                     complete = false;
@@ -261,7 +276,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         ),
                       ),
                     )
-                        :Expanded(
+                        : Expanded(
                       child: Stepper(
                         type: stepperType,
                         currentStep: currentStep,
@@ -270,7 +285,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                         onStepCancel: cancel,
                         steps: [
                           Step(
-                            title: new Text("Name"),
+                            title: new Text("New Account"),
                             isActive: currentStep == 0,
                             state: StepState.indexed,
                             content: Column(
@@ -286,6 +301,28 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                     });
                                   },
                                 ),
+                                TextFormField(
+                                  validator: _validateEmail,
+                                  decoration:
+                                  InputDecoration(labelText: "Email"),
+                                  keyboardType: TextInputType.emailAddress,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      email = val;
+                                    });
+                                  },
+                                ),
+                                TextFormField(
+                                  validator: _validatePassword,
+                                  decoration: InputDecoration(
+                                      labelText: "Password"),
+                                  obscureText: true,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      password = val;
+                                    });
+                                  },
+                                ),
                               ],
                             ),
                           ),
@@ -296,7 +333,8 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                               content: Column(
                                 children: [
                                   TextFormField(
-                                    validator: (val) => val.isEmpty
+                                    validator: (val) =>
+                                    val.isEmpty
                                         ? 'Enter a Number '
                                         : null,
                                     decoration: InputDecoration(
@@ -332,7 +370,8 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                     color: Colors.grey,
                                   ),
                                   TextFormField(
-                                    validator: (val) => val.isEmpty
+                                    validator: (val) =>
+                                    val.isEmpty
                                         ? 'Enter a City and State '
                                         : null,
                                     decoration: InputDecoration(
@@ -377,24 +416,30 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                               crossAxisCount: 2,
                               shrinkWrap: true,
                               childAspectRatio: 1.0,
-                              padding: EdgeInsets.only(right: 30,left: 30),
+                              padding: EdgeInsets.only(right: 30, left: 30),
                               mainAxisSpacing: 8,
                               children: resourcesOptions.map((imageName) {
                                 return GestureDetector(
-                                  onTap: (){
-                                    if (userData.userResources.contains(imageName)){
+                                  onTap: () {
+                                    if (userData.userResources.contains(
+                                        imageName)) {
                                       setState(() {
-                                        userData.userResources.remove(imageName);
+                                        userData.userResources.remove(
+                                            imageName);
                                       });
                                     }
-                                    else if (!userData.userResources.contains(imageName)){
+                                    else if (!userData.userResources.contains(
+                                        imageName)) {
                                       setState(() {
                                         userData.userResources.add(imageName);
                                       });
                                     }
                                     print(userData.userResources);
                                   },
-                                  child: GridViewItem(imageName, userData.userResources.contains(imageName), donationsColorsMap[imageName]),
+                                  child: GridViewItem(imageName,
+                                      userData.userResources.contains(
+                                          imageName),
+                                      donationsColorsMap[imageName]),
                                 );
                               }).toList(),
                             ),
@@ -408,23 +453,27 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                               crossAxisCount: 2,
                               shrinkWrap: true,
                               childAspectRatio: 1.0,
-                              padding: EdgeInsets.only(right: 30,left: 30),
+                              padding: EdgeInsets.only(right: 30, left: 30),
                               mainAxisSpacing: 8,
                               children: interestsOptions.map((imageName) {
                                 return GestureDetector(
-                                  onTap: (){
-                                    if (userData.userInterest.contains(imageName)){
+                                  onTap: () {
+                                    if (userData.userInterest.contains(
+                                        imageName)) {
                                       setState(() {
                                         userData.userInterest.remove(imageName);
                                       });
                                     }
-                                    else if (!userData.userInterest.contains(imageName)){
+                                    else if (!userData.userInterest.contains(
+                                        imageName)) {
                                       setState(() {
                                         userData.userInterest.add(imageName);
                                       });
                                     }
                                   },
-                                  child: GridViewItem(imageName, userData.userInterest.contains(imageName), interestsColorsMap[imageName]),
+                                  child: GridViewItem(imageName,
+                                      userData.userInterest.contains(imageName),
+                                      interestsColorsMap[imageName]),
                                 );
                               }).toList(),
                             ),
@@ -436,6 +485,35 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                 ),
               ),
             )),
+      ),
+    );
+  }
+}
+
+class GridViewItem extends StatelessWidget {
+  final String _imageName;
+  final bool _isSelected;
+  final Color backColor;
+
+  GridViewItem(this._imageName, this._isSelected, this.backColor);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 10.0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ImageIcon(AssetImage("images/${_imageName}.png"),
+              color: !_isSelected ? Colors.black : backColor,
+              size: 80,),
+            Text(_imageName,
+              style: GoogleFonts.ubuntu(fontWeight: FontWeight.w400),),
+          ],
+        ),
       ),
     );
   }

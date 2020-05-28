@@ -15,8 +15,8 @@ class UserData {
   String cityState;
   String phoneNumber;
   String ageRange;
-  List<dynamic> userResources;
-  List<dynamic> userInterest;
+  List<dynamic> userResources = [];
+  List<dynamic> userInterest = [];
 
   UserData({
     this.name,

@@ -11,7 +11,7 @@ class _ImpactPageState extends State<ImpactPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        'Index 0: Impact page SIGNED IN',
+        'COMING SOON',
         style: optionStyle,
       ),
     );
