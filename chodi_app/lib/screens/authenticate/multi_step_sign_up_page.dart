@@ -5,6 +5,7 @@ import 'package:chodiapp/services/firestore.dart';
 import 'package:chodiapp/shared/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multi_page_form/multi_page_form.dart';
 import 'package:provider/provider.dart';
@@ -372,13 +373,14 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
                                   TextFormField(
                                     validator: (val) =>
                                     val.isEmpty
-                                        ? 'Enter a City and State '
+                                        ? 'Enter Zip Code'
                                         : null,
                                     decoration: InputDecoration(
-                                        labelText: "City, State"),
+                                        labelText: "Zip Code"),
+                                    keyboardType: TextInputType.number,
                                     onChanged: (val) {
                                       setState(() {
-                                        userData.cityState = val;
+                                        userData.zipCode = val;
                                       });
                                     },
                                   ),

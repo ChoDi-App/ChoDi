@@ -1,9 +1,11 @@
+import 'package:chodiapp/services/auth.dart';
+import 'package:chodiapp/services/firebase_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Services/auth.dart';
 import 'package:chodiapp/models/user.dart';
 import 'Services/firestore.dart';
 import 'models/events.dart';
+import 'services/auth.dart';
 
 
 class AuthWidgetBuilder extends StatelessWidget{
@@ -20,16 +22,16 @@ class AuthWidgetBuilder extends StatelessWidget{
         print('StreamBuilder: ${snapshot.connectionState}');
         final User user = snapshot.data;
         if (user != null){
+          //print(user.uid);
           return MultiProvider(
             providers: [
-              Provider<FirestoreService>(
-                create: (_)=> FirestoreService(),
-              ),
               StreamProvider<UserData>.value(value: FirestoreService(uid: user.uid).userData),
+              Provider<FirebaseStorageService>(
+                create: (_) => FirebaseStorageService(uid: user.uid),
+              ),
               StreamProvider<List<Events>>.value(value: FirestoreService().eventsData,
                 initialData: [],
               catchError: (_,__)=> [],),
-
 
               //StreamProvider<User>.value(value: DatabaseService(uid: user.uid)
             ],

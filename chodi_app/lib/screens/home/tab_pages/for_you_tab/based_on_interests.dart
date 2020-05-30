@@ -9,7 +9,6 @@ class BasedOnInterest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<NonProfit> nonProfitsData = Provider.of<List<NonProfit>>(context);
-    User currentUser = Provider.of<User>(context);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

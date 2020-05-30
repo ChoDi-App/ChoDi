@@ -129,16 +129,6 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
               fontWeight: FontWeight.w300,
             ),
           ),
-          leading: Material(
-            child: IconButton(
-              icon: Icon(Icons.cancel),
-              onPressed: () {
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                currentFocus.unfocus();
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
         ),
         child: GestureDetector(
             onTap: () {
@@ -333,13 +323,14 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                                   ),
                                   TextFormField(
                                     validator: (val) => val.isEmpty
-                                        ? 'Enter a City and State '
+                                        ? 'Enter Zip Code'
                                         : null,
                                     decoration: InputDecoration(
-                                        labelText: "City, State"),
+                                        labelText: "Zip Code"),
+                                    keyboardType: TextInputType.number,
                                     onChanged: (val) {
                                       setState(() {
-                                        userData.cityState = val;
+                                        userData.zipCode = val;
                                       });
                                     },
                                   ),

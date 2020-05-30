@@ -1,4 +1,4 @@
-import 'package:chodiapp/Services/firestore.dart';
+import 'package:chodiapp/services/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chodiapp/models/user.dart';
 import 'package:flutter/services.dart';
@@ -71,6 +71,7 @@ class AuthService implements AuthBase{
           newUser.name = "New User";
           newUser.userResources = [];
           newUser.userInterest = [];
+          newUser.userId = authResult.user.uid;
           await FirestoreService(uid: authResult.user.uid).createIndividualUser(newUser);
           return _userFromFirebaseUser(authResult.user);
         }

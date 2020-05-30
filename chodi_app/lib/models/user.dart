@@ -12,40 +12,44 @@ class User{
 class UserData {
   String name;
   String userId;
-  String cityState;
+  String zipCode;
   String phoneNumber;
   String ageRange;
   List<dynamic> userResources = [];
   List<dynamic> userInterest = [];
+  String avatarDownloadUrl;
 
   UserData({
     this.name,
     this.userId,
-    this.cityState,
+    this.zipCode,
     this.phoneNumber,
     this.ageRange,
     this.userResources,
     this.userInterest,
+    this.avatarDownloadUrl,
   });
 
   factory UserData.fromMap(Map<String, dynamic> json) => UserData(
     name: json["name"],
     userId: json["userId"],
-    cityState: json["cityState"],
+    zipCode: json["zipCode"],
     phoneNumber: json["phoneNumber"],
     ageRange: json["ageRange"],
     userResources: List<String>.from(json["userResources"].map((x) => x)),
     userInterest: List<String>.from(json["userInterest"].map((x) => x)),
+    avatarDownloadUrl: json['avatarDownloadUrl'],
   );
 
   Map<String, dynamic> toMap(String uid) => {
     "name": name,
     "userId": uid,
-    "cityState": cityState,
+    "zipCode": zipCode,
     "phoneNumber": phoneNumber,
     "ageRange": ageRange,
     "userResources": List<dynamic>.from(userResources.map((x) => x)),
     "userInterest": List<dynamic>.from(userInterest.map((x) => x)),
+    "avatarDownloadUrl" : avatarDownloadUrl
   };
 }
 

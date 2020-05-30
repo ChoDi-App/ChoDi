@@ -2,6 +2,7 @@ import 'package:chodiapp/models/events.dart';
 import 'package:chodiapp/models/user.dart';
 import 'package:chodiapp/models/non_profit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firestore_path.dart';
 
 class FirestoreService {
   FirestoreService({this.uid});
@@ -27,6 +28,12 @@ class FirestoreService {
   Future updateNonProfit(NonProfit nonProfit) async {
     return await nonProfitCollection.document(nonProfit.ein).updateData(
         nonProfit.toMap());
+  }
+  // Sets the avatar download url
+  Future<void> setAvatarReference(String downloadUrl) async {
+    return await userCollection.document(uid).updateData(
+      {"avatarDownloadUrl" : downloadUrl}
+    );
   }
 
   List<NonProfit> _nonProfitListFromSnapshot(QuerySnapshot snapshot) {

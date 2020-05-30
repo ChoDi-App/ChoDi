@@ -2,7 +2,6 @@ import 'package:chodiapp/screens/Authenticate/non_profit_sign_up_page.dart';
 import 'package:chodiapp/screens/authenticate/multi_step_sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:chodiapp/screens/Authenticate/individual_sign_up_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class SignUpPage extends StatefulWidget {
