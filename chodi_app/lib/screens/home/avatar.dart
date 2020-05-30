@@ -1,3 +1,4 @@
+import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -25,8 +26,8 @@ class Avatar extends StatelessWidget {
         child: CircleAvatar(
           radius: radius,
           backgroundColor: Colors.black12,
-          backgroundImage: photoUrl != null && photoUrl != "" ? NetworkImage(photoUrl) : null,
-          child: photoUrl == null || photoUrl == "" ? Icon(Icons.camera_alt, size: radius) : null,
+          backgroundImage: photoUrl != null && photoUrl != "" ? NetworkImage(photoUrl): null,
+          child: photoUrl == null || photoUrl == "" ? Icon(Icons.camera_alt, size: radius) : null ,
         ),
       ),
     );

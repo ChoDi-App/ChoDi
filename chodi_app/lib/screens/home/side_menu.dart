@@ -131,7 +131,9 @@ class SideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person_pin),
             title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              Navigator.of(context).pushNamed('profilePage')
+            },
           ),
           ListTile(
             leading: Icon(Icons.history),
