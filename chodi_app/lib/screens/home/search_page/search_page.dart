@@ -58,7 +58,9 @@ class _SearchPageState extends State<SearchPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
                     side: BorderSide(color: Colors.black38)),
-                onPressed: () {
+                onPressed: () async {
+                  FocusScope.of(context).unfocus();
+                  await Future.delayed(Duration(milliseconds: 50));
                   _editFilterBottomSheet(context);
                 },
                 child: Text(
@@ -152,6 +154,8 @@ class _SearchPageState extends State<SearchPage> {
         });
       });
 
+      print("SQ:" + searchQuery);
+
       if (searchQuery.isNotEmpty) {
         temp.forEach((nonProfit) {
           if (nonProfit.name.contains(new RegExp(searchQuery, caseSensitive: false)) |
@@ -169,10 +173,10 @@ class _SearchPageState extends State<SearchPage> {
         });
 
       } else {
-        temp = listNonProfits;
         setState(() {
+          print("test");
           filteredNonProfits.clear();
-          filteredNonProfits.addAll(listNonProfits);
+          filteredNonProfits.addAll(temp);
         });
       }
     } else {
@@ -207,11 +211,11 @@ class _SearchPageState extends State<SearchPage> {
   void _clearSearchQuery() {
     setState(() {
       _searchQueryController.clear();
+      searchQuery = "";
       updateSearchResults();
-      filteredNonProfits.clear();
-
-//      filteredNonProfits.addAll(listNonProfits);
     });
+
+
   }
 
   void _editFilterBottomSheet (context) {
@@ -227,6 +231,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       filterOptions = value;
     });
+    updateSearchResults();
   }
 
 

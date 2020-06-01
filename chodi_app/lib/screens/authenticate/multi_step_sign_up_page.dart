@@ -396,12 +396,15 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
                                             });
                                           },
                                         ),
-                                        Text(
-                                          "I accept Terms of Use and Privacy Policy",
-                                          style: GoogleFonts.ubuntu(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w100,
-                                              color: Colors.black),
+                                        Expanded(
+                                          child: Text(
+                                            "I accept Terms of Use and Privacy Policy",
+                                            overflow: TextOverflow.clip,
+                                            style: GoogleFonts.ubuntu(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w100,
+                                                color: Colors.black),
+                                          ),
                                         )
                                       ],
                                     ),
