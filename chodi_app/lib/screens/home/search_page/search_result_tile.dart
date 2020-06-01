@@ -1,5 +1,6 @@
 import 'package:chodiapp/constants/constants.dart';
 import 'package:chodiapp/models/non_profit.dart';
+import 'package:chodiapp/screens/home/tab_pages/for_you_tab/non_profit_info_page.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,29 +9,38 @@ import 'package:flutter/rendering.dart';
 class SearchResultTile extends StatefulWidget {
   NonProfit nonProfit;
 
-  SearchResultTile({this.nonProfit});
+  SearchResultTile({@required this.nonProfit});
 
   @override
   _SearchResultTileState createState() => _SearchResultTileState();
 }
 
 class _SearchResultTileState extends State<SearchResultTile> {
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: backgroundColor,
-      child: Stack(
-        children: <Widget>[
-          Card(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _imageSection(),
-                Flexible(child: _infoSection())
-              ],
-            ),
-          )
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute( builder: (context) => NonProfitInfoPage(nonProfit: widget.nonProfit)),
+        );
+      },
+      child: Container(
+        color: backgroundColor,
+        child: Stack(
+          children: <Widget>[
+            Card(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _imageSection(),
+                  Flexible(child: _infoSection())
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

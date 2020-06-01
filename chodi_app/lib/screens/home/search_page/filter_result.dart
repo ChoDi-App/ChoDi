@@ -17,10 +17,10 @@ class _FilterResultState extends State<FilterResult> {
   List<String> categoriesSelected = [];
 
   List<String> categoriesOptions = [
-    'Human Rights',
-    'Policy',
-    'Animals',
-    'Environment'
+    'human rights',
+    'policy',
+    'animals',
+    'environment'
   ];
 
   @override
@@ -64,16 +64,20 @@ class _FilterResultState extends State<FilterResult> {
                 runSpacing: 0.0,
                 children: <Widget>[
                   filterChipWidget(chipName: 'Human Rights',
-                    isSelected: categoriesSelected.contains("Human Rights"),
+                    value: "human rights",
+                    isSelected: categoriesSelected.contains("human rights"),
                     returnSelectedChipName: addToCategoriesCallBack,),
                   filterChipWidget(chipName: 'Policy',
-                    isSelected: categoriesSelected.contains("Policy"),
+                    value: "policy",
+                    isSelected: categoriesSelected.contains("policy"),
                     returnSelectedChipName: addToCategoriesCallBack,),
                   filterChipWidget(chipName: 'Animals',
-                    isSelected: categoriesSelected.contains("Animals"),
+                    value: "animals",
+                    isSelected: categoriesSelected.contains("animals"),
                     returnSelectedChipName: addToCategoriesCallBack,),
                   filterChipWidget(chipName: 'Environment',
-                    isSelected: categoriesSelected.contains("Envrionment"),
+                    value: "environment",
+                    isSelected: categoriesSelected.contains("environment"),
                     returnSelectedChipName: addToCategoriesCallBack,),
                 ],
               ),
@@ -146,11 +150,12 @@ Widget _titleContainer(String myTitle) {
 
 class filterChipWidget extends StatefulWidget {
   final String chipName;
+  final String value;
   bool isSelected;
   final returnSelectedChipName;
 
   filterChipWidget(
-      {Key key, this.chipName, this.isSelected, this.returnSelectedChipName})
+      {Key key, this.chipName, this.value, this.isSelected, this.returnSelectedChipName})
       : super(key: key);
 
   @override
@@ -173,7 +178,7 @@ class _filterChipWidgetState extends State<filterChipWidget> {
       onSelected: (selected) {
         setState(() {
           widget.isSelected = selected;
-          widget.returnSelectedChipName(widget.chipName);
+          widget.returnSelectedChipName(widget.value);
         });
       },
       selectedColor: Colors.black38,);

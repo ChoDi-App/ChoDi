@@ -27,7 +27,6 @@ class NonProfitCard extends StatelessWidget {
             MaterialPageRoute( builder: (context) => NonProfitInfoPage(nonProfit: nonProfit)),
           );
         }
-
       },
       child: Card(
           elevation: 5.0,
