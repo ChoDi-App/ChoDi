@@ -8,4 +8,4 @@ If using Andriod Studio
  3. Enter url for reposotory
  4. Create project from existing resources 
  5. Keep the same name 
- 6. Once everything is loaded get the dependencies and done. 
+ 6. Once everything is loaded set up all dependencies in the pubspec.yaml file (Update and Get).

@@ -22,11 +22,12 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     listNonProfits = Provider.of<List<NonProfit>>(context);
-    if (filteredNonProfits.isEmpty & _searchQueryController.value.text.isEmpty) {
+    if ((filterOptions["categories"] == null) &
+        (filterOptions["yearsRange"] == null) &
+        filteredNonProfits.isEmpty &
+        _searchQueryController.value.text.isEmpty) {
       filteredNonProfits.addAll(listNonProfits);
     }
-
-    print(filterOptions);
 
     return Scaffold(
       appBar: AppBar(
@@ -142,71 +143,67 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void updateSearchResults() {
-    List<NonProfit> temp = new List<NonProfit>();
-    List<NonProfit> temp2 = new List<NonProfit>();
+    setState(() {
+      // List that is used for saving the non-profits related to the filtered options
+      List<NonProfit> listFilterOptions = new List<NonProfit>();
+      listFilterOptions.addAll(listNonProfits);
+      RangeValues rv = filterOptions["yearsRange"];
 
-    if (filterOptions["categories"].isNotEmpty) {
-      listNonProfits.forEach((nonProfit) {
-        filterOptions["categories"].forEach((cat) {
-          if (nonProfit.category.contains(cat)) {
-            temp.add(nonProfit);
-          }
-        });
-      });
-
-      print("SQ:" + searchQuery);
-
-      if (searchQuery.isNotEmpty) {
-        temp.forEach((nonProfit) {
-          if (nonProfit.name.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.missionVision.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.cause.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.category.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.address.city.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.address.state.contains(new RegExp(searchQuery, caseSensitive: false))) {
-            temp2.add(nonProfit);
-          }
-        });
-        setState(() {
-          filteredNonProfits.clear();
-          filteredNonProfits.addAll(temp2);
-        });
-
-      } else {
-        setState(() {
-          print("test");
-          filteredNonProfits.clear();
-          filteredNonProfits.addAll(temp);
-        });
-      }
-    } else {
-      if (searchQuery.isNotEmpty) {
+      // Checking for Year Founded range filter
+      if (rv != null) {
         listNonProfits.forEach((nonProfit) {
-          if (nonProfit.name.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.missionVision.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.cause.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.category.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.address.city.contains(new RegExp(searchQuery, caseSensitive: false)) |
-          nonProfit.address.state.contains(new RegExp(searchQuery, caseSensitive: false))){
-            temp.add(nonProfit);
+          double year = double.parse(nonProfit.yearFounded);
+          if ((rv.start.floor() > year) | (year > rv.end.ceil())) {
+            listFilterOptions.remove(nonProfit);
           }
         });
-        setState(() {
-          filteredNonProfits.clear();
-          filteredNonProfits.addAll(temp);
-        });
+      }
 
-      } else {
-        temp = listNonProfits;
-        setState(() {
-          filteredNonProfits.clear();
-          filteredNonProfits.addAll(listNonProfits);
+      // Checking for categories filter
+      if (filterOptions["categories"] != null) {
+        listNonProfits.forEach((nonProfit) {
+          filterOptions["categories"].forEach((category) {
+            if (!nonProfit.category.contains(category)) {
+              listFilterOptions.remove(nonProfit);
+            }
+          });
         });
       }
-    }
 
-
+      // Checking for search query key words filter
+      if (searchQuery.isNotEmpty) {
+        setFilteredNonProfits(findNonProfitsQuerySearch(listFilterOptions));
+      } else {
+        setFilteredNonProfits(listFilterOptions);
+      }
+    });
   }
+
+  List<NonProfit> findNonProfitsQuerySearch(List<NonProfit> np) {
+    List<NonProfit> temp = new List<NonProfit>();
+    np.forEach((nonProfit) {
+      if (nonProfit.name.contains(
+          new RegExp(searchQuery, caseSensitive: false)) |
+      nonProfit.missionVision.contains(
+          new RegExp(searchQuery, caseSensitive: false)) |
+      nonProfit.cause.contains(new RegExp(searchQuery, caseSensitive: false)) |
+      nonProfit.category.contains(
+          new RegExp(searchQuery, caseSensitive: false)) |
+      nonProfit.address.city.contains(
+          new RegExp(searchQuery, caseSensitive: false)) |
+      nonProfit.address.state.contains(
+          new RegExp(searchQuery, caseSensitive: false))) {
+        temp.add(nonProfit);
+      }
+    });
+    return temp;
+  }
+
+  void setFilteredNonProfits(List<NonProfit> np) {
+    filteredNonProfits.clear();
+    filteredNonProfits.addAll(np);
+  }
+
 
   void _clearSearchQuery() {
     setState(() {
@@ -214,8 +211,6 @@ class _SearchPageState extends State<SearchPage> {
       searchQuery = "";
       updateSearchResults();
     });
-
-
   }
 
   void _editFilterBottomSheet (context) {

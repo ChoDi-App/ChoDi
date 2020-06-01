@@ -12,8 +12,11 @@ class FilterResult extends StatefulWidget {
 
 class _FilterResultState extends State<FilterResult> {
 
-  RangeValues yearFoundedValues = RangeValues(1900, 2020);
-  RangeLabels yearFoundedLabels = RangeLabels('1900', '2020');
+  static const double start = 1900;
+  static const double end = 2020;
+
+  RangeValues yearFoundedValues = RangeValues(start, end);
+  RangeLabels yearFoundedLabels = RangeLabels(start.round().toString(), end.round().toString());
   List<String> categoriesSelected = [];
 
   List<String> categoriesOptions = [
@@ -37,8 +40,12 @@ class _FilterResultState extends State<FilterResult> {
           IconButton(
               icon: Icon(Icons.check, color: Colors.white),
               onPressed: () {
+                RangeValues resultRange;
+                if ((yearFoundedValues.start != start) | (yearFoundedValues.end != end)) {
+                  resultRange = yearFoundedValues;
+                }
                 widget.passOptionsCallBack({
-                  "yearsRange": yearFoundedValues,
+                  "yearsRange": resultRange,
                   "categories": categoriesSelected
                 });
                 Navigator.pop(context);
