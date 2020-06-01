@@ -17,6 +17,8 @@ class _SearchPageState extends State<SearchPage> {
   List<NonProfit> listNonProfits = new List<NonProfit>();
   List<NonProfit> filteredNonProfits = new List<NonProfit>();
 
+  Map filterOptions = {};
+
   @override
   void initState() {
     filteredNonProfits.addAll(listNonProfits);
@@ -26,6 +28,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     listNonProfits = Provider.of<List<NonProfit>>(context);
+    print(filterOptions);
 
     return Scaffold(
       appBar: AppBar(
@@ -179,10 +182,17 @@ class _SearchPageState extends State<SearchPage> {
     showModalBottomSheet(context: context, builder: (BuildContext bc) {
       return Container(
         height: MediaQuery.of(context).size.height * .60,
-        child: FilterResult()
+        child: FilterResult(passOptionsCallBack: saveUserFilters,)
       );
     });
   }
+
+  saveUserFilters(value) {
+    setState(() {
+      filterOptions = value;
+    });
+  }
+
 
 }
 
