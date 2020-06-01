@@ -29,10 +29,17 @@ class FirestoreService {
     return await nonProfitCollection.document(nonProfit.ein).updateData(
         nonProfit.toMap());
   }
+
+  // updates user information if they change it.
+  Future updateUserPreferences(Map<String, dynamic> map) async {
+    return await userCollection.document(uid).updateData(map);
+
+  }
+
   // Sets the avatar download url
   Future<void> setAvatarReference(String downloadUrl) async {
     return await userCollection.document(uid).updateData(
-      {"avatarDownloadUrl" : downloadUrl}
+        {"avatarDownloadUrl": downloadUrl}
     );
   }
 
