@@ -509,12 +509,12 @@ class GridViewItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ImageIcon(AssetImage("images/${_imageName}.png"),
+            ImageIcon(AssetImage("images/${_imageName}.png",),
               color: !_isSelected ? Colors.black : backColor,
-              size: 80,),
+              size: 50,),
             Text(_imageName,
               style: GoogleFonts.ubuntu(fontWeight: FontWeight.w400),),
           ],
