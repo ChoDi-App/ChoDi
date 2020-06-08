@@ -136,6 +136,10 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
                                 fontSize: 17, color: Colors.blue),
                           ),
                         ),
+                        onPreviousPressed: (){
+                          currentPage--;
+
+                        },
                         previousButtonStyle: FlatButton(
                           child: Text(
                             "Previous",
@@ -190,6 +194,7 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
             TextFormField(
               validator: (val) => val.isEmpty ? 'Enter a Name ' : null,
               decoration: InputDecoration(labelText: "First and Last Name"),
+              initialValue: userData.name == null ? null : userData.name,
               onChanged: (val) {
                 setState(() {
                   userData.name = val;
@@ -202,6 +207,7 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
             TextFormField(
               decoration: InputDecoration(labelText: "Email"),
               keyboardType: TextInputType.emailAddress,
+              initialValue: email == null ? null : email,
               onChanged: (val) {
                 setState(() {
                   email = val;
@@ -213,6 +219,7 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
             ),
             TextFormField(
               decoration: InputDecoration(labelText: "Password"),
+              initialValue: password == null ? null : password,
               obscureText: true,
               onChanged: (val) {
                 setState(() {
@@ -247,6 +254,7 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
             TextFormField(
               validator: (val) => val.isEmpty ? 'Enter a Number ' : null,
               decoration: InputDecoration(labelText: "Phone Number"),
+              initialValue: userData.phoneNumber == null ? null : userData.phoneNumber,
               keyboardType: TextInputType.numberWithOptions(),
               onChanged: (val) {
                 setState(() {
@@ -283,6 +291,7 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
               validator: (val) => val.isEmpty ? 'Enter Zip Code' : null,
               decoration: InputDecoration(labelText: "Zip Code"),
               keyboardType: TextInputType.number,
+              initialValue: userData.zipCode == null ? null : userData.zipCode,
               onChanged: (val) {
                 setState(() {
                   userData.zipCode = val;
