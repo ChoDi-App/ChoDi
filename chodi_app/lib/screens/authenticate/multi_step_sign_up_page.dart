@@ -175,38 +175,63 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
                         onNextPressed: () {},
                         pageList: [page1(), page2(), page3(), page4()],
                         onFormSubmitted: () async {
-                          if (_formKey.currentState.validate()) {
-                            if (userData.userInterest.isNotEmpty &&
-                                userData.userResources.isNotEmpty) {
-                              if (userData.ageRange != null) {
-                                if (agreedToTerms) {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  try {
-                                    dynamic result = _registerIndividualUser(
-                                        context, email, password, userData);
-                                    if (result == null) {
+                          try {
+                            if (_formKey.currentState.validate()) {
+                              if (userData.userInterest.isNotEmpty &&
+                                  userData.userResources.isNotEmpty) {
+                                if (userData.ageRange != null) {
+                                  if (agreedToTerms) {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    try {
+                                      dynamic result = _registerIndividualUser(
+                                          context, email, password, userData);
+                                      if (result == null) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                      }
+                                    } catch (e) {
+                                      print(e.toString());
                                       setState(() {
                                         loading = false;
                                       });
                                     }
-                                  } catch (e) {
-                                    print(e.toString());
-                                    setState(() {
-                                      loading = false;
-                                    });
+                                  }
+                                  if (agreedToTerms == false) {
+                                    print("Please Agree to Terms");
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Notice"),
+                                            content: Text(
+                                                "Please make sure to accept terms of use and privacy policy "),
+                                            actions: [
+                                              FlatButton(
+                                                child: Text("OK"),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  setState(() {
+                                                    complete = false;
+                                                  });
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        });
                                   }
                                 }
-                                if (agreedToTerms == false) {
-                                  print("Please Agree to Terms");
+                                if (userData.ageRange == null) {
+                                  print("Please Select an Age Range");
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: Text("Notice"),
                                           content: Text(
-                                              "Please make sure to accept terms of use and privacy policy "),
+                                              "Please make sure you select an age range to continue"),
                                           actions: [
                                             FlatButton(
                                               child: Text("OK"),
@@ -222,15 +247,17 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
                                       });
                                 }
                               }
-                              if (userData.ageRange == null) {
-                                print("Please Select an Age Range");
+                              if (userData.userInterest.isEmpty ||
+                                  userData.userResources.isEmpty) {
+                                print(
+                                    "Please fill select and interest and or donations");
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: Text("Notice"),
                                         content: Text(
-                                            "Please make sure you select an age range to continue"),
+                                            "Please make sure you select what you can provide and your interests, must select at a least one option of each to continue."),
                                         actions: [
                                           FlatButton(
                                             child: Text("OK"),
@@ -246,31 +273,15 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
                                     });
                               }
                             }
-                            if (userData.userInterest.isEmpty ||
-                                userData.userResources.isEmpty) {
-                              print(
-                                  "Please fill select and interest and or donations");
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text("Notice"),
-                                      content: Text(
-                                          "Please make sure you select what you can provide and your interests, must select at a least one option of each to continue."),
-                                      actions: [
-                                        FlatButton(
-                                          child: Text("OK"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            setState(() {
-                                              complete = false;
-                                            });
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  });
-                            }
+                          }
+                          catch (e){
+                            print(e);
+                            setState(() {
+                              loading = false;
+                            });
+                            
+
+
                           }
                         },
                       ),
