@@ -1,4 +1,3 @@
-import 'package:chodiapp/constants/constants.dart';
 import 'package:chodiapp/models/user.dart';
 import 'package:chodiapp/services/auth.dart';
 import 'package:chodiapp/services/firestore.dart';
@@ -23,6 +22,7 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
   String password = "";
   List<dynamic> userResources = [];
   List<dynamic> userInterest = [];
+  int currentPage = 0;
 
   bool agreedToTerms = false;
 
@@ -59,26 +59,18 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
     "animals": Color.fromRGBO(242, 122, 84, 1.0)
   };
 
-  StepperType stepperType = StepperType.vertical;
-
-  String _validateEmail(String value) {
+  bool _validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
+    return regex.hasMatch(value);
   }
 
-  String _validatePassword(String value) {
+  bool _validatePassword(String value) {
     Pattern pattern =
         r'^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})';
     RegExp regExp = new RegExp(pattern);
-    if (!regExp.hasMatch(value))
-      return "Enter Stronger Password";
-    else
-      return null;
+    return regExp.hasMatch(value);
   }
 
   Future<User> _registerIndividualUser(BuildContext context, String email,
@@ -89,29 +81,15 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
       await FirestoreService(uid: user.uid).createIndividualUser(userData);
       return user;
     } catch (e) {
+      _showDialog("The email address is already in use by another account.");
       print(e.toString());
+      setState(() {
+        loading = false;
+      });
       return null;
     }
   }
 
-  int currentStep = 0;
-  bool complete = false;
-
-  next() {
-    currentStep + 1 != 4
-        ? goTo(currentStep + 1)
-        : setState(() => complete = true);
-  }
-
-  cancel() {
-    if (currentStep > 0) {
-      goTo(currentStep - 1);
-    }
-  }
-
-  goTo(int step) {
-    setState(() => currentStep = step);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,116 +150,16 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
                                 fontSize: 17, color: Colors.blue),
                           ),
                         ),
-                        onNextPressed: () {},
+                        onNextPressed: () {
+                          return validation();
+                        },
                         pageList: [page1(), page2(), page3(), page4()],
                         onFormSubmitted: () async {
-                          try {
-                            if (_formKey.currentState.validate()) {
-                              if (userData.userInterest.isNotEmpty &&
-                                  userData.userResources.isNotEmpty) {
-                                if (userData.ageRange != null) {
-                                  if (agreedToTerms) {
-                                    setState(() {
-                                      loading = true;
-                                    });
-                                    try {
-                                      dynamic result = _registerIndividualUser(
-                                          context, email, password, userData);
-                                      if (result == null) {
-                                        setState(() {
-                                          loading = false;
-                                        });
-                                      }
-                                    } catch (e) {
-                                      print(e.toString());
-                                      setState(() {
-                                        loading = false;
-                                      });
-                                    }
-                                  }
-                                  if (agreedToTerms == false) {
-                                    print("Please Agree to Terms");
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text("Notice"),
-                                            content: Text(
-                                                "Please make sure to accept terms of use and privacy policy "),
-                                            actions: [
-                                              FlatButton(
-                                                child: Text("OK"),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                  setState(() {
-                                                    complete = false;
-                                                  });
-                                                },
-                                              )
-                                            ],
-                                          );
-                                        });
-                                  }
-                                }
-                                if (userData.ageRange == null) {
-                                  print("Please Select an Age Range");
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text("Notice"),
-                                          content: Text(
-                                              "Please make sure you select an age range to continue"),
-                                          actions: [
-                                            FlatButton(
-                                              child: Text("OK"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                setState(() {
-                                                  complete = false;
-                                                });
-                                              },
-                                            )
-                                          ],
-                                        );
-                                      });
-                                }
-                              }
-                              if (userData.userInterest.isEmpty ||
-                                  userData.userResources.isEmpty) {
-                                print(
-                                    "Please fill select and interest and or donations");
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text("Notice"),
-                                        content: Text(
-                                            "Please make sure you select what you can provide and your interests, must select at a least one option of each to continue."),
-                                        actions: [
-                                          FlatButton(
-                                            child: Text("OK"),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              setState(() {
-                                                complete = false;
-                                              });
-                                            },
-                                          )
-                                        ],
-                                      );
-                                    });
-                              }
-                            }
-                          }
-                          catch (e){
-                            print(e);
-                            setState(() {
-                              loading = false;
-                            });
-                            
-
-
+                          if (userData.userInterest.isNotEmpty) {
+                            _registerIndividualUser(
+                                context, email, password, userData);
+                          } else {
+                            _showDialog("Please make sure you select what you can provide and your interests, must select at a least one option of each to continue.");
                           }
                         },
                       ),
@@ -322,7 +200,6 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
               height: 30,
             ),
             TextFormField(
-              validator: _validateEmail,
               decoration: InputDecoration(labelText: "Email"),
               keyboardType: TextInputType.emailAddress,
               onChanged: (val) {
@@ -335,7 +212,6 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
               height: 30,
             ),
             TextFormField(
-              validator: _validatePassword,
               decoration: InputDecoration(labelText: "Password"),
               obscureText: true,
               onChanged: (val) {
@@ -351,96 +227,98 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
   }
 
   Widget page2() {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            height: 30,
-          ),
-          Text(
-            "Personal Information",
-            style:
-                GoogleFonts.ubuntu(fontSize: 22, fontWeight: FontWeight.w100),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          TextFormField(
-            validator: (val) => val.isEmpty ? 'Enter a Number ' : null,
-            decoration: InputDecoration(labelText: "Phone Number"),
-            keyboardType: TextInputType.numberWithOptions(),
-            onChanged: (val) {
-              setState(() {
-                userData.phoneNumber = val;
-              });
-            },
-          ),
-          SizedBox(
-            height: 30.0,
-          ),
-          DropdownButton(
-            hint: Text("Please Choose Age Range"),
-            value: userData.ageRange,
-            onChanged: (newValue) {
-              setState(() {
-                userData.ageRange = newValue;
-              });
-            },
-            items: listOfAgeRange.map((ageRange) {
-              return DropdownMenuItem(
-                child: new Text(ageRange),
-                value: ageRange,
-              );
-            }).toList(),
-          ),
-          Divider(
-            thickness: 1.0,
-            color: Colors.grey,
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          TextFormField(
-            validator: (val) => val.isEmpty ? 'Enter Zip Code' : null,
-            decoration: InputDecoration(labelText: "Zip Code"),
-            keyboardType: TextInputType.number,
-            onChanged: (val) {
-              setState(() {
-                userData.zipCode = val;
-              });
-            },
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Container(
-            padding: EdgeInsets.only(right: 50),
-            child: Row(
-              children: <Widget>[
-                Checkbox(
-                  value: agreedToTerms,
-                  onChanged: (value) {
-                    setState(() {
-                      agreedToTerms = value;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: Text(
-                    "I accept Terms of Use and Privacy Policy",
-                    overflow: TextOverflow.clip,
-                    style: GoogleFonts.ubuntu(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w100,
-                        color: Colors.black),
-                  ),
-                )
-              ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: 30,
             ),
-          ),
-        ],
+            Text(
+              "Personal Information",
+              style:
+                  GoogleFonts.ubuntu(fontSize: 22, fontWeight: FontWeight.w100),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            TextFormField(
+              validator: (val) => val.isEmpty ? 'Enter a Number ' : null,
+              decoration: InputDecoration(labelText: "Phone Number"),
+              keyboardType: TextInputType.numberWithOptions(),
+              onChanged: (val) {
+                setState(() {
+                  userData.phoneNumber = val;
+                });
+              },
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            DropdownButton(
+              hint: Text("Please Choose Age Range"),
+              value: userData.ageRange,
+              onChanged: (newValue) {
+                setState(() {
+                  userData.ageRange = newValue;
+                });
+              },
+              items: listOfAgeRange.map((ageRange) {
+                return DropdownMenuItem(
+                  child: new Text(ageRange),
+                  value: ageRange,
+                );
+              }).toList(),
+            ),
+            Divider(
+              thickness: 1.0,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            TextFormField(
+              validator: (val) => val.isEmpty ? 'Enter Zip Code' : null,
+              decoration: InputDecoration(labelText: "Zip Code"),
+              keyboardType: TextInputType.number,
+              onChanged: (val) {
+                setState(() {
+                  userData.zipCode = val;
+                });
+              },
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              padding: EdgeInsets.only(right: 50),
+              child: Row(
+                children: <Widget>[
+                  Checkbox(
+                    value: agreedToTerms,
+                    onChanged: (value) {
+                      setState(() {
+                        agreedToTerms = value;
+                      });
+                    },
+                  ),
+                  Expanded(
+                    child: Text(
+                      "I accept Terms of Use and Privacy Policy",
+                      overflow: TextOverflow.clip,
+                      style: GoogleFonts.ubuntu(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w100,
+                          color: Colors.black),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -541,6 +419,61 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
       ),
     );
   }
+
+  bool validation() {
+    switch(currentPage) {
+      case 0:
+        if ((userData.name != null) & _validateEmail(email) & _validatePassword(password)) {
+          currentPage++;
+          return true;
+        } else {
+          _showDialog("Please fill in all the fields. The email and password must be in a valid format.");
+          return false;
+        }
+        break;
+      case 1:
+        if (agreedToTerms & (userData.phoneNumber != null) & (userData.ageRange != null) & (userData.zipCode != null)) {
+          currentPage++;
+          return true;
+        } else {
+          _showDialog("Please fill in all the fields and accept the terms.");
+          return false;
+        }
+        break;
+      case 2:
+        if (userData.userResources.isNotEmpty) {
+          currentPage++;
+          return true;
+        } else {
+          _showDialog("Please select at least one option.");
+          return false;
+        }
+        break;
+      default:
+        return false;
+    }
+  }
+
+  void _showDialog(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Enter the correct format"),
+            content: Text(errorMessage),
+            actions: [
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                  });
+                },
+              )
+            ],
+          );
+        });
+  }
 }
 
 class GridViewItem extends StatelessWidget {
@@ -578,3 +511,5 @@ class GridViewItem extends StatelessWidget {
     );
   }
 }
+
+

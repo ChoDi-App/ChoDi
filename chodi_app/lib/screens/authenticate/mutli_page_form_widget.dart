@@ -91,10 +91,11 @@ class _MultiPageFormState extends State<MultiPageForm> {
                     : FlatButton(
                   child: getNextButtonWrapper(widget.nextButtonStyle),
                   onPressed: () {
-                    widget.onNextPressed();
-                    setState(() {
-                      currentPage = currentPage + 1;
-                    });
+                    if (widget.onNextPressed()){
+                      setState(() {
+                        currentPage = currentPage + 1;
+                      });
+                    }
                   },
                 ),
               ],

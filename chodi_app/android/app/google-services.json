@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "731009655889-74s384gqoo0p4m7ec9j436n3rhbantrc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chodiapp",
+            "certificate_hash": "3807e5b0cde851a0b047d910694e0a74fdfc0d6b"
+          }
+        },
+        {
           "client_id": "731009655889-9vab2squm2f4upprq7qk0p036qj79thv.apps.googleusercontent.com",
           "client_type": 3
         }
