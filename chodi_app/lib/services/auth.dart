@@ -52,6 +52,10 @@ class AuthService implements AuthBase{
     return _userFromFirebaseUser(user);
   }
 
+  Future resetPassword(String email) async{
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
 
   Future <User> signInWithGoogle() async{
     final googleSignIn = GoogleSignIn();

@@ -1,5 +1,6 @@
 import 'package:chodiapp/auth_widget_builder.dart';
 import 'package:chodiapp/screens/Home/search_page/search_page.dart';
+import 'package:chodiapp/screens/authenticate/forgot_password_page.dart';
 import 'package:chodiapp/screens/authenticate/sign_in_page.dart';
 import 'package:chodiapp/screens/authenticate/sign_up_page.dart';
 import 'package:chodiapp/screens/home/profile_page.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
             'signUpScreen': (BuildContext context) => new SignUpPage(),
             'searchPage': (BuildContext context) => new SearchPage(),
             'profilePage': (BuildContext context) => new ProfilePage(),
+            'forgotPasswordPage' : (BuildContext context) => new ForgotPasswordPage(),
 
           },
         );

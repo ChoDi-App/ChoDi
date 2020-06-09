@@ -184,7 +184,30 @@ class _SignInPageState extends State<SignInPage> {
                                 password = val;
                               });
                             },
-                          )
+                          ),
+                          SizedBox(height: 8.0,),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                "Forgot Password?",
+                                style: GoogleFonts.ubuntu(
+                                    fontWeight: FontWeight.w100, fontSize: 12),
+                              ),
+                              FlatButton(
+                                child: Text(
+                                  "Reset Password",
+                                  style: GoogleFonts.ubuntu(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15,
+                                      color: Colors.blue),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('forgotPasswordPage');
+                                },
+                              )
+                            ],
+                          ),
                         ],
                       ),
                       FlatButton(
@@ -274,26 +297,31 @@ class _SignInPageState extends State<SignInPage> {
                           ],
                         ),
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            "Don't Have an Account?",
-                            style: GoogleFonts.ubuntu(
-                                fontWeight: FontWeight.w100, fontSize: 12),
+                      Column(
+                        children: [
+
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                "Don't Have an Account?",
+                                style: GoogleFonts.ubuntu(
+                                    fontWeight: FontWeight.w100, fontSize: 12),
+                              ),
+                              FlatButton(
+                                child: Text(
+                                  "Sign Up",
+                                  style: GoogleFonts.ubuntu(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15,
+                                      color: Colors.blue),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('signUpScreen');
+                                },
+                              )
+                            ],
                           ),
-                          FlatButton(
-                            child: Text(
-                              "Sign Up",
-                              style: GoogleFonts.ubuntu(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 15,
-                                  color: Colors.blue),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pushNamed('signUpScreen');
-                            },
-                          )
                         ],
                       )
                     ],

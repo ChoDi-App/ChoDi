@@ -8,11 +8,13 @@ class MultiPageForm extends StatefulWidget {
   final Widget previousButtonStyle;
   final Widget submitButtonStyle;
   final List<Widget> pageList;
+  final Function onPreviousPressed;
   MultiPageForm(
       {
         @required this.totalPage,
         @required this.pageList,
         @required this.onFormSubmitted,
+        this.onPreviousPressed,
         this.onNextPressed,
         this.nextButtonStyle,
         this.previousButtonStyle,
@@ -79,7 +81,9 @@ class _MultiPageFormState extends State<MultiPageForm> {
                   child: getPreviousButtonWrapper(widget.previousButtonStyle),
                   onPressed: () {
                     setState(() {
+                      widget.onPreviousPressed();
                       currentPage = currentPage - 1;
+
                     });
                   },
                 ),

@@ -251,7 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: InputDecoration(labelText: userData.phoneNumber),
               onChanged: (val) {
                 setState(() {
-                  updatedUserData.name = val;
+                  updatedUserData.phoneNumber = val;
                 });
               },
             ),
@@ -267,7 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: InputDecoration(labelText: userData.zipCode),
               onChanged: (val) {
                 setState(() {
-                  updatedUserData.name = val;
+                  updatedUserData.zipCode = val;
                 });
               },
             ),

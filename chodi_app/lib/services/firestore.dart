@@ -16,6 +16,8 @@ class FirestoreService {
     return await userCollection.document(uid).setData(userData.toMap(uid));
   }
 
+
+
   Future updateIndividualUser(UserData userData) async {
     return await userCollection.document(uid).updateData(userData.toMap(uid));
   }

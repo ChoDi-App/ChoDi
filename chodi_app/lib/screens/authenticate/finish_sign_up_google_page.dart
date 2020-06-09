@@ -76,12 +76,11 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
     return regExp.hasMatch(value);
   }
 
-  Future<User> _registerIndividualUser(BuildContext context, String email,
+  Future _registerIndividualUser(BuildContext context, String email,
       String password, UserData userData) async {
     try {
-      User user = Provider.of<User>(context, listen: false);
-      await FirestoreService(uid: user.uid).updateIndividualUser(userData);
-      return user;
+      UserData user = Provider.of<UserData>(context, listen: false);
+      await FirestoreService(uid: user.userId).updateIndividualUser(userData);
     } catch (e) {
       _showDialog("The email address is already in use by another account.");
       print(e.toString());
@@ -102,20 +101,10 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
         navigationBar: CupertinoNavigationBar(
           border: Border(bottom: BorderSide.none),
           middle: Text(
-            "Sign Up",
+            "Finish Sign Up",
             style: GoogleFonts.ubuntu(
               fontSize: 25.0,
               fontWeight: FontWeight.w300,
-            ),
-          ),
-          leading: Material(
-            child: IconButton(
-              icon: Icon(Icons.cancel),
-              onPressed: () {
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                currentFocus.unfocus();
-                Navigator.of(context).pop();
-              },
             ),
           ),
         ),
@@ -138,6 +127,10 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
                           fontSize: 17, color: Colors.blue),
                     ),
                   ),
+                  onPreviousPressed: (){
+                    currentPage--;
+
+                  },
                   previousButtonStyle: FlatButton(
                     child: Text(
                       "Previous",
@@ -191,7 +184,8 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
           Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             TextFormField(
               validator: (val) => val.isEmpty ? 'Enter a Name ' : null,
-              decoration: InputDecoration(labelText: "First and Last Name"),
+              decoration: InputDecoration(labelText:"First and Last Name"),
+              initialValue: userData.name == null ? null : userData.name,
               onChanged: (val) {
                 setState(() {
                   userData.name = val;
@@ -225,6 +219,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
             TextFormField(
               validator: (val) => val.isEmpty ? 'Enter a Number ' : null,
               decoration: InputDecoration(labelText: "Phone Number"),
+              initialValue: userData.phoneNumber == null ? null : userData.phoneNumber,
               keyboardType: TextInputType.numberWithOptions(),
               onChanged: (val) {
                 setState(() {
@@ -260,6 +255,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
             TextFormField(
               validator: (val) => val.isEmpty ? 'Enter Zip Code' : null,
               decoration: InputDecoration(labelText: "Zip Code"),
+              initialValue: userData.zipCode == null ? null : userData.zipCode,
               keyboardType: TextInputType.number,
               onChanged: (val) {
                 setState(() {
@@ -398,12 +394,18 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
     );
   }
 
+
   bool validation() {
+    print(currentPage);
     switch(currentPage) {
       case 0:
         if (userData.name != null) {
-          currentPage++;
-          return true;
+          if (userData.name.isNotEmpty){
+            currentPage++;
+            return true;
+          }else{
+            return false;
+          }
         } else {
           _showDialog("Please fill in all the fields. The email and password must be in a valid format.");
           return false;
