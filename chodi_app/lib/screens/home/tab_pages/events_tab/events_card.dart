@@ -3,6 +3,12 @@ import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+////New code////
+import 'package:chodiapp/models/user.dart';
+import 'package:provider/provider.dart';
+import 'events_info_page.dart';
+////
+
 class EventsCard extends StatelessWidget {
   Events event;
 
@@ -10,6 +16,7 @@ class EventsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = Provider.of<User>(context);
     return GestureDetector(
       onTap: () {
 //      Navigator.push(
@@ -17,6 +24,17 @@ class EventsCard extends StatelessWidget {
 //        MaterialPageRoute(
 //            builder: (context) => NonProfitInfoPage(nonProfit: nonProfit)),
 //      );
+
+      ////New code////
+      if (currentUser == null){
+          Navigator.of(context).pushNamed('signInScreen');
+        }else{
+          Navigator.push(
+            context,
+            MaterialPageRoute( builder: (context) => EventsInfoPage(event: event)),
+          );
+        }
+      ////
       },
     child: Card(
         elevation: 5.0,
