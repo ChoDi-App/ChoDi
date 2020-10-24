@@ -73,6 +73,7 @@ class EventsInfoPage extends StatelessWidget {
                           flex: 2,
                           child: Column(
                             children: <Widget>[
+                              /*
                               Row(
                                 children: <Widget>[
                                   Icon(Icons.location_on),
@@ -83,6 +84,7 @@ class EventsInfoPage extends StatelessWidget {
                                   Text("Location: **CHAR OVERFLOW**")
                                 ],
                               ),
+                               */
                               Row(
                                 children: <Widget>[
                                   Icon(Icons.category),
@@ -114,6 +116,7 @@ class EventsInfoPage extends StatelessWidget {
                                   Text("End Date: ${event.eventDate.endDate}")
                                 ],
                               ),
+                              if(event.eventDate.startTime.isNotEmpty)(
                               Row(
                                 children: <Widget>[
                                   Icon(Icons.calendar_today),
@@ -122,7 +125,8 @@ class EventsInfoPage extends StatelessWidget {
                                   ),
                                   Text("Start Time: ${event.eventDate.startTime}")
                                 ],
-                              ),
+                              )),
+                              if(event.eventDate.endTime.isNotEmpty)(
                               Row(
                                 children: <Widget>[
                                   Icon(Icons.calendar_today),
@@ -131,7 +135,7 @@ class EventsInfoPage extends StatelessWidget {
                                   ),
                                   Text("End Time: ${event.eventDate.endTime}")
                                 ],
-                              ),
+                              )),
                             ],
                           ),
                         )
@@ -172,18 +176,26 @@ class EventsInfoPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            "**MISSING VISION**",
+                            "Location",
+                            style: GoogleFonts.ubuntu(
+                                fontSize: 17, color: Colors.black),
+                          ),
+                          Text(
+                            event.location,
                             style:
                             GoogleFonts.ubuntu(fontWeight: FontWeight.w100),
                           ),
+
                           SizedBox(
                             height: 10,
                           ),
+                          if(event.eventURL.isNotEmpty)(
                           Text(
                             "Website",
                             style: GoogleFonts.ubuntu(
                                 fontSize: 17, color: Colors.black),
-                          ),
+                          )),
+                          if(event.eventURL.isNotEmpty)(
                           Linkify(
                             onOpen: (url) async {
                               if (await canLaunch(url.url)) {
@@ -192,10 +204,9 @@ class EventsInfoPage extends StatelessWidget {
                                 throw 'Could not luanch $url';
                               }
                             },
-                            text: "**URL**",
+                            text: event.eventURL,
                             style: GoogleFonts.ubuntu(fontSize: 15),
-                          ),
-
+                          )),
                         ],
                       ),
                     ),
