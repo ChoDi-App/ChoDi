@@ -18,8 +18,7 @@ class EventsSavedPage extends StatelessWidget{
         backgroundColor: primaryColor,
       ),
       body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: ListView(
           children: <Widget>[
             //INSERT CODE HERE//
 

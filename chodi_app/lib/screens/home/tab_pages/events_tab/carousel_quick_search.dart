@@ -21,7 +21,7 @@ class _CarouselQuickSearchState extends State<CarouselQuickSearch> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
