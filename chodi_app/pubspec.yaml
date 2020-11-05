@@ -41,6 +41,8 @@ dependencies:
   multi_page_form: ^1.0.4
   image_picker: ^0.6.7
   bordered_text: ^1.0.0
+  geolocator: ^6.1.4
+  geocoder: ^0.2.1
 
 dev_dependencies:
   flutter_test:
