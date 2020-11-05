@@ -18,13 +18,15 @@ class EventsNearbyPage extends StatefulWidget {
 
 class _EventsNearbyPage extends State<EventsNearbyPage>{
   bool permissionError = false;
+  List<Events> moddedList = new List<Events>();
 
   @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
-    List<Events> moddedList = new List<Events>();
+    //List<Events> moddedList = new List<Events>();
     //UserData currentUser = Provider.of<UserData>(context);
-    geoSorting(eventsList).then((val) => setState(() {
+
+    geoSorting(eventsList).then((val) => setStateIfMounted(() {
       moddedList = val;
     }));
 
@@ -68,7 +70,7 @@ class _EventsNearbyPage extends State<EventsNearbyPage>{
               )
             ),
 
-            if(moddedList.length > 0 && !permissionError)(
+            if(!permissionError)(
               Column(
                 children: <Widget>[
                   GridView.builder(
@@ -93,6 +95,10 @@ class _EventsNearbyPage extends State<EventsNearbyPage>{
     );
   }
 
+  void setStateIfMounted(f) {
+    if (mounted) setState(f);
+  }
+
   //Modify list based on location
   Future<List<Events>> geoSorting(List<Events> eventsList) async{
     List<Events> moddedList = new List<Events>();
@@ -105,7 +111,13 @@ class _EventsNearbyPage extends State<EventsNearbyPage>{
     //Meters threshold for considering events as nearby
     //50,0000 meters = 31 miles
     var maxDist = 50080;
+
     Position selfCord = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+    //In case of a location service disabled error
+    //comment line above and uncomment lines below
+    //var cord = eventsList[0].location;
+    //var cord2 = await Geocoder.local.findAddressesFromQuery(cord);
+    //var selfCord = cord2.first.coordinates;
 
     for (var i=0; i<eventsList.length; i++) {
       var current = eventsList[i].location;
