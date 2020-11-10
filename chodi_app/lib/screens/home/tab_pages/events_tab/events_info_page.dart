@@ -7,6 +7,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_image/firebase_image.dart';
 
 import 'package:chodiapp/models/events.dart';
+import 'package:chodiapp/models/user.dart';
+import 'package:provider/provider.dart';
+import 'package:chodiapp/services/firestore.dart';
 
 class EventsInfoPage extends StatelessWidget {
   EventsInfoPage({@required this.event});
@@ -15,7 +18,14 @@ class EventsInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Events> eventsList = Provider.of<List<Events>>(context);
+    List<Events> moddedList = new List<Events>();
+    UserData currentUser = Provider.of<UserData>(context);
+    if(currentUser != null){
+      moddedList = updateSearchResults(eventsList, currentUser.einSaved);
+    }
     var deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -48,10 +58,22 @@ class EventsInfoPage extends StatelessWidget {
                           ),
                           width: deviceWidth / 1.3,
                         ),
+
+                        //Heart icon properties
+                        if(currentUser == null)(
+                            IconButton(icon: new Icon (Icons.favorite_border, size: 40),
+                              onPressed: () { /* Void code */ },))
+                        else if(moddedList.contains(event))(
+                            IconButton(icon: new Icon (Icons.favorite, size: 40),
+                              onPressed: () { toggleFavorite(moddedList,currentUser);},))
+                        else(
+                            IconButton(icon: new Icon (Icons.favorite_border, size: 40),
+                              onPressed: () { toggleFavorite(moddedList,currentUser);},)),
+                        /*
                         Icon(
                           Icons.favorite_border,
                           size: 40,
-                        )
+                        )*/
                       ],
                     ),
                     Text(event.eventContactEmail),
@@ -73,18 +95,6 @@ class EventsInfoPage extends StatelessWidget {
                           flex: 2,
                           child: Column(
                             children: <Widget>[
-                              /*
-                              Row(
-                                children: <Widget>[
-                                  Icon(Icons.location_on),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  //Text("Location: ${event.location}")
-                                  Text("Location: **CHAR OVERFLOW**")
-                                ],
-                              ),
-                               */
                               Row(
                                 children: <Widget>[
                                   Icon(Icons.category),
@@ -218,5 +228,28 @@ class EventsInfoPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Events> updateSearchResults(List<Events> eventsList, var einSaved) {
+    List<Events> savedList = new List<Events>();
+    for (var i=0; i<eventsList.length; i++) {
+      for (var j=0; j<einSaved.length; j++){
+        if(eventsList[i].ein == einSaved[j]){
+          savedList.add(eventsList[i]);
+          break;
+        }
+      }
+    }
+    return savedList;
+  }
+
+  void toggleFavorite(List<Events> moddedList, UserData currentUser){
+    if(moddedList.contains(event)){
+      currentUser.einSaved.remove(event.ein);
+    }
+    else{
+      currentUser.einSaved.add(event.ein);
+    }
+    return;
   }
 }

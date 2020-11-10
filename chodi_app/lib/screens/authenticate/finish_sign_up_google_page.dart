@@ -25,6 +25,7 @@ class _FinishSignUpGooglePageState extends State<FinishSignUpGooglePage> {
   String password = "";
   List<dynamic> userResources = [];
   List<dynamic> userInterest = [];
+  List<dynamic> ein = [];
   int currentPage = 0;
 
   bool agreedToTerms = false;

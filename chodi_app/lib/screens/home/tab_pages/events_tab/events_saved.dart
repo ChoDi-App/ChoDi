@@ -13,7 +13,7 @@ class EventsSavedPage extends StatelessWidget{
     List<Events> moddedList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
     if(currentUser != null){
-      moddedList = updateSearchResults(eventsList, new List<String>());//currentUser.einSaved);
+      moddedList = updateSearchResults(eventsList, currentUser.einSaved);
     }
 
     return Scaffold(
@@ -72,15 +72,15 @@ class EventsSavedPage extends StatelessWidget{
   }
 
   List<Events> updateSearchResults(List<Events> eventsList, var einSaved) {
-    List<Events> nearList = new List<Events>();
+    List<Events> savedList = new List<Events>();
     for (var i=0; i<eventsList.length; i++) {
       for (var j=0; j<einSaved.length; j++){
         if(eventsList[i].ein == einSaved[j]){
-          nearList.add(eventsList[i]);
+          savedList.add(eventsList[i]);
           break;
         }
       }
     }
-    return nearList;
+    return savedList;
   }
 }

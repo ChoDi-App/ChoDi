@@ -7,25 +7,92 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EventsCalendarPage extends StatelessWidget{
   @override
+  @override
   Widget build(BuildContext context) {
-    var deviceWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "CHODI",
-          style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100),
-        ),
-        backgroundColor: primaryColor,
-      ),
-      body: Container(
-        child: ListView(
-          children: <Widget>[
-            //INSERT CODE HERE//
+    List<Events> eventsList = Provider.of<List<Events>>(context);
+    List<Events> moddedList = new List<Events>();
+    moddedList = timeSorting(eventsList);//currentUser.einSaved);
 
-            ////
-          ],
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "CHODI",
+            style: GoogleFonts.ubuntu(fontWeight: FontWeight.w100),
+          ),
+          backgroundColor: primaryColor,
         ),
-      ),
+        body: Container(
+          child: ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Calendar",
+                    style:
+                    GoogleFonts.ubuntu(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+
+                if(true)(
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      //child: Text("Displaying events nearby: $location",
+                      child: Text("Displaying events in chronological order",
+                        style:
+                        GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
+                      ),
+                    )
+                ),
+
+                if(moddedList.length > 0)(
+                    Column(
+                      children: <Widget>[
+                        GridView.builder(
+                          itemCount: moddedList.length,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return EventsCard(
+                              event: moddedList[index],
+                            );
+                          },
+                        ),
+                      ],
+                    )
+                )
+              ]
+          ),
+        )
     );
+  }
+
+  //Modify list based on dates
+  List<Events> timeSorting(List<Events> eventsList){
+    List<Events> moddedList = new List<Events>();
+
+    //3 buckets for year-1, year, and year+1
+    //Each bucket contains 12 buckets for months
+    List<List<List<Events>>> bucketSort = new List<List<List<Events>>>();
+    for(var i=0; i<3; ++i){
+      bucketSort.add(new List<List<Events>>());
+      for(var j=0; j<12; ++j){
+        bucketSort[i].add(new List<Events>());
+      }
+    }
+    List<Events> invalidList = new List<Events>();
+
+    for (var i=0; i<eventsList.length; i++) {
+
+
+      if(0 == 0){
+        moddedList.add(eventsList[i]);
+      }
+    }
+
+    //Merge lists back into moddedList
+
+    return moddedList;
   }
 }
