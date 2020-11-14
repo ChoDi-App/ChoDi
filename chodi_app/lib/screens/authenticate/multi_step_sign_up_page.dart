@@ -22,7 +22,7 @@ class _MultiStepSignUpPageState extends State<MultiStepSignUpPage> {
   String password = "";
   List<dynamic> userResources = [];
   List<dynamic> userInterest = [];
-  List<dynamic> ein = [];
+  List<dynamic> einSaved = [];
   int currentPage = 0;
 
   bool agreedToTerms = false;

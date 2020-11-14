@@ -11,13 +11,23 @@ import 'package:chodiapp/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:chodiapp/services/firestore.dart';
 
-class EventsInfoPage extends StatelessWidget {
+class EventsInfoPage extends StatefulWidget {
+  final Events event;
   EventsInfoPage({@required this.event});
 
-  Events event;
+  @override
+  _EventsInfoPage createState() {
+    return new _EventsInfoPage();
+  }
+}
+
+class _EventsInfoPage extends State<EventsInfoPage> {
+  //_EventsInfoPage({@required this.event});
+  //Events event;
 
   @override
   Widget build(BuildContext context) {
+    Events event = widget.event;
     List<Events> eventsList = Provider.of<List<Events>>(context);
     List<Events> moddedList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
@@ -65,10 +75,10 @@ class EventsInfoPage extends StatelessWidget {
                               onPressed: () { /* Void code */ },))
                         else if(moddedList.contains(event))(
                             IconButton(icon: new Icon (Icons.favorite, size: 40),
-                              onPressed: () { toggleFavorite(moddedList,currentUser);},))
+                              onPressed: () { toggleFavorite(moddedList,currentUser,event);},))
                         else(
                             IconButton(icon: new Icon (Icons.favorite_border, size: 40),
-                              onPressed: () { toggleFavorite(moddedList,currentUser);},)),
+                              onPressed: () { toggleFavorite(moddedList,currentUser,event);},)),
                         /*
                         Icon(
                           Icons.favorite_border,
@@ -230,6 +240,10 @@ class EventsInfoPage extends StatelessWidget {
     );
   }
 
+  void setStateIfMounted(f) {
+    if (mounted) setState(f);
+  }
+
   List<Events> updateSearchResults(List<Events> eventsList, var einSaved) {
     List<Events> savedList = new List<Events>();
     for (var i=0; i<eventsList.length; i++) {
@@ -243,12 +257,25 @@ class EventsInfoPage extends StatelessWidget {
     return savedList;
   }
 
-  void toggleFavorite(List<Events> moddedList, UserData currentUser){
-    if(moddedList.contains(event)){
-      currentUser.einSaved.remove(event.ein);
+  void toggleFavorite(List<Events> moddedList, UserData currentUser, Events event){
+    try {
+      if (moddedList.contains(event)) {
+        setState(() {
+          currentUser.einSaved.remove(event.ein);
+          FirestoreService(uid: currentUser.userId).updateUserPreferences({
+            "einSaved": currentUser.einSaved});
+        });
+      }
+      else {
+        setState(() {
+          currentUser.einSaved.add(event.ein);
+          FirestoreService(uid: currentUser.userId).updateUserPreferences({
+            "einSaved": currentUser.einSaved});
+        });
+      }
     }
-    else{
-      currentUser.einSaved.add(event.ein);
+    catch (e) {
+      print(e.toString());
     }
     return;
   }
