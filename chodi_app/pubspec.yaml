@@ -44,6 +44,7 @@ dependencies:
   bordered_text: ^1.0.0
   geolocator: ^6.1.4
   geocoder: ^0.2.1
+  adobe_xd: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:
