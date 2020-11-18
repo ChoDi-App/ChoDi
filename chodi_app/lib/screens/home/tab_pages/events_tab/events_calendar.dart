@@ -7,11 +7,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EventsCalendarPage extends StatelessWidget{
   @override
-  @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
     List<Events> moddedList = new List<Events>();
-    moddedList = timeSorting(eventsList);//currentUser.einSaved);
+    moddedList = timeSorting(eventsList);
 
     return Scaffold(
         appBar: AppBar(
@@ -72,26 +71,8 @@ class EventsCalendarPage extends StatelessWidget{
   List<Events> timeSorting(List<Events> eventsList){
     List<Events> moddedList = new List<Events>();
 
-    //3 buckets for year-1, year, and year+1
-    //Each bucket contains 12 buckets for months
-    List<List<List<Events>>> bucketSort = new List<List<List<Events>>>();
-    for(var i=0; i<3; ++i){
-      bucketSort.add(new List<List<Events>>());
-      for(var j=0; j<12; ++j){
-        bucketSort[i].add(new List<Events>());
-      }
-    }
-    List<Events> invalidList = new List<Events>();
-
-    for (var i=0; i<eventsList.length; i++) {
-
-
-      if(0 == 0){
-        moddedList.add(eventsList[i]);
-      }
-    }
-
-    //Merge lists back into moddedList
+    eventsList.sort((a, b) => a.numericSDate.compareTo(b.numericSDate));
+    moddedList = eventsList;
 
     return moddedList;
   }

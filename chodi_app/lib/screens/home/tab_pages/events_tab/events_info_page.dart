@@ -227,6 +227,16 @@ class _EventsInfoPage extends State<EventsInfoPage> {
                             text: event.eventURL,
                             style: GoogleFonts.ubuntu(fontSize: 15),
                           )),
+
+                          if(event.qrCodeURL == "")(
+                              //Swap out image for blank qrCode
+                              Image(height: deviceWidth/2, image:
+                              FirebaseImage("gs://chodi-663f2.appspot.com/eventqrcodes/_QRWikipedia.png"))
+                          )
+                          else(
+                              Image(height: deviceWidth/2, image:
+                              FirebaseImage(event.qrCodeURL))
+                          ),
                         ],
                       ),
                     ),
