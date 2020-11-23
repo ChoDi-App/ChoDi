@@ -24,9 +24,10 @@ class SideMenu extends StatelessWidget {
             Provider.of<FirebaseStorageService>(context, listen: false);
         final downloadUrl = await storage.uploadAvatar(file: file);
         // 3. Save url to Firestore
-        final userData = Provider.of<UserData>(context,listen: false);
+        final userData = Provider.of<UserData>(context, listen: false);
         //UserData newUserData = UserData(avatarDownloadUrl: downloadUrl);
-        await FirestoreService(uid: userData.userId).setAvatarReference(downloadUrl);
+        await FirestoreService(uid: userData.userId)
+            .setAvatarReference(downloadUrl);
         // 4. (optional) delete local file as no longer needed
         await file.delete();
       }
@@ -131,9 +132,7 @@ class SideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person_pin),
             title: Text('Profile'),
-            onTap: () => {
-              Navigator.of(context).pushNamed('profilePage')
-            },
+            onTap: () => {Navigator.of(context).pushNamed('profilePage')},
           ),
           ListTile(
             leading: Icon(Icons.history),
