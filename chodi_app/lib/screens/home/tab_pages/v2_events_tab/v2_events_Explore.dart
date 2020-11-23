@@ -54,35 +54,33 @@ class _v2_ExplorePageState extends State<v2_ExplorePage> {
     else
       return SafeArea(
         child: Container(
-          child: SingleChildScrollView(
+          child: ListView(
             physics: BouncingScrollPhysics(),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 30),
-                if (eventsList.length > 0)
-                  (Padding(
-                    padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
-                    //child: Text("Displaying events nearby: $location",
-                    child: Text(
-                      (queryList.length > 1)
-                          ? ("Displaying ${queryList.length} results for ${widget.givenQuery}.")
-                          : ("Displaying ${queryList.length} result for ${widget.givenQuery}."),
-                      style: GoogleFonts.ubuntu(
-                          fontSize: 15, fontWeight: FontWeight.normal),
-                    ),
-                  )),
-                ListView.builder(
-                  itemCount: queryList.length,
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return v2_EventCard_lg(
-                      event: queryList[index],
-                    );
-                  },
-                ),
-              ],
-            ),
+            children: <Widget>[
+              SizedBox(height: 30),
+              if (eventsList.length > 0)
+                (Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
+                  //child: Text("Displaying events nearby: $location",
+                  child: Text(
+                    (queryList.length > 1)
+                        ? ("Displaying ${queryList.length} results for '${widget.givenQuery}'.")
+                        : ("Displaying ${queryList.length} result for '${widget.givenQuery}'."),
+                    style: GoogleFonts.ubuntu(
+                        fontSize: 15, fontWeight: FontWeight.normal),
+                  ),
+                )),
+              ListView.builder(
+                itemCount: queryList.length,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return v2_EventCard_lg(
+                    event: queryList[index],
+                  );
+                },
+              ),
+            ],
           ),
         ),
       );
