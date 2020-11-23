@@ -24,39 +24,47 @@ class _v2_Liked_State extends State<v2_Liked> {
     }
 
     return (moddedList.length < 1)
-        ? (Center(
-            child: Text(
-              "No liked events.",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.ubuntu(
-                  fontSize: 15, fontWeight: FontWeight.normal),
+        ? SafeArea(
+            child: Center(
+              child: Text(
+                "No liked events.",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.ubuntu(
+                    fontSize: 15, fontWeight: FontWeight.normal),
+              ),
             ),
-          ))
-        : Container(
-            child: ListView(children: <Widget>[
-              if (moddedList.length > 0)
-                (Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 10.0),
-                  //child: Text("Displaying events nearby: $location",
-                  child: Text(
-                    (moddedList.length > 1)
-                        ? ("Displaying ${moddedList.length} liked events.")
-                        : ("Displaying ${moddedList.length} liked event "),
-                    style: GoogleFonts.ubuntu(
-                        fontSize: 15, fontWeight: FontWeight.normal),
-                  ),
-                )),
-              (ListView.builder(
-                itemCount: moddedList.length,
-                shrinkWrap: true,
-                physics: ScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return v2_EventCard_lg(
-                    event: moddedList[index],
-                  );
-                },
-              ))
-            ]),
+          )
+        : SafeArea(
+            child: Container(
+              child: ListView(
+                physics: BouncingScrollPhysics(),
+                children: <Widget>[
+                  SizedBox(height: 50),
+                  if (moddedList.length > 0)
+                    (Padding(
+                      padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
+                      //child: Text("Displaying events nearby: $location",
+                      child: Text(
+                        (moddedList.length > 1)
+                            ? ("Displaying ${moddedList.length} liked events.")
+                            : ("Displaying ${moddedList.length} liked event "),
+                        style: GoogleFonts.ubuntu(
+                            fontSize: 15, fontWeight: FontWeight.normal),
+                      ),
+                    )),
+                  (ListView.builder(
+                    itemCount: moddedList.length,
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return v2_EventCard_lg(
+                        event: moddedList[index],
+                      );
+                    },
+                  ))
+                ],
+              ),
+            ),
           );
   }
 

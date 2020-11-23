@@ -16,32 +16,25 @@ class _v2_ExplorePageState extends State<v2_ExplorePage> {
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
 
-    return Container(
-      child: ListView.builder(
-        itemCount: eventsList.length,
-        shrinkWrap: true,
-        physics: ScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return v2_EventCard_lg(
-            event: eventsList[index],
-          );
-        },
+    return SafeArea(
+      child: Container(
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          children: <Widget>[
+            SizedBox(height: 50),
+            ListView.builder(
+              itemCount: eventsList.length,
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return v2_EventCard_lg(
+                  event: eventsList[index],
+                );
+              },
+            ),
+          ],
+        ),
       ),
-      // child: GridView.builder(
-      //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //     crossAxisCount: 1,
-      //   ),
-      //   itemCount: eventsList.length,
-      //   //itemCount: eList.length,
-      //   shrinkWrap: true,
-      //   physics: ScrollPhysics(),
-      //   itemBuilder: (BuildContext context, int index) {
-      //     return EventsCard(
-      //       event: eventsList[index],
-      //     );
-      //     //return eList[index];
-      //   },
-      // ),
     );
   }
 }

@@ -45,7 +45,7 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => EventsInfoPage(event: event)),
+                builder: (context) => v2_EventsInfoPage(event: event)),
           );
         }
       },
@@ -105,19 +105,20 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            event.eventName,
+                                            validString(event.eventName),
                                             style: h1,
                                             textAlign: TextAlign.left,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            'organization_name',
+                                            validString('organization_name'),
                                             style: h2,
                                             textAlign: TextAlign.left,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            event.location,
+                                            validLocation(
+                                                event.locationProperties),
                                             style: h2,
                                             textAlign: TextAlign.left,
                                             overflow: TextOverflow.ellipsis,
@@ -130,14 +131,20 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
                           ),
                           Expanded(
                             flex: 5,
-                            child: Container(
-                              //color: Colors.limeAccent,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 15),
-                              child: Text(
-                                "This would be a description of the event provided by the Organization. It's not implemented in the database yet",
-                                style: p,
-                                textAlign: TextAlign.left,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Container(
+                                //color: Colors.limeAccent,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 15),
+                                child: Text(
+                                  "This would be a description of the event provided by the Organization. It's not implemented in the database yet."
+                                  "This would be a description of the event provided by the Organization. It's not implemented in the database yet.",
+                                  style: p,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
                             ),
                           ),
@@ -206,6 +213,25 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
       }
     }
     return savedList;
+  }
+
+  String validString(String s) {
+    if (s != null)
+      return s;
+    else
+      return "Not Available";
+  }
+
+  String validLocation(LocationProperties lp) {
+    if (lp != null) {
+      if (lp.city != "" && lp.state != "")
+        return '${lp.city}, ${lp.state}';
+      else if (lp.state != "")
+        return '${lp.state}';
+      else
+        return "Location Unavailable";
+    } else
+      return "Location Unavailable";
   }
 
   void toggleFavorite(

@@ -19,7 +19,7 @@ class _v2_AuthenticatedHomeScreenState
   bool loading = false;
   List<Color> selectedColors = [
     Colors.yellow,
-    Colors.orange,
+    Colors.orange[600],
     Colors.red,
     Colors.blue,
     Colors.green
@@ -41,6 +41,8 @@ class _v2_AuthenticatedHomeScreenState
 
   @override
   Widget build(BuildContext context) {
+    var labelStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w600);
+
     return Scaffold(
       drawer: SideMenu(),
 //       appBar: AppBar(
@@ -94,21 +96,21 @@ class _v2_AuthenticatedHomeScreenState
             icon: Icon(Icons.person),
             title: Text(
               'Impact',
-              style: TextStyle(fontSize: 14),
+              style: labelStyle,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             title: Text(
               'Events',
-              style: TextStyle(fontSize: 14),
+              style: labelStyle,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text(
               'For You',
-              style: TextStyle(fontSize: 14),
+              style: labelStyle,
             ),
           ),
           BottomNavigationBarItem(
@@ -122,7 +124,7 @@ class _v2_AuthenticatedHomeScreenState
             icon: Icon(Icons.notifications),
             title: Text(
               'Notifications',
-              style: TextStyle(fontSize: 14),
+              style: labelStyle,
             ),
           ),
         ],
@@ -134,8 +136,8 @@ class _v2_AuthenticatedHomeScreenState
         showUnselectedLabels: true,
         unselectedItemColor: Colors.black,
         selectedItemColor: selectedColors[_selectedIndex],
-        selectedLabelStyle: TextStyle(fontSize: 12),
-        unselectedLabelStyle: TextStyle(fontSize: 12),
+        selectedLabelStyle: labelStyle,
+        unselectedLabelStyle: labelStyle,
         type: BottomNavigationBarType.fixed,
       ),
     );
