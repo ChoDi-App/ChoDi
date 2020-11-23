@@ -15,6 +15,7 @@ class Events {
   LocationProperties locationProperties;
   String qrCodeURL;
   String orgName;
+  String description;
 
   Events({
     this.ein,
@@ -31,6 +32,7 @@ class Events {
     this.locationProperties,
     this.qrCodeURL,
     this.orgName,
+    this.description
   });
   factory Events.fromMap(Map<String, dynamic> json) => Events(
         ein: json["ein"],
@@ -47,7 +49,9 @@ class Events {
         locationProperties:
             LocationProperties.fromMap(json["locationProperties"]),
         qrCodeURL: json["qrCodeURL"],
+        //orgName: json["organization"],
         orgName: "Organization_Name",
+        description: json["description"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -64,7 +68,8 @@ class Events {
         "numericSDate": numericSDate,
         "locationProperties": locationProperties.toMap(),
         "qrCodeURL": qrCodeURL,
-        "orgName": orgName,
+        "organization": orgName,
+        "description": description,
       };
 }
 

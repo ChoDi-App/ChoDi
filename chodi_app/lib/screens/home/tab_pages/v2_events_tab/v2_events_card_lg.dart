@@ -138,8 +138,7 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 25, vertical: 15),
                                 child: Text(
-                                  "This would be a description of the event provided by the Organization. It's not implemented in the database yet."
-                                  "This would be a description of the event provided by the Organization. It's not implemented in the database yet.",
+                                  validDescription(event.description),
                                   style: p,
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
@@ -220,6 +219,13 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
       return s;
     else
       return "Not Available";
+  }
+
+  String validDescription(String s){
+    if (s != null && s != "")
+      return s;
+    else
+      return "(Description is not available, please update the database)";
   }
 
   String validLocation(LocationProperties lp) {

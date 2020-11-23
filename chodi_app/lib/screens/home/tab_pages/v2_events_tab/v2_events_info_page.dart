@@ -201,11 +201,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                           Text('Description', style: h3),
                           SizedBox(height: 5),
                           Text(
-                              'This would be a description if we had one. '
-                              'This would be a description if we had one. '
-                              'This would be a description if we had one. '
-                              'This would be a description if we had one. '
-                              'This would be a description if we had one. ',
+                              validString(event.description),
                               style: regText),
                           SizedBox(height: infoFieldSpacing),
                           Text('More Information: ', style: regText),
@@ -234,10 +230,20 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                           Text(validFullLocation(event.locationProperties),
                               style: regText),
                           SizedBox(height: infoFieldSpacing),
-                          Container(
+
+                          if(event.qrCodeURL == "")(
+                              //Swap out image for blank qrCode
+                              Image(width: double.infinity,  height: 180, image:
+                              FirebaseImage("gs://chodi-663f2.appspot.com/eventqrcodes/_QRWikipedia.png"))
+                          )
+                          else(
+                              Image(width: double.infinity,  height: 180, image:
+                              FirebaseImage(event.qrCodeURL))
+                          ),
+                          /*Container(
                               width: double.infinity,
                               height: 180,
-                              color: Colors.grey[300]),
+                              color: Colors.grey[300]),*/
                           SizedBox(height: 50),
                         ],
                       ),
