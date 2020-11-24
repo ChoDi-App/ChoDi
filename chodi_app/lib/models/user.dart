@@ -17,7 +17,8 @@ class UserData {
   String ageRange;
   List<dynamic> userResources = [];
   List<dynamic> userInterest = [];
-  List<dynamic> einSaved = [];
+  List<dynamic> registeredEvents = [];
+  List<dynamic> savedEvents = [];
   String avatarDownloadUrl;
 
   UserData({
@@ -28,7 +29,8 @@ class UserData {
     this.ageRange,
     this.userResources,
     this.userInterest,
-    this.einSaved,
+    this.registeredEvents,
+    this.savedEvents,
     this.avatarDownloadUrl,
   }
   );
@@ -41,8 +43,8 @@ class UserData {
     ageRange: json["ageRange"],
     userResources: List<String>.from(json["userResources"].map((x) => x)),
     userInterest: List<String>.from(json["userInterest"].map((x) => x)),
-    einSaved: json["einSaved"] != null ? List<String>.from(json["einSaved"].map((x) => x)) : List<String>(),
-
+    registeredEvents: json["registeredEvents"] != null ? List<String>.from(json["registeredEvents"].map((x) => x)) : List<String>(),
+    savedEvents: json["savedEvents"] != null ? List<String>.from(json["savedEvents"].map((x) => x)) : List<String>(),
     avatarDownloadUrl: json['avatarDownloadUrl'],
   );
 
@@ -54,7 +56,8 @@ class UserData {
     "ageRange": ageRange,
     "userResources": List<dynamic>.from(userResources.map((x) => x)),
     "userInterest": List<dynamic>.from(userInterest.map((x) => x)),
-    "einSaved": List<dynamic>.from(einSaved.map((x) => x)),
+    "registeredEvents": List<dynamic>.from(registeredEvents.map((x) => x)),
+    "savedEvents": List<dynamic>.from(savedEvents.map((x) => x)),
     "avatarDownloadUrl" : avatarDownloadUrl
   };
 }

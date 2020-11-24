@@ -16,6 +16,8 @@ class Events {
   String qrCodeURL;
   String orgName;
   String description;
+  int maxCapacity;
+  List<dynamic> registeredUsers = [];
 
   Events({
     this.ein,
@@ -32,7 +34,9 @@ class Events {
     this.locationProperties,
     this.qrCodeURL,
     this.orgName,
-    this.description
+    this.description,
+    this.maxCapacity,
+    this.registeredUsers
   });
   factory Events.fromMap(Map<String, dynamic> json) => Events(
         ein: json["ein"],
@@ -52,6 +56,9 @@ class Events {
         //orgName: json["organization"],
         orgName: "Organization_Name",
         description: json["description"],
+        maxCapacity: json["maxCapacity"],
+        registeredUsers: json["registeredUsers"] != null
+            ? List<String>.from(json["registeredUsers"].map((x) => x)) : List<String>(),
       );
 
   Map<String, dynamic> toMap() => {
@@ -70,6 +77,8 @@ class Events {
         "qrCodeURL": qrCodeURL,
         "organization": orgName,
         "description": description,
+        "maxCapacity": maxCapacity,
+        "registeredUsers": List<dynamic>.from(registeredUsers.map((x) => x)),
       };
 }
 

@@ -23,7 +23,7 @@ class _v2_Liked_State extends State<v2_Liked> {
     List<Events> moddedList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
     if (currentUser != null) {
-      moddedList = updateSearchResults(eventsList, currentUser.einSaved);
+      moddedList = updateSearchResults(eventsList, currentUser.savedEvents);
     }
     List<Events> queryList = filterList(moddedList, widget.givenQuery);
 

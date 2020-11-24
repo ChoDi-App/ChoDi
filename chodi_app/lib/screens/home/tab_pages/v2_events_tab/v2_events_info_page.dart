@@ -33,7 +33,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     List<Events> moddedList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
     if (currentUser != null) {
-      moddedList = updateSearchResults(eventsList, currentUser.einSaved);
+      moddedList = updateSearchResults(eventsList, currentUser.savedEvents);
     }
     var deviceWidth = MediaQuery.of(context).size.width;
 
@@ -357,15 +357,15 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     try {
       if (moddedList.contains(event)) {
         setState(() {
-          currentUser.einSaved.remove(event.ein);
+          currentUser.savedEvents.remove(event.ein);
           FirestoreService(uid: currentUser.userId)
-              .updateUserPreferences({"einSaved": currentUser.einSaved});
+              .updateUserPreferences({"savedEvents": currentUser.savedEvents});
         });
       } else {
         setState(() {
-          currentUser.einSaved.add(event.ein);
+          currentUser.savedEvents.add(event.ein);
           FirestoreService(uid: currentUser.userId)
-              .updateUserPreferences({"einSaved": currentUser.einSaved});
+              .updateUserPreferences({"savedEvents": currentUser.savedEvents});
         });
       }
     } catch (e) {

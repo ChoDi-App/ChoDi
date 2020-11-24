@@ -13,7 +13,7 @@ class EventsSavedPage extends StatelessWidget{
     List<Events> moddedList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
     if(currentUser != null){
-      moddedList = updateSearchResults(eventsList, currentUser.einSaved);
+      moddedList = updateSearchResults(eventsList, currentUser.savedEvents);
     }
 
     return Scaffold(

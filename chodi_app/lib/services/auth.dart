@@ -75,7 +75,8 @@ class AuthService implements AuthBase{
           newUser.name = "New User";
           newUser.userResources = [];
           newUser.userInterest = [];
-          newUser.einSaved = [];
+          newUser.registeredEvents = [];
+          newUser.savedEvents = [];
           newUser.userId = authResult.user.uid;
           await FirestoreService(uid: authResult.user.uid).createIndividualUser(newUser);
           return _userFromFirebaseUser(authResult.user);
