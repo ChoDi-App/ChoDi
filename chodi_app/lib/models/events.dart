@@ -1,3 +1,4 @@
+import 'package:chodiapp/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Events {
@@ -19,25 +20,24 @@ class Events {
   int maxCapacity;
   List<dynamic> registeredUsers = [];
 
-  Events({
-    this.ein,
-    this.eventName,
-    this.eventURL,
-    this.eventDate,
-    this.location,
-    this.category,
-    this.eventContactEmail,
-    this.imageURI,
+  Events(
+      {this.ein,
+      this.eventName,
+      this.eventURL,
+      this.eventDate,
+      this.location,
+      this.category,
+      this.eventContactEmail,
+      this.imageURI,
 
-    //
-    this.numericSDate,
-    this.locationProperties,
-    this.qrCodeURL,
-    this.orgName,
-    this.description,
-    this.maxCapacity,
-    this.registeredUsers
-  });
+      //
+      this.numericSDate,
+      this.locationProperties,
+      this.qrCodeURL,
+      this.orgName,
+      this.description,
+      this.maxCapacity,
+      this.registeredUsers});
   factory Events.fromMap(Map<String, dynamic> json) => Events(
         ein: json["ein"],
         eventName: json["eventName"],
@@ -58,7 +58,8 @@ class Events {
         description: json["description"],
         maxCapacity: json["maxCapacity"],
         registeredUsers: json["registeredUsers"] != null
-            ? List<String>.from(json["registeredUsers"].map((x) => x)) : List<String>(),
+            ? List<String>.from(json["registeredUsers"].map((x) => x))
+            : List<String>(),
       );
 
   Map<String, dynamic> toMap() => {
@@ -80,6 +81,24 @@ class Events {
         "maxCapacity": maxCapacity,
         "registeredUsers": List<dynamic>.from(registeredUsers.map((x) => x)),
       };
+
+  // Method used to generate string to generate unique QR Code "ticket"
+  // Currently, just appends the last 8 digits of a given user's userID
+  // to the last 8 digits of the eventID.
+  String getSecretString(UserData user) {
+    String ss = this.ein.substring(this.ein.length - 8);
+    ss += user.userId.substring(user.userId.length - 8);
+    return ss;
+  }
+
+  // Method used to add user to event's registeredUser list,
+  void registerUser(UserData user) {
+    this.registeredUsers.add(user.userId);
+  }
+
+  void unregisterUser(UserData user) {
+    this.registeredUsers.remove(user.userId);
+  }
 }
 
 class EventDate {

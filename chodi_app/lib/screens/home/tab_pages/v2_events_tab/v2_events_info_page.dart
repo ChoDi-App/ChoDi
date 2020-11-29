@@ -1,4 +1,5 @@
 import 'package:chodiapp/constants/constants.dart';
+import 'package:chodiapp/screens/home/ExpandingText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -30,11 +31,23 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
   Widget build(BuildContext context) {
     Events event = widget.event;
     List<Events> eventsList = Provider.of<List<Events>>(context);
-    List<Events> moddedList = new List<Events>();
+    List<Events> favEventList = new List<Events>();
+    List<Events> regEventList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
     if (currentUser != null) {
-      moddedList = updateSearchResults(eventsList, currentUser.savedEvents);
+      favEventList = updateSearchResults(eventsList, currentUser.savedEvents);
+      regEventList =
+          updateSearchResults(eventsList, currentUser.registeredEvents);
+
+      // favEventList = eventsList.where((someEvent) {
+      //   return currentUser.savedEvents.contains(someEvent.ein);
+      // }).toList();
+      //
+      // regEventList = eventsList.where((someEvent) {
+      //   return currentUser.registeredEvents.contains(someEvent.ein);
+      // }).toList();
     }
+
     var deviceWidth = MediaQuery.of(context).size.width;
 
     // TextStyles
@@ -51,9 +64,91 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     final verticPadding = 20.0;
     final infoFieldSpacing = 35.0;
 
-    Widget _FavoriteButton() {
-      if (!moddedList.contains(event)) {
+    Widget _RSVPButton() {
+      if (event.registeredUsers.length >= event.maxCapacity) {
         return FloatingActionButton(
+          heroTag: 3,
+          backgroundColor: Colors.grey[400],
+          child: Icon(
+            Icons.bookmark_border,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            // SnackBar saying Capacity Reached
+          },
+        );
+      } else if (!regEventList.contains(event)) {
+        return FloatingActionButton(
+          heroTag: 3,
+          backgroundColor: Colors.yellow[700],
+          child: Icon(
+            Icons.bookmark_border,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            // 1) Check event availability
+            //    - Size of registeredUsersList compared to maxCapacity
+            // 2) Popup Dialog Box Confirming intent to RSVP
+            // 3) Add to RegisteredList
+
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(
+                      "Registration",
+                      style: h2,
+                    ),
+                    content: Text(
+                      "There are ${event.maxCapacity - event.registeredUsers.length} spaces available.\n"
+                      "Would you like to register?",
+                      style: regText,
+                    ),
+                    actions: [
+                      FlatButton(
+                        child: Text("Yes"),
+                        onPressed: () {
+                          setState(() {
+                            event.registerUser(currentUser);
+                            currentUser.registerEvent(event.ein);
+                            toggleRegistered(regEventList, currentUser, event);
+                            Navigator.pop(context);
+                          });
+                        },
+                      ),
+                      FlatButton(
+                        child: Text("Cancel"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  );
+                });
+          },
+        );
+      } else {
+        return FloatingActionButton(
+          heroTag: 3,
+          backgroundColor: Colors.yellow[700],
+          child: Icon(
+            Icons.bookmark,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            // Link to QRCode page
+          },
+        );
+      }
+    }
+
+    Widget _FavoriteButton() {
+      if (!favEventList.contains(event)) {
+        return FloatingActionButton(
+          heroTag: 1,
           backgroundColor: Colors.redAccent,
           child: Icon(
             Icons.favorite_border,
@@ -61,7 +156,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
             size: 30,
           ),
           onPressed: () {
-            toggleFavorite(moddedList, currentUser, event);
+            toggleLiked(favEventList, currentUser, event);
           },
         );
       } else {
@@ -74,7 +169,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
             size: 30,
           ),
           onPressed: () {
-            toggleFavorite(moddedList, currentUser, event);
+            toggleLiked(favEventList, currentUser, event);
           },
         );
       }
@@ -89,7 +184,13 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
             color: Colors.white,
             size: 30,
           ),
-          onPressed: () {});
+          onPressed: () {
+            setState(() {
+              event.maxCapacity = 0;
+            });
+
+            // Implement Dynamic Link Sharing
+          });
     }
 
     return Scaffold(
@@ -138,7 +239,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                     ),
                   ),
 
-                  // Features Continer
+                  // Features Container
                   Container(
                     height: 150,
                     color: Colors.grey[200],
@@ -200,9 +301,8 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                           SizedBox(height: 15),
                           Text('Description', style: h3),
                           SizedBox(height: 5),
-                          Text(
-                              validString(event.description),
-                              style: regText),
+                          ExpandingText(
+                              validString(event.description), regText),
                           SizedBox(height: infoFieldSpacing),
                           Text('More Information: ', style: regText),
                           Linkify(
@@ -230,20 +330,6 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                           Text(validFullLocation(event.locationProperties),
                               style: regText),
                           SizedBox(height: infoFieldSpacing),
-
-                          if(event.qrCodeURL == "")(
-                              //Swap out image for blank qrCode
-                              Image(width: double.infinity,  height: 180, image:
-                              FirebaseImage("gs://chodi-663f2.appspot.com/eventqrcodes/_QRWikipedia.png"))
-                          )
-                          else(
-                              Image(width: double.infinity,  height: 180, image:
-                              FirebaseImage(event.qrCodeURL))
-                          ),
-                          /*Container(
-                              width: double.infinity,
-                              height: 180,
-                              color: Colors.grey[300]),*/
                           SizedBox(height: 50),
                         ],
                       ),
@@ -263,6 +349,11 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
             right: 20,
             bottom: 110,
             child: _ShareButton(),
+          ),
+          Positioned(
+            right: 20,
+            bottom: 190,
+            child: _RSVPButton(),
           ),
         ],
       ),
@@ -352,7 +443,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     return savedList;
   }
 
-  void toggleFavorite(
+  void toggleLiked(
       List<Events> moddedList, UserData currentUser, Events event) {
     try {
       if (moddedList.contains(event)) {
@@ -366,6 +457,28 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
           currentUser.savedEvents.add(event.ein);
           FirestoreService(uid: currentUser.userId)
               .updateUserPreferences({"savedEvents": currentUser.savedEvents});
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return;
+  }
+
+  void toggleRegistered(
+      List<Events> regList, UserData currentUser, Events event) {
+    try {
+      if (regList.contains(event)) {
+        setState(() {
+          currentUser.registeredEvents.remove(event.ein);
+          FirestoreService(uid: currentUser.userId).updateUserPreferences(
+              {"registeredEvents": currentUser.registeredEvents});
+        });
+      } else {
+        setState(() {
+          currentUser.registeredEvents.add(event.ein);
+          FirestoreService(uid: currentUser.userId).updateUserPreferences(
+              {"registeredEvents": currentUser.registeredEvents});
         });
       }
     } catch (e) {

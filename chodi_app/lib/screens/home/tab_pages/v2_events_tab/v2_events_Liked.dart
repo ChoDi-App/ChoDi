@@ -13,21 +13,21 @@ class v2_Liked extends StatefulWidget {
   v2_Liked(this.givenQuery);
 
   @override
-  _v2_Liked_State createState() => _v2_Liked_State();
+  _v2_Liked createState() => _v2_Liked();
 }
 
-class _v2_Liked_State extends State<v2_Liked> {
+class _v2_Liked extends State<v2_Liked> {
   @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
-    List<Events> moddedList = new List<Events>();
+    List<Events> favEventList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
     if (currentUser != null) {
-      moddedList = updateSearchResults(eventsList, currentUser.savedEvents);
+      favEventList = updateSearchResults(eventsList, currentUser.savedEvents);
     }
-    List<Events> queryList = filterList(moddedList, widget.givenQuery);
+    List<Events> queryList = filterList(favEventList, widget.givenQuery);
 
-    if (moddedList.length < 1)
+    if (favEventList.length < 1)
       return SafeArea(
         child: Center(
           child: Text(
@@ -45,25 +45,25 @@ class _v2_Liked_State extends State<v2_Liked> {
             physics: BouncingScrollPhysics(),
             children: <Widget>[
               SizedBox(height: 30),
-              if (moddedList.length > 0)
+              if (favEventList.length > 0)
                 (Padding(
                   padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
                   //child: Text("Displaying events nearby: $location",
                   child: Text(
-                    (moddedList.length > 1)
-                        ? ("Displaying ${moddedList.length} liked events.")
-                        : ("Displaying ${moddedList.length} liked event. "),
+                    (favEventList.length > 1)
+                        ? ("Displaying ${favEventList.length} liked events.")
+                        : ("Displaying 1 liked event. "),
                     style: GoogleFonts.ubuntu(
                         fontSize: 15, fontWeight: FontWeight.normal),
                   ),
                 )),
               (ListView.builder(
-                itemCount: moddedList.length,
+                itemCount: favEventList.length,
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return v2_EventCard_lg(
-                    event: moddedList[index],
+                    event: favEventList[index],
                   );
                 },
               ))
@@ -78,14 +78,14 @@ class _v2_Liked_State extends State<v2_Liked> {
             physics: BouncingScrollPhysics(),
             children: <Widget>[
               SizedBox(height: 30),
-              if (moddedList.length > 0)
+              if (favEventList.length > 0)
                 (Padding(
                   padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
                   //child: Text("Displaying events nearby: $location",
                   child: Text(
-                    (moddedList.length > 1)
-                        ? ("Displaying ${queryList.length} Liked Results for '${widget.givenQuery}'")
-                        : ("Displaying ${queryList.length} Liked Result for '${widget.givenQuery}'"),
+                    (favEventList.length > 1)
+                        ? ("Displaying ${queryList.length} liked results for '${widget.givenQuery}'")
+                        : ("Displaying 1 liked result for '${widget.givenQuery}'"),
                     style: GoogleFonts.ubuntu(
                         fontSize: 15, fontWeight: FontWeight.normal),
                   ),

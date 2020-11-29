@@ -2,11 +2,11 @@
 //
 //     final userData = userDataFromJson(jsonString);
 
-class User{
+class User {
   final String uid;
   final String name;
 
-  User({this.uid,this.name});
+  User({this.uid, this.name});
 }
 
 class UserData {
@@ -32,36 +32,46 @@ class UserData {
     this.registeredEvents,
     this.savedEvents,
     this.avatarDownloadUrl,
-  }
-  );
+  });
 
   factory UserData.fromMap(Map<String, dynamic> json) => UserData(
-    name: json["name"],
-    userId: json["userId"],
-    zipCode: json["zipCode"],
-    phoneNumber: json["phoneNumber"],
-    ageRange: json["ageRange"],
-    userResources: List<String>.from(json["userResources"].map((x) => x)),
-    userInterest: List<String>.from(json["userInterest"].map((x) => x)),
-    registeredEvents: json["registeredEvents"] != null ? List<String>.from(json["registeredEvents"].map((x) => x)) : List<String>(),
-    savedEvents: json["savedEvents"] != null ? List<String>.from(json["savedEvents"].map((x) => x)) : List<String>(),
-    avatarDownloadUrl: json['avatarDownloadUrl'],
-  );
+        name: json["name"],
+        userId: json["userId"],
+        zipCode: json["zipCode"],
+        phoneNumber: json["phoneNumber"],
+        ageRange: json["ageRange"],
+        userResources: List<String>.from(json["userResources"].map((x) => x)),
+        userInterest: List<String>.from(json["userInterest"].map((x) => x)),
+        registeredEvents: json["registeredEvents"] != null
+            ? List<String>.from(json["registeredEvents"].map((x) => x))
+            : List<String>(),
+        savedEvents: json["savedEvents"] != null
+            ? List<String>.from(json["savedEvents"].map((x) => x))
+            : List<String>(),
+        avatarDownloadUrl: json['avatarDownloadUrl'],
+      );
 
   Map<String, dynamic> toMap(String uid) => {
-    "name": name,
-    "userId": uid,
-    "zipCode": zipCode,
-    "phoneNumber": phoneNumber,
-    "ageRange": ageRange,
-    "userResources": List<dynamic>.from(userResources.map((x) => x)),
-    "userInterest": List<dynamic>.from(userInterest.map((x) => x)),
-    "registeredEvents": List<dynamic>.from(registeredEvents.map((x) => x)),
-    "savedEvents": List<dynamic>.from(savedEvents.map((x) => x)),
-    "avatarDownloadUrl" : avatarDownloadUrl
-  };
-}
+        "name": name,
+        "userId": uid,
+        "zipCode": zipCode,
+        "phoneNumber": phoneNumber,
+        "ageRange": ageRange,
+        "userResources": List<dynamic>.from(userResources.map((x) => x)),
+        "userInterest": List<dynamic>.from(userInterest.map((x) => x)),
+        "registeredEvents": List<dynamic>.from(registeredEvents.map((x) => x)),
+        "savedEvents": List<dynamic>.from(savedEvents.map((x) => x)),
+        "avatarDownloadUrl": avatarDownloadUrl
+      };
 
+  void registerEvent(String eventID) {
+    this.registeredEvents.add(eventID);
+  }
+
+  void unregisterEvent(String eventID) {
+    this.registeredEvents.remove(eventID);
+  }
+}
 
 //
 //class UserData{

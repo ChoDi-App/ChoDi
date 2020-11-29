@@ -16,18 +16,21 @@ class v2_EventCard_lg extends StatefulWidget {
   v2_EventCard_lg({@required this.event});
 
   @override
-  _v2_EventCard_lg_State createState() => _v2_EventCard_lg_State();
+  _v2_EventCard_lg createState() => _v2_EventCard_lg();
 }
 
-class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
+class _v2_EventCard_lg extends State<v2_EventCard_lg> {
   @override
   Widget build(BuildContext context) {
     Events event = widget.event;
     List<Events> eventsList = Provider.of<List<Events>>(context);
-    List<Events> moddedList = new List<Events>();
+    List<Events> favEventList = new List<Events>();
+    List<Events> regEventList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
     if (currentUser != null) {
-      moddedList = updateSearchResults(eventsList, currentUser.savedEvents);
+      favEventList = updateSearchResults(eventsList, currentUser.savedEvents);
+      regEventList =
+          updateSearchResults(eventsList, currentUser.registeredEvents);
     }
 
     var h1 = TextStyle(
@@ -65,7 +68,7 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
               child: Row(
                 children: [
                   Expanded(
-                      flex: 10,
+                      flex: 15,
                       child: Column(
                         children: [
                           Expanded(
@@ -85,8 +88,7 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
                                           fit: BoxFit.cover,
                                           placeholder: AssetImage(
                                               'images/loadingImage.gif'),
-                                          image: FirebaseImage(event.imageURI ??
-                                              "gs://chodi-663f2.appspot.com/nonprofitlogos/loadingImage.gif"),
+                                          image: FirebaseImage(event.imageURI),
                                         ),
                                       ),
                                     ),
@@ -152,41 +154,55 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
                   Expanded(
                       flex: 2,
                       child: Container(
+                        padding: EdgeInsets.fromLTRB(0, 10, 20, 10),
                         //color: Colors.grey,
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 15),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            // Registered Icon properties
+                            if (regEventList.contains(event))
+                              GestureDetector(
+                                child: (Icon(
+                                  Icons.bookmark,
+                                  color: Colors.yellow[600],
+                                  size: 35,
+                                )),
+                                onTap: () {},
+                              ),
                             //Heart icon properties
+                            SizedBox(height: 10),
                             if (currentUser == null)
-                              (IconButton(
-                                color: Colors.grey,
-                                icon: new Icon(
-                                  Icons.favorite_border,
-                                  size: 40,
-                                ),
-                                onPressed: () {/* Void code */},
-                              ))
-                            else if (moddedList.contains(event))
-                              (IconButton(
-                                color: Colors.grey[400],
-                                icon: new Icon(
+                              (GestureDetector(
+                                child: Icon(
                                   Icons.favorite,
-                                  size: 40,
-                                  color: Colors.redAccent,
+                                  color: Colors.grey[300],
+                                  size: 35,
                                 ),
-                                onPressed: () {
+                                onTap: () {},
+                              ))
+                            else if (favEventList.contains(event))
+                              (GestureDetector(
+                                child: Icon(
+                                  Icons.favorite,
+                                  color: Colors.redAccent,
+                                  size: 35,
+                                ),
+                                onTap: () {
                                   toggleFavorite(
-                                      moddedList, currentUser, event);
+                                      favEventList, currentUser, event);
                                 },
                               ))
                             else
-                              (IconButton(
-                                color: Colors.grey[400],
-                                icon: new Icon(Icons.favorite_border, size: 40),
-                                onPressed: () {
+                              (GestureDetector(
+                                child: Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.grey[300],
+                                  size: 35,
+                                ),
+                                onTap: () {
                                   toggleFavorite(
-                                      moddedList, currentUser, event);
+                                      favEventList, currentUser, event);
                                 },
                               )),
                           ],
@@ -221,7 +237,7 @@ class _v2_EventCard_lg_State extends State<v2_EventCard_lg> {
       return "Not Available";
   }
 
-  String validDescription(String s){
+  String validDescription(String s) {
     if (s != null && s != "")
       return s;
     else

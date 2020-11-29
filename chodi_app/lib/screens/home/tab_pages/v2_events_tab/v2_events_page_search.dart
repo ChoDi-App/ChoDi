@@ -9,10 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class v2_EventsPageSearch extends StatefulWidget {
   @override
-  _v2_EventsPageSearchState createState() => _v2_EventsPageSearchState();
+  _v2_EventsPageSearch createState() => _v2_EventsPageSearch();
 }
 
-class _v2_EventsPageSearchState extends State<v2_EventsPageSearch> {
+class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
   final List<Tab> page_tabs = <Tab>[
     Tab(text: 'RSVP'),
     Tab(text: 'Likes'),
@@ -148,11 +148,10 @@ class _v2_EventsPageSearchState extends State<v2_EventsPageSearch> {
               },
               child: TabBarView(
                 children: [
-                  Container(
-                    child: Center(
-                      child: Text('No RSVP Implementation yet.'),
-                    ),
-                  ),
+                  // Container(
+                  //   child: Text('Something'),
+                  // ),
+                  v2_RSVP(aQuery),
                   v2_Liked(aQuery),
                   v2_ExplorePage(aQuery),
                 ],

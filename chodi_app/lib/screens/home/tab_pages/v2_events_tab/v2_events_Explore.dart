@@ -11,10 +11,10 @@ class v2_ExplorePage extends StatefulWidget {
   v2_ExplorePage(this.givenQuery);
 
   @override
-  _v2_ExplorePageState createState() => _v2_ExplorePageState();
+  _v2_ExplorePage createState() => _v2_ExplorePage();
 }
 
-class _v2_ExplorePageState extends State<v2_ExplorePage> {
+class _v2_ExplorePage extends State<v2_ExplorePage> {
   @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);

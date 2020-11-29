@@ -44,48 +44,48 @@ class _v2_AuthenticatedHomeScreenState
 
     return Scaffold(
       drawer: SideMenu(),
-      appBar: AppBar(
-//        leading: IconButton(
-//            icon: Icon(Icons.menu),
-//            onPressed: () async{
-//              setState(() {
-//                loading = true;
-//              });
-//              await _auth.signOut();
+//       appBar: AppBar(
+// //        leading: IconButton(
+// //            icon: Icon(Icons.menu),
+// //            onPressed: () async{
+// //              setState(() {
+// //                loading = true;
+// //              });
+// //              await _auth.signOut();
+// //
+// //            }
+// //        ),
+//         actions: <Widget>[
+//           IconButton(
+//             icon: Icon(Icons.search),
+//             onPressed: () {
+//               Navigator.of(context).pushNamed('searchPage');
+//             },
+//           )
+//         ],
 //
-//            }
-//        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              Navigator.of(context).pushNamed('searchPage');
-            },
-          )
-        ],
-
-        title: Center(
-          child: RichText(
-              text: new TextSpan(
-                  style: new TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.0),
-                  children: <TextSpan>[
-                new TextSpan(
-                    text: "C", style: new TextStyle(color: Colors.yellow)),
-                new TextSpan(
-                    text: "H", style: new TextStyle(color: Colors.orange)),
-                new TextSpan(
-                    text: "O", style: new TextStyle(color: Colors.red)),
-                new TextSpan(
-                    text: "D", style: new TextStyle(color: Colors.blue)),
-                new TextSpan(
-                    text: "I", style: new TextStyle(color: Colors.green)),
-              ])),
-        ),
-        backgroundColor: appBarColor,
-      ),
+//         title: Center(
+//           child: RichText(
+//               text: new TextSpan(
+//                   style: new TextStyle(
+//                       fontSize: 24.0,
+//                       fontWeight: FontWeight.w800,
+//                       letterSpacing: 1.0),
+//                   children: <TextSpan>[
+//                 new TextSpan(
+//                     text: "C", style: new TextStyle(color: Colors.yellow)),
+//                 new TextSpan(
+//                     text: "H", style: new TextStyle(color: Colors.orange)),
+//                 new TextSpan(
+//                     text: "O", style: new TextStyle(color: Colors.red)),
+//                 new TextSpan(
+//                     text: "D", style: new TextStyle(color: Colors.blue)),
+//                 new TextSpan(
+//                     text: "I", style: new TextStyle(color: Colors.green)),
+//               ])),
+//         ),
+//         backgroundColor: appBarColor,
+//       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
