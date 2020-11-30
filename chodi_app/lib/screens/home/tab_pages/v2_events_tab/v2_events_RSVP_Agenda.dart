@@ -1,5 +1,5 @@
 import 'package:chodiapp/models/events.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_AgendaCalendar.dart';
+import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_RSVPd.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_card_sm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +8,27 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:chodiapp/models/user.dart';
 
-class v2_RSVP extends StatefulWidget {
+/*
+  This File will replace RSVPd page, when fully implemented.
+  The difference is an 'Agenda' button that is attached below
+  the tab bar navigator. Button should always remain in view,
+  and scrolling within TabView should still collapse portion
+  above the tab bar navigator (meaning the search bar or
+  AppBar title).
+*/
+
+class v2_RSVP_Agenda extends StatefulWidget {
   String givenQuery;
   var sharedScrollController;
 
-  v2_RSVP(this.givenQuery, {@optionalTypeArgs this.sharedScrollController});
+  v2_RSVP_Agenda(this.givenQuery,
+      {@optionalTypeArgs this.sharedScrollController});
 
   @override
-  _v2_RSVP createState() => _v2_RSVP();
+  _v2_RSVP_Agenda createState() => _v2_RSVP_Agenda();
 }
 
-class _v2_RSVP extends State<v2_RSVP> {
+class _v2_RSVP_Agenda extends State<v2_RSVP_Agenda> {
   @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
@@ -32,26 +42,21 @@ class _v2_RSVP extends State<v2_RSVP> {
     final double cardHeight = MediaQuery.of(context).size.height / 3;
     final double cardWidth = MediaQuery.of(context).size.width / 2;
 
-    void showAgenda() {
-      showModalBottomSheet(
-          isScrollControlled: true,
-          isDismissible: true,
-          enableDrag: true,
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (BuildContext context) {
-            return DraggableScrollableSheet(
-              initialChildSize: .95,
-              maxChildSize: 1,
-              minChildSize: .75,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return v2_AgendaCalendar(scrollController: scrollController);
-              },
-            );
-          });
-    }
-
+    return Scaffold(
+      backgroundColor: Colors.white70,
+      appBar: AppBar(
+        elevation: 10,
+        backgroundColor: Colors.grey[300],
+        title: Text(
+          'Agenda',
+          style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: v2_RSVP(
+        widget.givenQuery,
+        sharedScrollController: widget.sharedScrollController,
+      ),
+    );
     if (regEventList.length < 1)
       return SafeArea(
         child: Center(
@@ -67,37 +72,9 @@ class _v2_RSVP extends State<v2_RSVP> {
       return (SafeArea(
         child: Container(
           child: ListView(
-            controller: widget.sharedScrollController,
             physics: BouncingScrollPhysics(),
             children: <Widget>[
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 7,
-                      offset: Offset(0, 5),
-                    )
-                  ],
-                  color: Colors.yellow[600],
-                ),
-                child: FlatButton(
-                  padding: EdgeInsets.symmetric(vertical: 0),
-                  child: Text(
-                    "Agenda",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16),
-                  ),
-                  onPressed: () {
-                    showAgenda();
-                  },
-                ),
-              ),
+              SizedBox(height: 30),
               if (regEventList.length > 0)
                 (Padding(
                   padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
@@ -135,7 +112,6 @@ class _v2_RSVP extends State<v2_RSVP> {
       return (SafeArea(
         child: Container(
           child: ListView(
-            controller: widget.sharedScrollController,
             physics: BouncingScrollPhysics(),
             children: <Widget>[
               SizedBox(height: 30),

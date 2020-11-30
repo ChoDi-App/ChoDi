@@ -102,25 +102,36 @@ class Events {
 }
 
 class EventDate {
+  Timestamp startStamp;
+  Timestamp endStanp;
   String startDate;
   String endDate;
   String startTime;
   String endTime;
 
-  EventDate({this.startDate, this.endDate, this.startTime, this.endTime});
+  EventDate(
+      {this.startDate,
+      this.endDate,
+      this.startTime,
+      this.endTime,
+      this.startStamp,
+      this.endStanp});
 
   factory EventDate.fromMap(Map<String, dynamic> json) => EventDate(
-        startDate: json["startDate"],
-        endDate: json["endDate"],
-        startTime: json["startTime"],
-        endTime: json["endTime"],
-      );
+      startDate: json["startDate"],
+      endDate: json["endDate"],
+      startTime: json["startTime"],
+      endTime: json["endTime"],
+      startStamp: json["startStamp"],
+      endStanp: json["endStamp"]);
 
   Map<String, dynamic> toMap() => {
         "startDate": startDate,
         "endDate": endDate,
         "startTime": startTime,
-        "endTime": endTime
+        "endTime": endTime,
+        "startStamp": startStamp,
+        "endStamp": endStanp
       };
 }
 

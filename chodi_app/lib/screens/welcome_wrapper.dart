@@ -6,6 +6,8 @@ import 'package:chodiapp/screens/Home/v2_authenticated_home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_AgendaCalendar.dart';
+
 class WelcomeWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class WelcomeWrapper extends StatelessWidget {
         return FinishSignUpGooglePage();
       } else {
         return v2_AuthenticatedHomeScreen();
+        //return v2_AgendaCalendar();
       }
     }
     if (userData == null) {

@@ -1,4 +1,5 @@
 import 'package:chodiapp/screens/home/side_menu.dart';
+import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_RSVP_Agenda.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_RSVPd.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Liked.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Explore.dart';
@@ -23,6 +24,8 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
   String aQuery = "";
   var _clearTextField = TextEditingController();
 
+  var sharedScrollController;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,6 +36,7 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
         body: DefaultTabController(
           length: page_tabs.length,
           child: NestedScrollView(
+            controller: sharedScrollController,
             headerSliverBuilder: (context, value) {
               return (!searching)
                   ? <Widget>[
@@ -64,6 +68,7 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                             ),
                             onPressed: () {
                               setState(() {
+                                aQuery = "";
                                 searching = true;
                               });
                             },
@@ -90,8 +95,9 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                           textAlign: TextAlign.left,
                           keyboardType: TextInputType.text,
                           onChanged: (text) {
-                            aQuery = text;
-                            setState(() {});
+                            setState(() {
+                              aQuery = text;
+                            });
                           },
                           decoration: InputDecoration(
                             hintText: 'Search',
@@ -108,9 +114,10 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                               color: Colors.grey[400],
                               icon: Icon(Icons.cancel),
                               onPressed: () {
-                                aQuery = "";
-                                _clearTextField.clear();
-                                setState(() {});
+                                setState(() {
+                                  aQuery = "";
+                                  _clearTextField.clear();
+                                });
                               },
                             ),
                             filled: true,
@@ -121,7 +128,9 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                           TextButton(
                               onPressed: () {
                                 setState(() {
+                                  aQuery = "";
                                   searching = false;
+                                  _clearTextField.clear();
                                 });
                               },
                               child: Padding(
@@ -141,6 +150,7 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                       ),
                     ];
             },
+            // This GestureDetector will close keyboard when scrolling down
             body: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {

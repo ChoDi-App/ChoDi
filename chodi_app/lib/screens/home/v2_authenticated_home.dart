@@ -1,7 +1,7 @@
 import 'package:chodiapp/constants/constants.dart';
 import 'package:chodiapp/screens/home/side_menu.dart';
 import 'package:chodiapp/screens/home/tab_pages/for_you_tab/for_you_page.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_page_search.dart';
+import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Nav.dart';
 import 'package:flutter/material.dart';
 import 'tab_pages/impact_tab/impact_page.dart';
 import 'tab_pages/messages_tab/messages_page.dart';

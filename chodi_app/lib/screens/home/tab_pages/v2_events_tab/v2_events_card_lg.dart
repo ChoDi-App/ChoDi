@@ -6,7 +6,7 @@ import 'package:chodiapp/services/firestore.dart';
 import 'package:chodiapp/models/events.dart';
 import 'package:chodiapp/models/user.dart';
 import 'package:provider/provider.dart';
-import 'v2_events_info_page.dart';
+import 'v2_events_InfoPage.dart';
 
 class v2_EventCard_lg extends StatefulWidget {
   //Each EventCard has a corresponding 'event'

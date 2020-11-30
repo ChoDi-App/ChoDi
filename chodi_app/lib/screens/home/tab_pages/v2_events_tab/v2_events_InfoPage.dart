@@ -1,5 +1,6 @@
 import 'package:chodiapp/constants/constants.dart';
 import 'package:chodiapp/screens/home/ExpandingText.dart';
+import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_QRCodePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -48,8 +49,6 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
       // }).toList();
     }
 
-    var deviceWidth = MediaQuery.of(context).size.width;
-
     // TextStyles
     final textColor1 = Colors.black;
     final textColor2 = Colors.black87;
@@ -64,8 +63,135 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     final verticPadding = 20.0;
     final infoFieldSpacing = 35.0;
 
+    void showRSVPInfo() {
+      showModalBottomSheet(
+          isScrollControlled: true,
+          isDismissible: true,
+          enableDrag: true,
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (BuildContext context) {
+            return DraggableScrollableSheet(
+              initialChildSize: .95,
+              maxChildSize: 1,
+              minChildSize: .80,
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
+                return v2_QRCodePage(
+                    event: event, scrollController: scrollController);
+              },
+            );
+          });
+    }
+
+    void showOptions() {
+      showModalBottomSheet(
+          isDismissible: true,
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (BuildContext context) {
+            return DraggableScrollableSheet(
+              initialChildSize: .40,
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
+                return Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25)),
+                  child: Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.red,
+                          ),
+                          child: FlatButton(
+                            padding: EdgeInsets.symmetric(vertical: 0),
+                            child: Text(
+                              "Cancel RSVP",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        "Cancel RSVP",
+                                        style: h2,
+                                      ),
+                                      content: Text(
+                                        "Are you sure you want to cancel this registration?",
+                                        style: regText,
+                                      ),
+                                      actions: [
+                                        FlatButton(
+                                          child: Text("Yes"),
+                                          onPressed: () {
+                                            setState(() {
+                                              event.unregisterUser(currentUser);
+                                              currentUser
+                                                  .unregisterEvent(event.ein);
+                                              toggleRegistered(regEventList,
+                                                  currentUser, event);
+
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            });
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text("No"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  });
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        TextButton(
+                          child: Text(
+                            "View RSVP Information",
+                            textAlign: TextAlign.center,
+                            style: regText,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            showRSVPInfo();
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          });
+    }
+
     Widget _RSVPButton() {
-      if (event.registeredUsers.length >= event.maxCapacity) {
+      if (regEventList.contains(event)) {
+        return FloatingActionButton(
+          heroTag: 3,
+          backgroundColor: Colors.yellow[700],
+          child: Icon(
+            Icons.bookmark,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            // Link to QRCode page
+            showOptions();
+          },
+        );
+      } else if (event.registeredUsers.length >= event.maxCapacity) {
         return FloatingActionButton(
           heroTag: 3,
           backgroundColor: Colors.grey[400],
@@ -78,7 +204,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
             // SnackBar saying Capacity Reached
           },
         );
-      } else if (!regEventList.contains(event)) {
+      } else {
         return FloatingActionButton(
           heroTag: 3,
           backgroundColor: Colors.yellow[700],
@@ -127,19 +253,6 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                     ],
                   );
                 });
-          },
-        );
-      } else {
-        return FloatingActionButton(
-          heroTag: 3,
-          backgroundColor: Colors.yellow[700],
-          child: Icon(
-            Icons.bookmark,
-            color: Colors.white,
-            size: 30,
-          ),
-          onPressed: () {
-            // Link to QRCode page
           },
         );
       }
@@ -329,6 +442,12 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                           SizedBox(height: 5),
                           Text(validFullLocation(event.locationProperties),
                               style: regText),
+                          SizedBox(height: infoFieldSpacing),
+                          Container(
+                            height: 225,
+                            color: Colors.grey[400],
+                            child: Center(child: Text('Map goes here.')),
+                          ),
                           SizedBox(height: infoFieldSpacing),
                           SizedBox(height: 50),
                         ],
