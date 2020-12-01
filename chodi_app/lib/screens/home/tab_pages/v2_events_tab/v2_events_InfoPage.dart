@@ -264,7 +264,9 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
             size: 30,
           ),
           onPressed: () {
-            toggleLiked(favEventList, currentUser, event);
+            setState(() {
+              toggleLiked(favEventList, currentUser, event);
+            });
           },
         );
       } else {
@@ -277,7 +279,9 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
             size: 30,
           ),
           onPressed: () {
-            toggleLiked(favEventList, currentUser, event);
+            setState(() {
+              toggleLiked(favEventList, currentUser, event);
+            });
           },
         );
       }
@@ -561,17 +565,13 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
       List<Events> moddedList, UserData currentUser, Events event) {
     try {
       if (moddedList.contains(event)) {
-        setState(() {
-          currentUser.savedEvents.remove(event.ein);
-          FirestoreService(uid: currentUser.userId)
-              .updateUserPreferences({"savedEvents": currentUser.savedEvents});
-        });
+        currentUser.savedEvents.remove(event.ein);
+        FirestoreService(uid: currentUser.userId)
+            .updateUserPreferences({"savedEvents": currentUser.savedEvents});
       } else {
-        setState(() {
-          currentUser.savedEvents.add(event.ein);
-          FirestoreService(uid: currentUser.userId)
-              .updateUserPreferences({"savedEvents": currentUser.savedEvents});
-        });
+        currentUser.savedEvents.add(event.ein);
+        FirestoreService(uid: currentUser.userId)
+            .updateUserPreferences({"savedEvents": currentUser.savedEvents});
       }
     } catch (e) {
       print(e.toString());

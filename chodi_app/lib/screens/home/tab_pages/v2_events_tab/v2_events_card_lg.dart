@@ -189,8 +189,10 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                   size: 35,
                                 ),
                                 onTap: () {
-                                  toggleFavorite(
-                                      favEventList, currentUser, event);
+                                  setState(() {
+                                    toggleLiked(
+                                        favEventList, currentUser, event);
+                                  });
                                 },
                               ))
                             else
@@ -201,8 +203,10 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                   size: 35,
                                 ),
                                 onTap: () {
-                                  toggleFavorite(
-                                      favEventList, currentUser, event);
+                                  setState(() {
+                                    toggleLiked(
+                                        favEventList, currentUser, event);
+                                  });
                                 },
                               )),
                           ],
@@ -256,21 +260,17 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
       return "Location Unavailable";
   }
 
-  void toggleFavorite(
+  void toggleLiked(
       List<Events> moddedList, UserData currentUser, Events event) {
     try {
       if (moddedList.contains(event)) {
-        setState(() {
-          currentUser.savedEvents.remove(event.ein);
-          FirestoreService(uid: currentUser.userId)
-              .updateUserPreferences({"savedEvents": currentUser.savedEvents});
-        });
+        currentUser.savedEvents.remove(event.ein);
+        FirestoreService(uid: currentUser.userId)
+            .updateUserPreferences({"savedEvents": currentUser.savedEvents});
       } else {
-        setState(() {
-          currentUser.savedEvents.add(event.ein);
-          FirestoreService(uid: currentUser.userId)
-              .updateUserPreferences({"savedEvents": currentUser.savedEvents});
-        });
+        currentUser.savedEvents.add(event.ein);
+        FirestoreService(uid: currentUser.userId)
+            .updateUserPreferences({"savedEvents": currentUser.savedEvents});
       }
     } catch (e) {
       print(e.toString());

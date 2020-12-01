@@ -139,18 +139,17 @@ class _v2_RSVP extends State<v2_RSVP> {
             physics: BouncingScrollPhysics(),
             children: <Widget>[
               SizedBox(height: 30),
-              if (regEventList.length > 0)
-                (Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
-                  //child: Text("Displaying events nearby: $location",
-                  child: Text(
-                    (regEventList.length > 1)
-                        ? ("Displaying ${queryList.length} registered results for '${widget.givenQuery}'")
-                        : ("Displaying 1 registered result for '${widget.givenQuery}'"),
-                    style: GoogleFonts.ubuntu(
-                        fontSize: 15, fontWeight: FontWeight.normal),
-                  ),
-                )),
+              (Padding(
+                padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
+                //child: Text("Displaying events nearby: $location",
+                child: Text(
+                  (regEventList.length > 1)
+                      ? ("Displaying ${queryList.length} registered results for '${widget.givenQuery}'")
+                      : ("Displaying 1 registered result for '${widget.givenQuery}'"),
+                  style: GoogleFonts.ubuntu(
+                      fontSize: 15, fontWeight: FontWeight.normal),
+                ),
+              )),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: (GridView.builder(
