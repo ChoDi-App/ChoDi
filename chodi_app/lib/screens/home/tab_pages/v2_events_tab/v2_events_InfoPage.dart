@@ -132,9 +132,6 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                                           child: Text("Yes"),
                                           onPressed: () {
                                             setState(() {
-                                              event.unregisterUser(currentUser);
-                                              currentUser
-                                                  .unregisterEvent(event.ein);
                                               toggleRegistered(regEventList,
                                                   currentUser, event);
 
@@ -237,8 +234,6 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                         child: Text("Yes"),
                         onPressed: () {
                           setState(() {
-                            event.registerUser(currentUser);
-                            currentUser.registerEvent(event.ein);
                             toggleRegistered(regEventList, currentUser, event);
                             Navigator.pop(context);
                           });
@@ -576,28 +571,6 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
           currentUser.savedEvents.add(event.ein);
           FirestoreService(uid: currentUser.userId)
               .updateUserPreferences({"savedEvents": currentUser.savedEvents});
-        });
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-    return;
-  }
-
-  void toggleRegistered(
-      List<Events> regList, UserData currentUser, Events event) {
-    try {
-      if (regList.contains(event)) {
-        setState(() {
-          currentUser.registeredEvents.remove(event.ein);
-          FirestoreService(uid: currentUser.userId).updateUserPreferences(
-              {"registeredEvents": currentUser.registeredEvents});
-        });
-      } else {
-        setState(() {
-          currentUser.registeredEvents.add(event.ein);
-          FirestoreService(uid: currentUser.userId).updateUserPreferences(
-              {"registeredEvents": currentUser.registeredEvents});
         });
       }
     } catch (e) {

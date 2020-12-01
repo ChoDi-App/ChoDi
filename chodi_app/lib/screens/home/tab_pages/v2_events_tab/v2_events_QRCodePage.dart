@@ -1,12 +1,9 @@
 import 'package:chodiapp/constants/constants.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_RSVPd.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Nav.dart';
 import 'package:chodiapp/services/firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import 'package:chodiapp/models/events.dart';
@@ -196,13 +193,19 @@ void toggleRegistered(
     List<Events> regList, UserData currentUser, Events event) {
   try {
     if (regList.contains(event)) {
-      currentUser.registeredEvents.remove(event.ein);
+      event.unregisterUser(currentUser);
+      currentUser.unregisterEvent(event.ein);
       FirestoreService(uid: currentUser.userId).updateUserPreferences(
           {"registeredEvents": currentUser.registeredEvents});
+      FirestoreService(ein: event.ein)
+          .updateEventPreferences({"registeredUsers": event.registeredUsers});
     } else {
-      currentUser.registeredEvents.add(event.ein);
+      event.registerUser(currentUser);
+      currentUser.registerEvent(event.ein);
       FirestoreService(uid: currentUser.userId).updateUserPreferences(
           {"registeredEvents": currentUser.registeredEvents});
+      FirestoreService(ein: event.ein)
+          .updateEventPreferences({"registeredUsers": event.registeredUsers});
     }
   } catch (e) {
     print(e.toString());

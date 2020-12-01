@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_image/firebase_image.dart';
-import 'package:chodiapp/services/firestore.dart';
 import 'package:chodiapp/models/events.dart';
 import 'package:chodiapp/models/user.dart';
 import 'package:provider/provider.dart';
@@ -111,12 +110,8 @@ class _v2_EventCard_sm extends State<v2_EventCard_sm> {
                                           child: Text("Yes"),
                                           onPressed: () {
                                             setState(() {
-                                              event.unregisterUser(currentUser);
-                                              currentUser
-                                                  .unregisterEvent(event.ein);
                                               toggleRegistered(regEventList,
                                                   currentUser, event);
-
                                               Navigator.pop(context);
                                               Navigator.pop(context);
                                             });
@@ -284,28 +279,6 @@ class _v2_EventCard_sm extends State<v2_EventCard_sm> {
         ),
       ),
     );
-  }
-
-  void toggleRegistered(
-      List<Events> regList, UserData currentUser, Events event) {
-    try {
-      if (regList.contains(event)) {
-        setState(() {
-          currentUser.registeredEvents.remove(event.ein);
-          FirestoreService(uid: currentUser.userId).updateUserPreferences(
-              {"registeredEvents": currentUser.registeredEvents});
-        });
-      } else {
-        setState(() {
-          currentUser.registeredEvents.add(event.ein);
-          FirestoreService(uid: currentUser.userId).updateUserPreferences(
-              {"registeredEvents": currentUser.registeredEvents});
-        });
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-    return;
   }
 
   List<Events> updateSearchResults(List<Events> eventsList, var einSaved) {
