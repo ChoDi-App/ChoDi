@@ -108,7 +108,6 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                           ),
                           onPressed: () {
                             Navigator.pop(context);
-                            Navigator.pop(context);
                             showRSVPInfo(event: event);
                           },
                         )
