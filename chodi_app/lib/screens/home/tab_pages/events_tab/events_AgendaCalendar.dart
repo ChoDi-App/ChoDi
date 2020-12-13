@@ -1,22 +1,22 @@
 import 'package:chodiapp/models/user.dart';
 import 'package:chodiapp/screens/home/search_page/filter_result.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_InfoPage.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_QRCodePage.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_InfoPage.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_QRCodePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:chodiapp/models/events.dart';
 
-class v2_AgendaCalendar extends StatefulWidget {
+class AgendaCalendar extends StatefulWidget {
   var scrollController;
-  v2_AgendaCalendar({this.scrollController});
+  AgendaCalendar({this.scrollController});
 
   @override
-  _v2_AgendaCalendarState createState() => _v2_AgendaCalendarState();
+  _AgendaCalendarState createState() => _AgendaCalendarState();
 }
 
-class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
+class _AgendaCalendarState extends State<AgendaCalendar> {
   CalendarController _controller;
   Map<DateTime, List<dynamic>> _events;
   List<dynamic> _selectedEvents;
@@ -59,7 +59,7 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
               minChildSize: .80,
               builder:
                   (BuildContext context, ScrollController scrollController) {
-                return v2_QRCodePage(
+                return QRCodePage(
                     event: event, scrollController: scrollController);
               },
             );
@@ -95,7 +95,7 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      v2_EventsInfoPage(event: event)),
+                                      EventsInfoPage(event: event)),
                             );
                           },
                         ),

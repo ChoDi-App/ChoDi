@@ -1,4 +1,4 @@
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_QRCodePage.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_QRCodePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,20 +6,20 @@ import 'package:firebase_image/firebase_image.dart';
 import 'package:chodiapp/models/events.dart';
 import 'package:chodiapp/models/user.dart';
 import 'package:provider/provider.dart';
-import 'v2_events_InfoPage.dart';
+import 'events_InfoPage.dart';
 
-class v2_EventCard_sm extends StatefulWidget {
+class EventCard_sm extends StatefulWidget {
   //Each EventCard has a corresponding 'event'
   Events event;
   double cardHeight;
   //EventCard Constructor requires an 'event'
-  v2_EventCard_sm({@required this.event, @optionalTypeArgs this.cardHeight});
+  EventCard_sm({@required this.event, @optionalTypeArgs this.cardHeight});
 
   @override
-  _v2_EventCard_sm createState() => _v2_EventCard_sm();
+  _EventCard_sm createState() => _EventCard_sm();
 }
 
-class _v2_EventCard_sm extends State<v2_EventCard_sm> {
+class _EventCard_sm extends State<EventCard_sm> {
   @override
   Widget build(BuildContext context) {
     Events event = widget.event;
@@ -55,7 +55,7 @@ class _v2_EventCard_sm extends State<v2_EventCard_sm> {
               minChildSize: .80,
               builder:
                   (BuildContext context, ScrollController scrollController) {
-                return v2_QRCodePage(
+                return QRCodePage(
                     event: event, scrollController: scrollController);
               },
             );
@@ -142,7 +142,7 @@ class _v2_EventCard_sm extends State<v2_EventCard_sm> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      v2_EventsInfoPage(event: event)),
+                                      EventsInfoPage(event: event)),
                             );
                           },
                         ),

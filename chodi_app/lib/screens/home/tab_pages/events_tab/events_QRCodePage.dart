@@ -10,10 +10,10 @@ import 'package:chodiapp/models/events.dart';
 import 'package:chodiapp/models/user.dart';
 import 'package:provider/provider.dart';
 
-class v2_QRCodePage extends StatelessWidget {
+class QRCodePage extends StatelessWidget {
   final Events event;
   var scrollController;
-  v2_QRCodePage({@required this.event, this.scrollController});
+  QRCodePage({@required this.event, this.scrollController});
 
   @override
   Widget build(BuildContext context) {

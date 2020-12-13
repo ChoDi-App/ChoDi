@@ -1,7 +1,7 @@
 import 'package:chodiapp/models/events.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_AgendaCalendar.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Nav.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_card_sm.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_AgendaCalendar.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_Nav.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_card_sm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/constants.dart';
@@ -9,20 +9,20 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:chodiapp/models/user.dart';
 
-class v2_RSVP extends StatefulWidget {
+class RSVP extends StatefulWidget {
   String query;
   var sharedScrollController;
 
-  v2_RSVP({
+  RSVP({
     @required this.query,
     this.sharedScrollController,
   });
 
   @override
-  _v2_RSVP createState() => _v2_RSVP();
+  _RSVP createState() => _RSVP();
 }
 
-class _v2_RSVP extends State<v2_RSVP> {
+class _RSVP extends State<RSVP> {
   @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
@@ -50,7 +50,7 @@ class _v2_RSVP extends State<v2_RSVP> {
               minChildSize: .75,
               builder:
                   (BuildContext context, ScrollController scrollController) {
-                return v2_AgendaCalendar(scrollController: scrollController);
+                return AgendaCalendar(scrollController: scrollController);
               },
             );
           });
@@ -124,7 +124,7 @@ class _v2_RSVP extends State<v2_RSVP> {
                       childAspectRatio: (cardWidth / cardHeight),
                       crossAxisCount: 2),
                   itemBuilder: (BuildContext context, int index) {
-                    return v2_EventCard_sm(
+                    return EventCard_sm(
                       event: regEventList[index],
                       cardHeight: cardHeight,
                     );
@@ -164,7 +164,7 @@ class _v2_RSVP extends State<v2_RSVP> {
                       childAspectRatio: (cardWidth / cardHeight),
                       crossAxisCount: 2),
                   itemBuilder: (BuildContext context, int index) {
-                    return v2_EventCard_sm(
+                    return EventCard_sm(
                       event: queryList[index],
                       cardHeight: cardHeight,
                     );

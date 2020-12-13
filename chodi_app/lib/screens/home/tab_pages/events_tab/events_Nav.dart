@@ -1,17 +1,17 @@
 import 'package:chodiapp/screens/home/side_menu.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_RSVPd.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Liked.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Explore.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_RSVPd.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_Liked.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_Explore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class v2_EventsPageSearch extends StatefulWidget {
+class EventsPageSearch extends StatefulWidget {
   @override
-  _v2_EventsPageSearch createState() => _v2_EventsPageSearch();
+  _EventsPageSearch createState() => _EventsPageSearch();
 }
 
-class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
+class _EventsPageSearch extends State<EventsPageSearch> {
   // Used to open LeftSide Profile Drawer
   final GlobalKey<ScaffoldState> drawerKey = new GlobalKey<ScaffoldState>();
 
@@ -201,9 +201,9 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                   // Container(
                   //   child: Text('Something'),
                   // ),
-                  v2_RSVP(query: aQuery),
-                  v2_Liked(aQuery),
-                  v2_ExplorePage(query: aQuery),
+                  RSVP(query: aQuery),
+                  Liked(aQuery),
+                  ExplorePage(query: aQuery),
                 ],
               ),
             ),

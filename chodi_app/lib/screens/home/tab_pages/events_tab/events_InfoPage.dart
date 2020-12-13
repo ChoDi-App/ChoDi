@@ -2,7 +2,7 @@ import 'package:chodiapp/constants/constants.dart';
 import 'package:chodiapp/models/non_profit.dart';
 import 'package:chodiapp/screens/home/tab_pages/for_you_tab/non_profit_info_page.dart';
 import 'package:chodiapp/screens/home/ExpandingText.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_QRCodePage.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_QRCodePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -16,17 +16,17 @@ import 'package:chodiapp/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:chodiapp/services/firestore.dart';
 
-class v2_EventsInfoPage extends StatefulWidget {
+class EventsInfoPage extends StatefulWidget {
   final Events event;
-  v2_EventsInfoPage({@required this.event});
+  EventsInfoPage({@required this.event});
 
   @override
-  _v2_EventsInfoPage createState() {
-    return new _v2_EventsInfoPage();
+  _EventsInfoPage createState() {
+    return new _EventsInfoPage();
   }
 }
 
-class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
+class _EventsInfoPage extends State<EventsInfoPage> {
   //_EventsInfoPage({@required this.event});
   //Events event;
 
@@ -79,7 +79,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
               minChildSize: .80,
               builder:
                   (BuildContext context, ScrollController scrollController) {
-                return v2_QRCodePage(
+                return QRCodePage(
                     event: event, scrollController: scrollController);
               },
             );

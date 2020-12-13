@@ -1,5 +1,5 @@
 import 'package:chodiapp/models/events.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_card_lg.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_card_lg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/constants.dart';
@@ -7,16 +7,16 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:chodiapp/models/user.dart';
 
-class v2_Liked extends StatefulWidget {
+class Liked extends StatefulWidget {
   String givenQuery;
 
-  v2_Liked(this.givenQuery);
+  Liked(this.givenQuery);
 
   @override
-  _v2_Liked createState() => _v2_Liked();
+  _Liked createState() => _Liked();
 }
 
-class _v2_Liked extends State<v2_Liked> {
+class _Liked extends State<Liked> {
   @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
@@ -62,7 +62,7 @@ class _v2_Liked extends State<v2_Liked> {
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  return v2_EventCard_lg(
+                  return EventCard_lg(
                     event: favEventList[index],
                     showDistance: false,
                   );
@@ -96,7 +96,7 @@ class _v2_Liked extends State<v2_Liked> {
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  return v2_EventCard_lg(
+                  return EventCard_lg(
                     event: queryList[index],
                     showDistance: false,
                   );

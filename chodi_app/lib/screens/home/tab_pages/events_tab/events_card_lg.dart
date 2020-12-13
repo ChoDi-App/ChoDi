@@ -6,20 +6,20 @@ import 'package:chodiapp/services/firestore.dart';
 import 'package:chodiapp/models/events.dart';
 import 'package:chodiapp/models/user.dart';
 import 'package:provider/provider.dart';
-import 'v2_events_InfoPage.dart';
+import 'events_InfoPage.dart';
 
-class v2_EventCard_lg extends StatefulWidget {
+class EventCard_lg extends StatefulWidget {
   //Each EventCard has a corresponding 'event'
   Events event;
   bool showDistance;
   //EventCard Constructor requires an 'event'
-  v2_EventCard_lg({@required this.event, this.showDistance = true});
+  EventCard_lg({@required this.event, this.showDistance = true});
 
   @override
-  _v2_EventCard_lg createState() => _v2_EventCard_lg();
+  _EventCard_lg createState() => _EventCard_lg();
 }
 
-class _v2_EventCard_lg extends State<v2_EventCard_lg> {
+class _EventCard_lg extends State<EventCard_lg> {
   @override
   Widget build(BuildContext context) {
     Events event = widget.event;
@@ -48,7 +48,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => v2_EventsInfoPage(event: event)),
+                builder: (context) => EventsInfoPage(event: event)),
           );
         }
       },

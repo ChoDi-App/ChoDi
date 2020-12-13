@@ -1,22 +1,22 @@
 import 'package:chodiapp/models/events.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Nav.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_card_lg.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_Nav.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_card_lg.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class v2_ExplorePage extends StatefulWidget {
+class ExplorePage extends StatefulWidget {
   String query;
   List<searchFilterChip> filters;
 
-  v2_ExplorePage({@required this.query, this.filters});
+  ExplorePage({@required this.query, this.filters});
 
   @override
-  _v2_ExplorePage createState() => _v2_ExplorePage();
+  _ExplorePage createState() => _ExplorePage();
 }
 
-class _v2_ExplorePage extends State<v2_ExplorePage> {
+class _ExplorePage extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
@@ -50,7 +50,7 @@ class _v2_ExplorePage extends State<v2_ExplorePage> {
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  return v2_EventCard_lg(
+                  return EventCard_lg(
                     event: eventsList[index],
                   );
                 },
@@ -83,7 +83,7 @@ class _v2_ExplorePage extends State<v2_ExplorePage> {
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  return v2_EventCard_lg(
+                  return EventCard_lg(
                     event: queryList[index],
                   );
                 },

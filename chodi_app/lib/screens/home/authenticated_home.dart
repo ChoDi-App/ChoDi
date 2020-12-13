@@ -1,8 +1,8 @@
 import 'package:chodiapp/constants/constants.dart';
 import 'package:chodiapp/screens/home/side_menu.dart';
 import 'package:chodiapp/screens/home/tab_pages/for_you_tab/for_you_page.dart';
+import 'package:chodiapp/screens/home/tab_pages/events_tab/events_Nav.dart';
 import 'package:flutter/material.dart';
-import 'tab_pages/events_tab/events_page.dart';
 import 'tab_pages/impact_tab/impact_page.dart';
 import 'tab_pages/messages_tab/messages_page.dart';
 import 'tab_pages/notifications_tab/notifications_page.dart';
@@ -17,7 +17,7 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
   bool loading = false;
   List<Color> selectedColors = [
     Colors.yellow,
-    Colors.orange,
+    Colors.orange[400],
     Colors.red,
     Colors.blue,
     Colors.green
@@ -25,7 +25,7 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
   int _selectedIndex = 2;
   List<Widget> _widgetOptions = <Widget>[
     ImpactPage(),
-    EventsPage(),
+    EventsPageSearch(),
     ForYouPage(),
     MessagesPage(),
     NotificationsPage(),
@@ -39,6 +39,8 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var labelStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w600);
+
     return Scaffold(
       drawer: SideMenu(),
       appBar: AppBar(
@@ -92,46 +94,48 @@ class _AuthenticatedHomeScreenState extends State<AuthenticatedHomeScreen> {
             icon: Icon(Icons.person),
             title: Text(
               'Impact',
-              style: TextStyle(fontSize: 12),
+              style: labelStyle,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             title: Text(
               'Events',
-              style: TextStyle(fontSize: 12),
+              style: labelStyle,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text(
               'For You',
-              style: TextStyle(fontSize: 12),
+              style: labelStyle,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
             title: Text(
               'Messages',
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: 14),
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             title: Text(
               'Notifications',
-              style: TextStyle(fontSize: 12),
+              style: labelStyle,
             ),
           ),
         ],
         backgroundColor: appBarColor,
-        iconSize: 15.0,
+        iconSize: 25.0,
         currentIndex: _selectedIndex,
         //selectedItemColor: Colors.black,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
         unselectedItemColor: Colors.black,
         selectedItemColor: selectedColors[_selectedIndex],
+        selectedLabelStyle: labelStyle,
+        unselectedLabelStyle: labelStyle,
         type: BottomNavigationBarType.fixed,
       ),
     );
