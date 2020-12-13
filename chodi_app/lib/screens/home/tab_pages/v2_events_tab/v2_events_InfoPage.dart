@@ -267,10 +267,6 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
       return IconButton(
           icon: Icon(Icons.share_rounded, color: Colors.blueAccent, size: 30),
           onPressed: () {
-            setState(() {
-              event.maxCapacity = 0;
-            });
-
             // Implement Dynamic Link Sharing
           });
     }
