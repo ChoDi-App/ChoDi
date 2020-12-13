@@ -1,4 +1,6 @@
 import 'package:chodiapp/constants/constants.dart';
+import 'package:chodiapp/models/non_profit.dart';
+import 'package:chodiapp/screens/home/tab_pages/for_you_tab/non_profit_info_page.dart';
 import 'package:chodiapp/screens/home/ExpandingText.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_QRCodePage.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,7 +57,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     final h1 =
         TextStyle(fontSize: 28, fontWeight: FontWeight.w500, color: textColor1);
     final h2 =
-        TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: textColor1);
+        TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: textColor2);
     final h3 =
         TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: textColor2);
     final regText = TextStyle(fontSize: 16, height: 1.3, color: textColor2);
@@ -175,41 +177,24 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
 
     Widget _RSVPButton() {
       if (regEventList.contains(event)) {
-        return FloatingActionButton(
-          heroTag: 3,
-          backgroundColor: Colors.yellow[700],
-          child: Icon(
-            Icons.bookmark,
-            color: Colors.white,
-            size: 30,
-          ),
+        // If User is already registered...
+        return IconButton(
+          icon: Icon(Icons.bookmark, color: Colors.yellow[600], size: 30),
           onPressed: () {
             // Link to QRCode page
             showOptions();
           },
         );
       } else if (event.registeredUsers.length >= event.maxCapacity) {
-        return FloatingActionButton(
-          heroTag: 3,
-          backgroundColor: Colors.grey[400],
-          child: Icon(
-            Icons.bookmark_border,
-            color: Colors.white,
-            size: 30,
-          ),
-          onPressed: () {
-            // SnackBar saying Capacity Reached
-          },
+        // If User isn't registered, but event at full capacity...
+        return Text(
+          "Full",
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.red),
         );
       } else {
-        return FloatingActionButton(
-          heroTag: 3,
-          backgroundColor: Colors.yellow[700],
-          child: Icon(
-            Icons.bookmark_border,
-            color: Colors.white,
-            size: 30,
-          ),
+        // If user not registered, and event not at full capacity
+        return IconButton(
+          icon: Icon(Icons.bookmark_border, color: Colors.grey[400], size: 30),
           onPressed: () {
             // 1) Check event availability
             //    - Size of registeredUsersList compared to maxCapacity
@@ -254,15 +239,11 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     }
 
     Widget _FavoriteButton() {
+      // If user has not already favorited...
       if (!favEventList.contains(event)) {
-        return FloatingActionButton(
-          heroTag: 1,
-          backgroundColor: Colors.redAccent,
-          child: Icon(
-            Icons.favorite_border,
-            color: Colors.white,
-            size: 30,
-          ),
+        return IconButton(
+          icon: Icon(Icons.favorite_border_rounded,
+              color: Colors.grey[400], size: 30),
           onPressed: () {
             setState(() {
               toggleLiked(favEventList, currentUser, event);
@@ -270,14 +251,9 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
           },
         );
       } else {
-        return FloatingActionButton(
-          heroTag: 1,
-          backgroundColor: Colors.redAccent,
-          child: Icon(
-            Icons.favorite,
-            color: Colors.white,
-            size: 30,
-          ),
+        //If user has already favorited...
+        return IconButton(
+          icon: Icon(Icons.favorite, color: Colors.redAccent, size: 30),
           onPressed: () {
             setState(() {
               toggleLiked(favEventList, currentUser, event);
@@ -288,14 +264,8 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     }
 
     Widget _ShareButton() {
-      return FloatingActionButton(
-          heroTag: 0,
-          backgroundColor: Colors.blueAccent[400],
-          child: Icon(
-            Icons.share,
-            color: Colors.white,
-            size: 30,
-          ),
+      return IconButton(
+          icon: Icon(Icons.share_rounded, color: Colors.blueAccent, size: 30),
           onPressed: () {
             setState(() {
               event.maxCapacity = 0;
@@ -308,172 +278,181 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          'Event Details',
-          style: TextStyle(fontWeight: FontWeight.w900, color: Colors.grey),
-        ),
-        iconTheme: IconThemeData(color: Colors.grey),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
-              child: Column(
-                children: [
-                  // Header Container
-                  Container(
-                    height: 120,
-                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        blurRadius: 7,
-                        spreadRadius: 5,
-                        offset: Offset(0, 10),
-                      )
-                    ]),
-                    width: double.infinity,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: horizPadding, vertical: verticPadding),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(event.orgName, style: h2),
-                          SizedBox(height: 5),
-                          Text(event.eventName, style: h1),
-                          SizedBox(height: 5),
-                        ],
-                      ),
-                    ),
-                  ),
+          title: Text(
+            'Event Details',
+            style: TextStyle(fontWeight: FontWeight.w900, color: Colors.grey),
+          ),
+          iconTheme: IconThemeData(color: Colors.grey),
+          backgroundColor: Colors.white,
+          elevation: 3,
+          shadowColor: Colors.white70,
+          actions: <Widget>[
+            _RSVPButton(),
+            _ShareButton(),
+            _FavoriteButton(),
+            SizedBox(width: 10)
+          ]),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Container(
+          child: Column(
+            children: [
+              // Header Container
+              Container(
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    blurRadius: 7,
+                    spreadRadius: 5,
+                    offset: Offset(0, 10),
+                  )
+                ]),
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: horizPadding, vertical: verticPadding),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        child: Text(event.organizationName, style: h3),
+                        onTap: () {
+                          print("tapped");
+                          List<NonProfit> nonProfitsData =
+                              Provider.of<List<NonProfit>>(context,
+                                  listen: false);
+                          NonProfit nonProfit = nonProfitsData
+                              .where((someNonProfit) =>
+                                  someNonProfit.name == event.organizationName)
+                              .single;
 
-                  // Features Container
-                  Container(
-                    height: 150,
-                    color: Colors.grey[200],
-                    child: ListView(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Container(
-                          width: 150 + horizPadding,
-                          child: Center(
-                            child: Row(
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    NonProfitInfoPage(nonProfit: nonProfit)),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 5),
+                      Text(event.eventName, style: h1),
+                      SizedBox(height: 5),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Features Container
+              Container(
+                height: 150,
+                color: Colors.grey[200],
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    Container(
+                      width: 150 + horizPadding,
+                      child: Center(
+                        child: Row(
+                          children: [
+                            SizedBox(width: horizPadding),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(width: horizPadding),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      child: FadeInImage(
-                                        width: 130,
-                                        height: 130,
-                                        fit: BoxFit.cover,
-                                        placeholder: AssetImage(
-                                            'images/loadingImage.gif'),
-                                        image: FirebaseImage(event.imageURI ??
-                                            "gs://chodi-663f2.appspot.com/nonprofitlogos/loadingImage.gif"),
-                                      ),
-                                    ),
-                                  ],
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: FadeInImage(
+                                    width: 130,
+                                    height: 130,
+                                    fit: BoxFit.cover,
+                                    placeholder:
+                                        AssetImage('images/loadingImage.gif'),
+                                    image: FirebaseImage(event.imageURI ??
+                                        "gs://chodi-663f2.appspot.com/nonprofitlogos/loadingImage.gif"),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
+                          ],
                         ),
-                        Container(
-                          height: double.infinity,
-                          width: 300,
-                          //color: Colors.lightBlue[400],
-                        ),
-                        Container(
-                          height: double.infinity,
-                          width: 300,
-                          //color: Colors.lightBlue[500],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Details Container
-                  Container(
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: horizPadding, vertical: verticPadding),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 15),
-                          Text('Description', style: h3),
-                          SizedBox(height: 5),
-                          ExpandingText(
-                              validString(event.description), regText),
-                          SizedBox(height: infoFieldSpacing),
-                          Text('More Information: ', style: regText),
-                          Linkify(
-                            onOpen: (url) async {
-                              if (await canLaunch(url.url)) {
-                                await launch(url.url);
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            },
-                            text: validString(event.eventURL),
-                            style: GoogleFonts.ubuntu(fontSize: 15),
-                          ),
-                          SizedBox(height: infoFieldSpacing),
-                          Text('Date', style: h3),
-                          SizedBox(height: 5),
-                          Text(validDate(event.eventDate), style: regText),
-                          SizedBox(height: infoFieldSpacing),
-                          Text('Time', style: h3),
-                          SizedBox(height: 5),
-                          Text(validTime(event.eventDate), style: regText),
-                          SizedBox(height: infoFieldSpacing),
-                          Text('Location', style: h3),
-                          SizedBox(height: 5),
-                          Text(validFullLocation(event.locationProperties),
-                              style: regText),
-                          SizedBox(height: infoFieldSpacing),
-                          Container(
-                            height: 225,
-                            color: Colors.grey[400],
-                            child: Center(child: Text('Map goes here.')),
-                          ),
-                          SizedBox(height: infoFieldSpacing),
-                          SizedBox(height: 50),
-                        ],
                       ),
                     ),
-                  ),
-                ],
+                    Container(
+                      height: double.infinity,
+                      width: 300,
+                      //color: Colors.lightBlue[400],
+                    ),
+                    Container(
+                      height: double.infinity,
+                      width: 300,
+                      //color: Colors.lightBlue[500],
+                    ),
+                  ],
+                ),
               ),
-              color: Colors.white,
-            ),
+
+              // Details Container
+              Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: horizPadding,
+                    vertical: verticPadding,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 15),
+                      Text('Description', style: h3),
+                      SizedBox(height: 5),
+                      ExpandingText(
+                        validString(event.description),
+                        regText,
+                      ),
+                      SizedBox(height: infoFieldSpacing),
+                      Text('More Information: ', style: regText),
+                      Linkify(
+                        onOpen: (url) async {
+                          if (await canLaunch(url.url)) {
+                            await launch(url.url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        text: validString(event.eventURL),
+                        style: GoogleFonts.ubuntu(fontSize: 15),
+                      ),
+                      SizedBox(height: infoFieldSpacing),
+                      Text('Date', style: h3),
+                      SizedBox(height: 5),
+                      Text(validDate(event.eventDate), style: regText),
+                      SizedBox(height: infoFieldSpacing),
+                      Text('Time', style: h3),
+                      SizedBox(height: 5),
+                      Text(validTime(event.eventDate), style: regText),
+                      SizedBox(height: infoFieldSpacing),
+                      Text('Location', style: h3),
+                      SizedBox(height: 5),
+                      Text(validFullLocation(event.locationProperties),
+                          style: regText),
+                      SizedBox(height: infoFieldSpacing),
+                      Container(
+                        height: 225,
+                        color: Colors.grey[400],
+                        child: Center(child: Text('Map goes here.')),
+                      ),
+                      SizedBox(height: infoFieldSpacing),
+                      SizedBox(height: 50),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          Positioned(
-            right: 20,
-            bottom: 30,
-            child: _FavoriteButton(),
-          ),
-          Positioned(
-            right: 20,
-            bottom: 110,
-            child: _ShareButton(),
-          ),
-          Positioned(
-            right: 20,
-            bottom: 190,
-            child: _RSVPButton(),
-          ),
-        ],
+          color: Colors.white,
+        ),
       ),
     );
   }

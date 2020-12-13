@@ -1,4 +1,5 @@
 import 'package:chodiapp/models/events.dart';
+import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Nav.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_card_lg.dart';
 import 'package:flutter/material.dart';
 import 'package:chodiapp/constants/constants.dart';
@@ -6,9 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class v2_ExplorePage extends StatefulWidget {
-  String givenQuery;
+  String query;
+  List<searchFilterChip> filters;
 
-  v2_ExplorePage(this.givenQuery);
+  v2_ExplorePage({@required this.query, this.filters});
 
   @override
   _v2_ExplorePage createState() => _v2_ExplorePage();
@@ -18,9 +20,15 @@ class _v2_ExplorePage extends State<v2_ExplorePage> {
   @override
   Widget build(BuildContext context) {
     List<Events> eventsList = Provider.of<List<Events>>(context);
-    List<Events> queryList = filterList(eventsList, widget.givenQuery);
 
-    if (widget.givenQuery == "")
+    // List<Events> eventsList = (widget.filters == null)
+    //     ? Provider.of<List<Events>>(context)
+    //     : filterListWithChips(
+    //         Provider.of<List<Events>>(context), widget.filters);
+
+    List<Events> queryList = filterList(eventsList, widget.query);
+
+    if (widget.query == "")
       return SafeArea(
         child: Container(
           child: ListView(
@@ -64,8 +72,8 @@ class _v2_ExplorePage extends State<v2_ExplorePage> {
                   //child: Text("Displaying events nearby: $location",
                   child: Text(
                     (queryList.length > 1)
-                        ? ("Displaying ${queryList.length} results for '${widget.givenQuery}'.")
-                        : ("Displaying ${queryList.length} result for '${widget.givenQuery}'."),
+                        ? ("Displaying ${queryList.length} results for '${widget.query}'.")
+                        : ("Displaying ${queryList.length} result for '${widget.query}'."),
                     style: GoogleFonts.ubuntu(
                         fontSize: 15, fontWeight: FontWeight.normal),
                   ),
@@ -90,7 +98,7 @@ class _v2_ExplorePage extends State<v2_ExplorePage> {
     return someList.where((someEventInList) {
       var theQuery = someQuery.toLowerCase();
       var eventTitle = someEventInList.eventName.toLowerCase();
-      var eventOrg = someEventInList.orgName.toLowerCase();
+      var eventOrg = someEventInList.organizationName.toLowerCase();
       var eventCity = someEventInList.locationProperties.city.toLowerCase();
       var eventState = someEventInList.locationProperties.state.toLowerCase();
       var eventCat = someEventInList.category.toLowerCase();

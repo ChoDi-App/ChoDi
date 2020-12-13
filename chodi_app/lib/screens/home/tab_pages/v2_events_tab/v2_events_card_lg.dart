@@ -11,9 +11,9 @@ import 'v2_events_InfoPage.dart';
 class v2_EventCard_lg extends StatefulWidget {
   //Each EventCard has a corresponding 'event'
   Events event;
-
+  bool showDistance;
   //EventCard Constructor requires an 'event'
-  v2_EventCard_lg({@required this.event});
+  v2_EventCard_lg({@required this.event, this.showDistance = true});
 
   @override
   _v2_EventCard_lg createState() => _v2_EventCard_lg();
@@ -38,7 +38,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
       fontWeight: FontWeight.w700,
     );
     var h2 = TextStyle(fontSize: 16);
-    var p = TextStyle(fontSize: 14, height: 1.5);
+    var p = TextStyle(fontSize: 13, height: 1.5);
 
     return GestureDetector(
       onTap: () {
@@ -68,7 +68,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
               child: Row(
                 children: [
                   Expanded(
-                      flex: 15,
+                      flex: 13,
                       child: Column(
                         children: [
                           Expanded(
@@ -113,7 +113,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            validString('organization_name'),
+                                            validString(event.organizationName),
                                             style: h2,
                                             textAlign: TextAlign.left,
                                             overflow: TextOverflow.ellipsis,
@@ -134,17 +134,34 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                           Expanded(
                             flex: 5,
                             child: Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: EdgeInsets.all(2),
                               child: Container(
                                 //color: Colors.limeAccent,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 15),
-                                child: Text(
-                                  validDescription(event.description),
-                                  style: p,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
+                                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 0),
+                                      child: Text(
+                                        validDescription(event.description),
+                                        style: p,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                    if (widget.showDistance)
+                                      Text(
+                                        "radial_distance",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: p.fontSize + 2),
+                                      )
+                                  ],
                                 ),
                               ),
                             ),

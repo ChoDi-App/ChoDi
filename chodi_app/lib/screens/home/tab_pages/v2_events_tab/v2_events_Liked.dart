@@ -64,6 +64,7 @@ class _v2_Liked extends State<v2_Liked> {
                 itemBuilder: (BuildContext context, int index) {
                   return v2_EventCard_lg(
                     event: favEventList[index],
+                    showDistance: false,
                   );
                 },
               ))
@@ -97,6 +98,7 @@ class _v2_Liked extends State<v2_Liked> {
                 itemBuilder: (BuildContext context, int index) {
                   return v2_EventCard_lg(
                     event: queryList[index],
+                    showDistance: false,
                   );
                 },
               ))
@@ -110,7 +112,7 @@ class _v2_Liked extends State<v2_Liked> {
     return someList.where((someEventInList) {
       var theQuery = someQuery.toLowerCase();
       var eventTitle = someEventInList.eventName.toLowerCase();
-      var eventOrg = someEventInList.orgName.toLowerCase();
+      var eventOrg = someEventInList.organizationName.toLowerCase();
       var eventCity = someEventInList.locationProperties.city.toLowerCase();
       var eventState = someEventInList.locationProperties.state.toLowerCase();
       var eventCat = someEventInList.category.toLowerCase();

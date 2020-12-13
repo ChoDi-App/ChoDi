@@ -57,7 +57,7 @@ class v2_QRCodePage extends StatelessWidget {
                         },
                       ),
                       SizedBox(height: 20),
-                      Text(event.orgName, style: h2),
+                      Text(event.organizationName, style: h2),
                       SizedBox(height: 5),
                       Text(event.eventName, style: h1),
                       Padding(

@@ -1,5 +1,6 @@
 import 'package:chodiapp/models/events.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_AgendaCalendar.dart';
+import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Nav.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_card_sm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:chodiapp/models/user.dart';
 
 class v2_RSVP extends StatefulWidget {
-  String givenQuery;
+  String query;
   var sharedScrollController;
 
-  v2_RSVP(this.givenQuery, {@optionalTypeArgs this.sharedScrollController});
+  v2_RSVP({
+    @required this.query,
+    this.sharedScrollController,
+  });
 
   @override
   _v2_RSVP createState() => _v2_RSVP();
@@ -28,7 +32,7 @@ class _v2_RSVP extends State<v2_RSVP> {
       regEventList =
           updateSearchResults(eventsList, currentUser.registeredEvents);
     }
-    List<Events> queryList = filterList(regEventList, widget.givenQuery);
+    List<Events> queryList = filterList(regEventList, widget.query);
     final double cardHeight = MediaQuery.of(context).size.height / 3;
     final double cardWidth = MediaQuery.of(context).size.width / 2;
 
@@ -63,7 +67,7 @@ class _v2_RSVP extends State<v2_RSVP> {
           ),
         ),
       );
-    else if (widget.givenQuery == "") {
+    else if (widget.query == "") {
       return (SafeArea(
         child: Container(
           child: ListView(
@@ -81,7 +85,7 @@ class _v2_RSVP extends State<v2_RSVP> {
                       offset: Offset(0, 5),
                     )
                   ],
-                  color: Colors.yellow[600],
+                  color: Colors.orange[400],
                 ),
                 child: FlatButton(
                   padding: EdgeInsets.symmetric(vertical: 0),
@@ -144,8 +148,8 @@ class _v2_RSVP extends State<v2_RSVP> {
                 //child: Text("Displaying events nearby: $location",
                 child: Text(
                   (regEventList.length > 1)
-                      ? ("Displaying ${queryList.length} registered results for '${widget.givenQuery}'")
-                      : ("Displaying 1 registered result for '${widget.givenQuery}'"),
+                      ? ("Displaying ${queryList.length} registered results for '${widget.query}'")
+                      : ("Displaying 1 registered result for '${widget.query}'"),
                   style: GoogleFonts.ubuntu(
                       fontSize: 15, fontWeight: FontWeight.normal),
                 ),
@@ -178,7 +182,7 @@ class _v2_RSVP extends State<v2_RSVP> {
     return someList.where((someEventInList) {
       var theQuery = someQuery.toLowerCase();
       var eventTitle = someEventInList.eventName.toLowerCase();
-      var eventOrg = someEventInList.orgName.toLowerCase();
+      var eventOrg = someEventInList.organizationName.toLowerCase();
       var eventCity = someEventInList.locationProperties.city.toLowerCase();
       var eventState = someEventInList.locationProperties.state.toLowerCase();
       var eventCat = someEventInList.category.toLowerCase();

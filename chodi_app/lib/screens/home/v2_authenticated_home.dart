@@ -18,7 +18,7 @@ class _v2_AuthenticatedHomeScreenState
   bool loading = false;
   List<Color> selectedColors = [
     Colors.yellow,
-    Colors.orange[600],
+    Colors.orange[400],
     Colors.red,
     Colors.blue,
     Colors.green

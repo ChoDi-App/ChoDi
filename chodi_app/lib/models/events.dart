@@ -1,4 +1,5 @@
 import 'package:chodiapp/models/user.dart';
+import 'package:chodiapp/models/non_profit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Events {
@@ -15,52 +16,56 @@ class Events {
   Timestamp numericSDate;
   LocationProperties locationProperties;
   String qrCodeURL;
-  String orgName;
+  String organizationName;
   String description;
   int maxCapacity;
   List<dynamic> registeredUsers = [];
+  GeoPoint geopoint;
 
-  Events(
-      {this.ein,
-      this.eventName,
-      this.eventURL,
-      this.eventDate,
-      this.location,
-      this.category,
-      this.eventContactEmail,
-      this.imageURI,
+  Events({
+    this.ein,
+    this.eventName,
+    this.eventURL,
+    this.eventDate,
+    this.location,
+    this.category,
+    this.eventContactEmail,
+    this.imageURI,
+
+    //
+    this.numericSDate,
+    this.locationProperties,
+    this.qrCodeURL,
+    this.organizationName,
+    this.description,
+    this.maxCapacity,
+    this.registeredUsers,
+    this.geopoint,
+  });
+
+  factory Events.fromMap(Map<String, dynamic> json) => Events(
+      ein: json["ein"],
+      eventName: json["eventName"],
+      eventURL: json["eventURL"],
+      eventDate: EventDate.fromMap(json["eventDate"]),
+      location: json["location"],
+      category: json["category"],
+      eventContactEmail: json["eventContactEmail"],
+      imageURI: json["imageURI"],
 
       //
-      this.numericSDate,
-      this.locationProperties,
-      this.qrCodeURL,
-      this.orgName,
-      this.description,
-      this.maxCapacity,
-      this.registeredUsers});
-  factory Events.fromMap(Map<String, dynamic> json) => Events(
-        ein: json["ein"],
-        eventName: json["eventName"],
-        eventURL: json["eventURL"],
-        eventDate: EventDate.fromMap(json["eventDate"]),
-        location: json["location"],
-        category: json["category"],
-        eventContactEmail: json["eventContactEmail"],
-        imageURI: json["imageURI"],
-
-        //
-        numericSDate: json["numericSDate"],
-        locationProperties:
-            LocationProperties.fromMap(json["locationProperties"]),
-        qrCodeURL: json["qrCodeURL"],
-        //orgName: json["organization"],
-        orgName: "Organization_Name",
-        description: json["description"],
-        maxCapacity: json["maxCapacity"],
-        registeredUsers: json["registeredUsers"] != null
-            ? List<String>.from(json["registeredUsers"].map((x) => x))
-            : List<String>(),
-      );
+      numericSDate: json["numericSDate"],
+      locationProperties:
+          LocationProperties.fromMap(json["locationProperties"]),
+      qrCodeURL: json["qrCodeURL"],
+      //orgName: json["organization"],
+      organizationName: json["organizationName"],
+      description: json["description"],
+      maxCapacity: json["maxCapacity"],
+      registeredUsers: (json["registeredUsers"] != null)
+          ? List<String>.from(json["registeredUsers"].map((x) => x))
+          : List<String>(),
+      geopoint: json["geopoint"]);
 
   Map<String, dynamic> toMap() => {
         "ein": ein,
@@ -76,10 +81,11 @@ class Events {
         "numericSDate": numericSDate,
         "locationProperties": locationProperties.toMap(),
         "qrCodeURL": qrCodeURL,
-        "organization": orgName,
+        "organization": organizationName,
         "description": description,
         "maxCapacity": maxCapacity,
         "registeredUsers": List<dynamic>.from(registeredUsers.map((x) => x)),
+        "geopoint": geopoint,
       };
 
   // Method used to generate string to generate unique QR Code "ticket"

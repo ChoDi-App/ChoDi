@@ -1,11 +1,9 @@
 import 'package:chodiapp/screens/home/side_menu.dart';
-import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_RSVP_Agenda.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_RSVPd.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Liked.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Explore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class v2_EventsPageSearch extends StatefulWidget {
@@ -14,17 +12,28 @@ class v2_EventsPageSearch extends StatefulWidget {
 }
 
 class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
+  // Used to open LeftSide Profile Drawer
+  final GlobalKey<ScaffoldState> drawerKey = new GlobalKey<ScaffoldState>();
+
+  // Used for tab control
   final List<Tab> page_tabs = <Tab>[
     Tab(text: 'RSVP'),
     Tab(text: 'Likes'),
     Tab(text: 'Explore')
   ];
-  final GlobalKey<ScaffoldState> drawerKey = new GlobalKey<ScaffoldState>();
-  bool searching = false;
-  String aQuery = "";
   var _clearTextField = TextEditingController();
-
   var sharedScrollController;
+
+  // User for searching
+  bool searching = false;
+  bool filtersShown = false;
+  bool filtering = false;
+  String aQuery = "";
+  final List<searchFilterChip> searchFilters = <searchFilterChip>[
+    searchFilterChip(chipName: 'Near Me'),
+    searchFilterChip(chipName: 'My Interests'),
+    searchFilterChip(chipName: 'My Communities')
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +57,7 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                         snap: true,
                         leading: IconButton(
                           icon: Icon(
-                            Icons.menu,
+                            Icons.menu_rounded,
                             color: Colors.black54,
                           ),
                           onPressed: () => drawerKey.currentState.openDrawer(),
@@ -90,6 +99,22 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                         pinned: true,
                         snap: true,
                         automaticallyImplyLeading: false,
+                        // leadingWidth: 30,
+                        // // Filter Selection Button
+                        // leading: (IconButton(
+                        //   iconSize: 30,
+                        //   padding: EdgeInsets.all(12),
+                        //   icon: Icon(Icons.filter_list_rounded),
+                        //   color: (!filtering)
+                        //       ? Colors.black54
+                        //       : Colors.orange[400],
+                        //   splashColor: Colors.transparent,
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       filtersShown = !filtersShown;
+                        //     });
+                        //   },
+                        // )),
                         title: TextField(
                           controller: _clearTextField,
                           textAlign: TextAlign.left,
@@ -124,6 +149,21 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                             contentPadding: EdgeInsets.all(15),
                           ),
                         ),
+
+                        // expandedHeight: (filtersShown) ? 180 : null,
+                        // flexibleSpace: (filtersShown)
+                        //     ? Container(
+                        //         child: Padding(
+                        //           padding: EdgeInsets.fromLTRB(20, 70, 20, 0),
+                        //           child: Wrap(
+                        //             spacing: 5,
+                        //             runSpacing: 3,
+                        //             children: searchFilters,
+                        //           ),
+                        //         ),
+                        //       )
+                        //     : SizedBox(),
+
                         actions: [
                           TextButton(
                               onPressed: () {
@@ -147,7 +187,7 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                           indicatorColor: Colors.grey[700],
                           tabs: page_tabs,
                         ),
-                      ),
+                      )
                     ];
             },
             // This GestureDetector will close keyboard when scrolling down
@@ -161,15 +201,46 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                   // Container(
                   //   child: Text('Something'),
                   // ),
-                  v2_RSVP(aQuery),
+                  v2_RSVP(query: aQuery),
                   v2_Liked(aQuery),
-                  v2_ExplorePage(aQuery),
+                  v2_ExplorePage(query: aQuery),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class searchFilterChip extends StatefulWidget {
+  final String chipName;
+  bool selected;
+
+  @override
+  searchFilterChip({@required this.chipName});
+
+  @override
+  State<StatefulWidget> createState() => _searchFilterChip();
+}
+
+class _searchFilterChip extends State<searchFilterChip> {
+  var _isSelected = false;
+  @override
+  Widget build(BuildContext context) {
+    return FilterChip(
+      label: Text(widget.chipName),
+      labelStyle:
+          TextStyle(color: (!_isSelected) ? Colors.black54 : Colors.white),
+      selectedColor: Colors.orange[400],
+      showCheckmark: false,
+      selected: _isSelected,
+      onSelected: (isSelected) {
+        setState(() {
+          _isSelected = isSelected;
+        });
+      },
     );
   }
 }
