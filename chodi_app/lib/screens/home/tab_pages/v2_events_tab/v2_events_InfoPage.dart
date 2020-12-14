@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_image/firebase_image.dart';
 
@@ -37,6 +38,8 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
     List<Events> favEventList = new List<Events>();
     List<Events> regEventList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
+    GoogleMapController _controller;
+
     if (currentUser != null) {
       favEventList = updateSearchResults(eventsList, currentUser.savedEvents);
       regEventList =
@@ -51,7 +54,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
       // }).toList();
     }
 
-    // TextStyles
+    // TextStyles (ideally, these would be in chodi_app/lib/contants.dart
     final textColor1 = Colors.black;
     final textColor2 = Colors.black87;
     final h1 =
@@ -271,6 +274,33 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
           });
     }
 
+    Widget googleMap(BuildContext context) {
+      var markers = new Set<Marker>();
+      markers.add(Marker(
+        markerId: MarkerId(event.ein),
+        position: LatLng(event.geopoint.latitude, event.geopoint.longitude),
+      ));
+      return Container(
+        height: 255,
+        width: MediaQuery.of(context).size.width,
+        child: GoogleMap(
+          onMapCreated: (controller) {
+            setState(() {
+              _controller = controller;
+            });
+          },
+          mapType: MapType.normal,
+          markers: markers,
+          initialCameraPosition: CameraPosition(
+              zoom: 12,
+              target: LatLng(
+                widget.event.geopoint.latitude,
+                widget.event.geopoint.longitude,
+              )),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -434,11 +464,7 @@ class _v2_EventsInfoPage extends State<v2_EventsInfoPage> {
                       Text(validFullLocation(event.locationProperties),
                           style: regText),
                       SizedBox(height: infoFieldSpacing),
-                      Container(
-                        height: 225,
-                        color: Colors.grey[400],
-                        child: Center(child: Text('Map goes here.')),
-                      ),
+                      googleMap(context),
                       SizedBox(height: infoFieldSpacing),
                       SizedBox(height: 50),
                     ],

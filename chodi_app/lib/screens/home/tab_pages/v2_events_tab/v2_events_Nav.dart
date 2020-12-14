@@ -1,14 +1,33 @@
+import 'dart:developer';
+import 'package:geolocator/geolocator.dart';
+
 import 'package:chodiapp/screens/home/side_menu.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_RSVPd.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Liked.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_Explore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class v2_EventsPageSearch extends StatefulWidget {
   @override
   _v2_EventsPageSearch createState() => _v2_EventsPageSearch();
+
+  // Used for searching
+  bool searching = false;
+  String aQuery = "";
+
+  // Used for filtering
+  Position userPosition;
+  bool locationAlreadySet = false;
+  bool filtersShown = false;
+  bool filtering = false;
+  final List<searchFilterChip> searchFilters = <searchFilterChip>[
+    searchFilterChip(chipName: 'Near Me'),
+    searchFilterChip(chipName: 'My Interests'),
+    searchFilterChip(chipName: 'My Communities')
+  ];
 }
 
 class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
@@ -16,27 +35,23 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
   final GlobalKey<ScaffoldState> drawerKey = new GlobalKey<ScaffoldState>();
 
   // Used for tab control
-  final List<Tab> page_tabs = <Tab>[
-    Tab(text: 'RSVP'),
-    Tab(text: 'Likes'),
-    Tab(text: 'Explore')
-  ];
+  final List<Tab> page_tabs = <Tab>[Tab(text: 'RSVP'), Tab(text: 'Likes'), Tab(text: 'Explore')];
   var _clearTextField = TextEditingController();
   var sharedScrollController;
 
-  // User for searching
-  bool searching = false;
-  bool filtersShown = false;
-  bool filtering = false;
-  String aQuery = "";
-  final List<searchFilterChip> searchFilters = <searchFilterChip>[
-    searchFilterChip(chipName: 'Near Me'),
-    searchFilterChip(chipName: 'My Interests'),
-    searchFilterChip(chipName: 'My Communities')
-  ];
-
   @override
   Widget build(BuildContext context) {
+    // Get's User position when entering tab
+    // (ideally, position would already be set in case for
+    //    other use in other tabs)
+    if (!widget.locationAlreadySet) {
+      _determinePosition().then((value) {
+        widget.userPosition = value;
+        log(widget.userPosition.toString());
+        widget.locationAlreadySet = true;
+      });
+    }
+
     return SafeArea(
       child: Scaffold(
         key: drawerKey,
@@ -47,7 +62,7 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
           child: NestedScrollView(
             controller: sharedScrollController,
             headerSliverBuilder: (context, value) {
-              return (!searching)
+              return (!widget.searching)
                   ? <Widget>[
                       SliverAppBar(
                         elevation: 10,
@@ -64,9 +79,7 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                         ),
                         title: Text(
                           'Events',
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
                         ),
                         actions: [
                           IconButton(
@@ -77,8 +90,8 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                             ),
                             onPressed: () {
                               setState(() {
-                                aQuery = "";
-                                searching = true;
+                                widget.aQuery = "";
+                                widget.searching = true;
                               });
                             },
                           )
@@ -98,36 +111,33 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                         floating: true,
                         pinned: true,
                         snap: true,
-                        automaticallyImplyLeading: false,
-                        // leadingWidth: 30,
-                        // // Filter Selection Button
-                        // leading: (IconButton(
-                        //   iconSize: 30,
-                        //   padding: EdgeInsets.all(12),
-                        //   icon: Icon(Icons.filter_list_rounded),
-                        //   color: (!filtering)
-                        //       ? Colors.black54
-                        //       : Colors.orange[400],
-                        //   splashColor: Colors.transparent,
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       filtersShown = !filtersShown;
-                        //     });
-                        //   },
-                        // )),
+                        // automaticallyImplyLeading: false,
+                        leadingWidth: 40,
+                        // Filter Selection Button
+                        leading: (IconButton(
+                          iconSize: 30,
+                          padding: EdgeInsets.all(12),
+                          icon: Icon(Icons.filter_list_rounded),
+                          color: (!widget.filtering) ? Colors.black54 : Colors.orange[400],
+                          splashColor: Colors.transparent,
+                          onPressed: () {
+                            setState(() {
+                              widget.filtersShown = !widget.filtersShown;
+                            });
+                          },
+                        )),
                         title: TextField(
                           controller: _clearTextField,
                           textAlign: TextAlign.left,
                           keyboardType: TextInputType.text,
                           onChanged: (text) {
                             setState(() {
-                              aQuery = text;
+                              widget.aQuery = text;
                             });
                           },
                           decoration: InputDecoration(
                             hintText: 'Search',
-                            hintStyle:
-                                TextStyle(fontSize: 16, color: Colors.grey),
+                            hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(100),
                               borderSide: BorderSide(
@@ -140,7 +150,7 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                               icon: Icon(Icons.cancel),
                               onPressed: () {
                                 setState(() {
-                                  aQuery = "";
+                                  widget.aQuery = "";
                                   _clearTextField.clear();
                                 });
                               },
@@ -150,26 +160,46 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                           ),
                         ),
 
-                        // expandedHeight: (filtersShown) ? 180 : null,
-                        // flexibleSpace: (filtersShown)
-                        //     ? Container(
-                        //         child: Padding(
-                        //           padding: EdgeInsets.fromLTRB(20, 70, 20, 0),
-                        //           child: Wrap(
-                        //             spacing: 5,
-                        //             runSpacing: 3,
-                        //             children: searchFilters,
-                        //           ),
-                        //         ),
-                        //       )
-                        //     : SizedBox(),
+                        expandedHeight: (widget.filtersShown) ? 200 : null,
+                        flexibleSpace: (widget.filtersShown)
+                            ? Container(
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(20, 70, 20, 0),
+                                  child: Column(
+                                    children: [
+                                      Wrap(
+                                        alignment: WrapAlignment.center,
+                                        spacing: 5,
+                                        runSpacing: 3,
+                                        children: widget.searchFilters,
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            widget.filtersShown = false;
+                                            widget.filtering = determineIfFiltering(widget.searchFilters);
+                                          });
+                                        },
+                                        child: Text(
+                                          "Apply Changes",
+                                          style: TextStyle(color: Colors.orange[400]),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
 
                         actions: [
                           TextButton(
                               onPressed: () {
                                 setState(() {
-                                  aQuery = "";
-                                  searching = false;
+                                  widget.aQuery = "";
+                                  widget.searching = false;
+                                  widget.filtering = false;
+                                  widget.filtersShown = false;
+                                  _clearFilters(widget.searchFilters);
                                   _clearTextField.clear();
                                 });
                               },
@@ -201,9 +231,14 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
                   // Container(
                   //   child: Text('Something'),
                   // ),
-                  v2_RSVP(query: aQuery),
-                  v2_Liked(aQuery),
-                  v2_ExplorePage(query: aQuery),
+                  v2_RSVP(query: widget.aQuery),
+                  v2_Liked(givenQuery: widget.aQuery),
+                  v2_ExplorePage(
+                    query: widget.aQuery,
+                    userPosition: _determinePosition(),
+                    filtering: widget.filtering,
+                    filters: widget.searchFilters,
+                  ),
                 ],
               ),
             ),
@@ -212,11 +247,48 @@ class _v2_EventsPageSearch extends State<v2_EventsPageSearch> {
       ),
     );
   }
+
+  bool determineIfFiltering(List<searchFilterChip> filters) {
+    for (searchFilterChip f in filters) {
+      if (f.selected) return true;
+    }
+    return false;
+  }
+
+  void _clearFilters(List<searchFilterChip> filters) {
+    for (searchFilterChip c in filters) {
+      c.selected = false;
+    }
+  }
+}
+
+Future<Position> _determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error('Location permissions are permantly denied, we cannot request permissions.');
+  }
+
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+      return Future.error('Location permissions are denied (actual value: $permission).');
+    }
+  }
+
+  return await Geolocator.getCurrentPosition();
 }
 
 class searchFilterChip extends StatefulWidget {
   final String chipName;
-  bool selected;
+  bool selected = false;
 
   @override
   searchFilterChip({@required this.chipName});
@@ -226,19 +298,17 @@ class searchFilterChip extends StatefulWidget {
 }
 
 class _searchFilterChip extends State<searchFilterChip> {
-  var _isSelected = false;
   @override
   Widget build(BuildContext context) {
     return FilterChip(
       label: Text(widget.chipName),
-      labelStyle:
-          TextStyle(color: (!_isSelected) ? Colors.black54 : Colors.white),
+      labelStyle: TextStyle(color: (!widget.selected) ? Colors.black54 : Colors.white),
       selectedColor: Colors.orange[400],
       showCheckmark: false,
-      selected: _isSelected,
+      selected: widget.selected,
       onSelected: (isSelected) {
         setState(() {
-          _isSelected = isSelected;
+          widget.selected = isSelected;
         });
       },
     );

@@ -10,7 +10,7 @@ import 'package:chodiapp/models/user.dart';
 class v2_Liked extends StatefulWidget {
   String givenQuery;
 
-  v2_Liked(this.givenQuery);
+  v2_Liked({@required this.givenQuery});
 
   @override
   _v2_Liked createState() => _v2_Liked();
@@ -33,8 +33,7 @@ class _v2_Liked extends State<v2_Liked> {
           child: Text(
             "No liked events.",
             textAlign: TextAlign.center,
-            style:
-                GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
+            style: GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
           ),
         ),
       );
@@ -50,11 +49,8 @@ class _v2_Liked extends State<v2_Liked> {
                   padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
                   //child: Text("Displaying events nearby: $location",
                   child: Text(
-                    (favEventList.length > 1)
-                        ? ("Displaying ${favEventList.length} liked events.")
-                        : ("Displaying 1 liked event. "),
-                    style: GoogleFonts.ubuntu(
-                        fontSize: 15, fontWeight: FontWeight.normal),
+                    (favEventList.length > 1) ? ("Displaying ${favEventList.length} liked events.") : ("Displaying 1 liked event. "),
+                    style: GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
                   ),
                 )),
               (ListView.builder(
@@ -64,7 +60,6 @@ class _v2_Liked extends State<v2_Liked> {
                 itemBuilder: (BuildContext context, int index) {
                   return v2_EventCard_lg(
                     event: favEventList[index],
-                    showDistance: false,
                   );
                 },
               ))
@@ -87,8 +82,7 @@ class _v2_Liked extends State<v2_Liked> {
                     (favEventList.length > 1)
                         ? ("Displaying ${queryList.length} liked results for '${widget.givenQuery}'")
                         : ("Displaying 1 liked result for '${widget.givenQuery}'"),
-                    style: GoogleFonts.ubuntu(
-                        fontSize: 15, fontWeight: FontWeight.normal),
+                    style: GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
                   ),
                 )),
               (ListView.builder(
@@ -98,7 +92,6 @@ class _v2_Liked extends State<v2_Liked> {
                 itemBuilder: (BuildContext context, int index) {
                   return v2_EventCard_lg(
                     event: queryList[index],
-                    showDistance: false,
                   );
                 },
               ))

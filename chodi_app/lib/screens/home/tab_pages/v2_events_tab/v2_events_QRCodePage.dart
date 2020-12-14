@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import 'package:chodiapp/models/events.dart';
@@ -22,20 +23,38 @@ class v2_QRCodePage extends StatelessWidget {
     // TextStyles
     final textColor1 = Colors.black;
     final textColor2 = Colors.black87;
-    final h1 =
-        TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: textColor1);
-    final h2 =
-        TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: textColor1);
-    final h3 =
-        TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: textColor2);
+    final h1 = TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: textColor1);
+    final h2 = TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: textColor1);
+    final h3 = TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: textColor2);
     final regText = TextStyle(fontSize: 14, height: 1.3, color: textColor2);
     final infoFieldSpacing = 35.0;
+
+    Widget googleMap(BuildContext context) {
+      var markers = new Set<Marker>();
+      markers.add(Marker(
+        markerId: MarkerId(event.ein),
+        position: LatLng(event.geopoint.latitude, event.geopoint.longitude),
+      ));
+      return Container(
+        height: 255,
+        width: MediaQuery.of(context).size.width,
+        child: GoogleMap(
+          mapType: MapType.normal,
+          markers: markers,
+          initialCameraPosition: CameraPosition(
+              zoom: 12,
+              target: LatLng(
+                event.geopoint.latitude,
+                event.geopoint.longitude,
+              )),
+        ),
+      );
+    }
 
     return SafeArea(
       child: ListView(controller: scrollController, children: [
         Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(50))),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(50))),
           color: Colors.grey[300],
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 35),
@@ -81,7 +100,7 @@ class v2_QRCodePage extends StatelessWidget {
                       ),
                       Text('Volunteer', style: h2),
                       SizedBox(height: 5),
-                      Text(currentUser.name, style: h1),
+                      Text(formatName(currentUser.name), style: h1),
                       //Text(event.ein),
                       //Text(currentUser.userId),
                       SizedBox(height: 25),
@@ -103,13 +122,12 @@ class v2_QRCodePage extends StatelessWidget {
                 SizedBox(height: infoFieldSpacing),
                 Text('Location', style: h3),
                 SizedBox(height: 5),
-                Text(validFullLocation(event.locationProperties),
-                    style: regText),
+                Text(validFullLocation(event.locationProperties), style: regText),
                 SizedBox(height: infoFieldSpacing),
                 Container(
                   height: 225,
                   color: Colors.grey[400],
-                  child: Center(child: Text('Map goes here.')),
+                  child: googleMap(context),
                 ),
                 SizedBox(height: infoFieldSpacing),
                 SizedBox(height: 50),
@@ -122,6 +140,18 @@ class v2_QRCodePage extends StatelessWidget {
     );
   }
 
+  String formatName(String name) {
+    List<String> tokens = name.split(" ");
+    String formattedName = "";
+    for (String s in tokens) {
+      if (s.length > 1)
+        formattedName = formattedName + s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase() + " ";
+      else
+        formattedName = formattedName + s.toUpperCase() + " ";
+    }
+    return formattedName.trim();
+  }
+
   String validString(String s) {
     if (s != null && s != "") return s;
     return "Not Available";
@@ -129,10 +159,7 @@ class v2_QRCodePage extends StatelessWidget {
 
   String validLocation(LocationProperties lp) {
     if (lp != null) {
-      if (lp.city != null &&
-          lp.city != "" &&
-          lp.state != null &&
-          lp.state != "")
+      if (lp.city != null && lp.city != "" && lp.state != null && lp.state != "")
         return '${lp.city}, ${lp.state}';
       else if (lp.state != null && lp.state != "")
         return '${lp.state}';
@@ -189,23 +216,18 @@ class v2_QRCodePage extends StatelessWidget {
   }
 }
 
-void toggleRegistered(
-    List<Events> regList, UserData currentUser, Events event) {
+void toggleRegistered(List<Events> regList, UserData currentUser, Events event) {
   try {
     if (regList.contains(event)) {
       event.unregisterUser(currentUser);
       currentUser.unregisterEvent(event.ein);
-      FirestoreService(uid: currentUser.userId).updateUserPreferences(
-          {"registeredEvents": currentUser.registeredEvents});
-      FirestoreService(ein: event.ein)
-          .updateEventPreferences({"registeredUsers": event.registeredUsers});
+      FirestoreService(uid: currentUser.userId).updateUserPreferences({"registeredEvents": currentUser.registeredEvents});
+      FirestoreService(ein: event.ein).updateEventPreferences({"registeredUsers": event.registeredUsers});
     } else {
       event.registerUser(currentUser);
       currentUser.registerEvent(event.ein);
-      FirestoreService(uid: currentUser.userId).updateUserPreferences(
-          {"registeredEvents": currentUser.registeredEvents});
-      FirestoreService(ein: event.ein)
-          .updateEventPreferences({"registeredUsers": event.registeredUsers});
+      FirestoreService(uid: currentUser.userId).updateUserPreferences({"registeredEvents": currentUser.registeredEvents});
+      FirestoreService(ein: event.ein).updateEventPreferences({"registeredUsers": event.registeredUsers});
     }
   } catch (e) {
     print(e.toString());

@@ -29,8 +29,7 @@ class _v2_RSVP extends State<v2_RSVP> {
     List<Events> regEventList = new List<Events>();
     UserData currentUser = Provider.of<UserData>(context);
     if (currentUser != null) {
-      regEventList =
-          updateSearchResults(eventsList, currentUser.registeredEvents);
+      regEventList = updateSearchResults(eventsList, currentUser.registeredEvents);
     }
     List<Events> queryList = filterList(regEventList, widget.query);
     final double cardHeight = MediaQuery.of(context).size.height / 3;
@@ -48,8 +47,7 @@ class _v2_RSVP extends State<v2_RSVP> {
               initialChildSize: .95,
               maxChildSize: 1,
               minChildSize: .75,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
+              builder: (BuildContext context, ScrollController scrollController) {
                 return v2_AgendaCalendar(scrollController: scrollController);
               },
             );
@@ -62,8 +60,7 @@ class _v2_RSVP extends State<v2_RSVP> {
           child: Text(
             "No registered events.",
             textAlign: TextAlign.center,
-            style:
-                GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
+            style: GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
           ),
         ),
       );
@@ -74,6 +71,7 @@ class _v2_RSVP extends State<v2_RSVP> {
             controller: widget.sharedScrollController,
             physics: BouncingScrollPhysics(),
             children: <Widget>[
+              // AGENDA BUTTON
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -92,10 +90,7 @@ class _v2_RSVP extends State<v2_RSVP> {
                   child: Text(
                     "Agenda",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16),
                   ),
                   onPressed: () {
                     showAgenda();
@@ -107,11 +102,8 @@ class _v2_RSVP extends State<v2_RSVP> {
                   padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
                   //child: Text("Displaying events nearby: $location",
                   child: Text(
-                    (regEventList.length > 1)
-                        ? ("Displaying ${regEventList.length} registered events.")
-                        : ("Displaying 1 registered event. "),
-                    style: GoogleFonts.ubuntu(
-                        fontSize: 15, fontWeight: FontWeight.normal),
+                    (regEventList.length > 1) ? ("Displaying ${regEventList.length} registered events.") : ("Displaying 1 registered event. "),
+                    style: GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
                   ),
                 )),
               Container(
@@ -120,9 +112,7 @@ class _v2_RSVP extends State<v2_RSVP> {
                   itemCount: regEventList.length,
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: (cardWidth / cardHeight),
-                      crossAxisCount: 2),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: (cardWidth / cardHeight), crossAxisCount: 2),
                   itemBuilder: (BuildContext context, int index) {
                     return v2_EventCard_sm(
                       event: regEventList[index],
@@ -142,6 +132,32 @@ class _v2_RSVP extends State<v2_RSVP> {
             controller: widget.sharedScrollController,
             physics: BouncingScrollPhysics(),
             children: <Widget>[
+              // AGENDA BUTTON
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 7,
+                      offset: Offset(0, 5),
+                    )
+                  ],
+                  color: Colors.orange[400],
+                ),
+                child: FlatButton(
+                  padding: EdgeInsets.symmetric(vertical: 0),
+                  child: Text(
+                    "Agenda",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16),
+                  ),
+                  onPressed: () {
+                    showAgenda();
+                  },
+                ),
+              ),
               SizedBox(height: 30),
               (Padding(
                 padding: const EdgeInsets.fromLTRB(15.0, 20.0, 8.0, 10.0),
@@ -150,8 +166,7 @@ class _v2_RSVP extends State<v2_RSVP> {
                   (regEventList.length > 1)
                       ? ("Displaying ${queryList.length} registered results for '${widget.query}'")
                       : ("Displaying 1 registered result for '${widget.query}'"),
-                  style: GoogleFonts.ubuntu(
-                      fontSize: 15, fontWeight: FontWeight.normal),
+                  style: GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.normal),
                 ),
               )),
               Container(
@@ -160,9 +175,7 @@ class _v2_RSVP extends State<v2_RSVP> {
                   itemCount: queryList.length,
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: (cardWidth / cardHeight),
-                      crossAxisCount: 2),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: (cardWidth / cardHeight), crossAxisCount: 2),
                   itemBuilder: (BuildContext context, int index) {
                     return v2_EventCard_sm(
                       event: queryList[index],

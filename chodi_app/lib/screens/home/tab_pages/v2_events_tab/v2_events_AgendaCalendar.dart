@@ -1,5 +1,4 @@
 import 'package:chodiapp/models/user.dart';
-import 'package:chodiapp/screens/home/search_page/filter_result.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_InfoPage.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_QRCodePage.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,11 +36,7 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
 
     final textColor1 = Colors.black;
     final textColor2 = Colors.black87;
-    var h1 = TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        height: 1.3,
-        color: textColor1);
+    var h1 = TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.3, color: textColor1);
     var h2 = TextStyle(fontSize: 14, color: textColor2);
     final regText = TextStyle(fontSize: 14, height: 1.3, color: textColor2);
 
@@ -57,10 +52,8 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
               initialChildSize: .95,
               maxChildSize: 1,
               minChildSize: .80,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return v2_QRCodePage(
-                    event: event, scrollController: scrollController);
+              builder: (BuildContext context, ScrollController scrollController) {
+                return v2_QRCodePage(event: event, scrollController: scrollController);
               },
             );
           });
@@ -74,11 +67,9 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
           builder: (BuildContext context) {
             return DraggableScrollableSheet(
               initialChildSize: .50,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
+              builder: (BuildContext context, ScrollController scrollController) {
                 return Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                   child: Padding(
                     padding: EdgeInsets.all(15),
                     child: Column(
@@ -93,9 +84,7 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                             Navigator.pop(context);
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      v2_EventsInfoPage(event: event)),
+                              MaterialPageRoute(builder: (context) => v2_EventsInfoPage(event: event)),
                             );
                           },
                         ),
@@ -127,16 +116,11 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
     }
 
     for (Events e in regEventList) {
-      if (_events[DateTime.parse(e.eventDate.startStamp.toDate().toString())] !=
-              null &&
-          !_events[DateTime.parse(e.eventDate.startStamp.toDate().toString())]
-              .contains(e))
-        _events[DateTime.parse(e.eventDate.startStamp.toDate().toString())]
-            .add(e);
+      if (_events[DateTime.parse(e.eventDate.startStamp.toDate().toString())] != null &&
+          !_events[DateTime.parse(e.eventDate.startStamp.toDate().toString())].contains(e))
+        _events[DateTime.parse(e.eventDate.startStamp.toDate().toString())].add(e);
       else
-        _events[DateTime.parse(e.eventDate.startStamp.toDate().toString())] = [
-          e
-        ];
+        _events[DateTime.parse(e.eventDate.startStamp.toDate().toString())] = [e];
     }
 
     return Scaffold(
@@ -173,20 +157,16 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                           SizedBox(width: 50),
                           Text(
                             'Agenda',
-                            style: TextStyle(
-                                fontSize: 26, fontWeight: FontWeight.w800),
+                            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
                           ),
                           IconButton(
-                            color: Colors.yellow[600],
+                            color: Colors.orange[400],
                             onPressed: () {
                               setState(() {
-                                if (_controller.calendarFormat ==
-                                    CalendarFormat.week)
-                                  _controller
-                                      .setCalendarFormat(CalendarFormat.month);
+                                if (_controller.calendarFormat == CalendarFormat.week)
+                                  _controller.setCalendarFormat(CalendarFormat.month);
                                 else
-                                  _controller
-                                      .setCalendarFormat(CalendarFormat.week);
+                                  _controller.setCalendarFormat(CalendarFormat.week);
                               });
                             },
                             icon: Icon(Icons.calendar_today_rounded),
@@ -205,9 +185,8 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                         formatButtonVisible: false,
                       ),
                       calendarStyle: CalendarStyle(
-                          selectedColor: Colors.yellow[600],
-                          selectedStyle: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w800),
+                          selectedColor: Colors.orange[400],
+                          selectedStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.white),
                           todayColor: Colors.grey[300],
                           todayStyle: TextStyle()),
                       onDaySelected: (date, event, holidays) {
@@ -228,13 +207,11 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                       physics: ScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
-                          title: Text(
-                              _selectedEvents.cast<Events>()[index].eventName),
+                          title: Text(_selectedEvents.cast<Events>()[index].eventName),
                           trailing: IconButton(
                             icon: Icon(Icons.more_horiz),
                             onPressed: () {
-                              showOptions(
-                                  event: _selectedEvents.cast<Events>()[index]);
+                              showOptions(event: _selectedEvents.cast<Events>()[index]);
                             },
                           ),
                         );

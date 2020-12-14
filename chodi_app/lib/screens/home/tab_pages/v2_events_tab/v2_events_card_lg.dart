@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:chodiapp/services/firestore.dart';
@@ -12,8 +13,9 @@ class v2_EventCard_lg extends StatefulWidget {
   //Each EventCard has a corresponding 'event'
   Events event;
   bool showDistance;
+  String distanceLabel;
   //EventCard Constructor requires an 'event'
-  v2_EventCard_lg({@required this.event, this.showDistance = true});
+  v2_EventCard_lg({@required this.event, this.distanceLabel, this.showDistance = false});
 
   @override
   _v2_EventCard_lg createState() => _v2_EventCard_lg();
@@ -29,8 +31,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
     UserData currentUser = Provider.of<UserData>(context);
     if (currentUser != null) {
       favEventList = updateSearchResults(eventsList, currentUser.savedEvents);
-      regEventList =
-          updateSearchResults(eventsList, currentUser.registeredEvents);
+      regEventList = updateSearchResults(eventsList, currentUser.registeredEvents);
     }
 
     var h1 = TextStyle(
@@ -47,8 +48,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
         } else {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => v2_EventsInfoPage(event: event)),
+            MaterialPageRoute(builder: (context) => v2_EventsInfoPage(event: event)),
           );
         }
       },
@@ -82,12 +82,10 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                     child: Padding(
                                       padding: EdgeInsets.all(25),
                                       child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
+                                        borderRadius: BorderRadius.circular(100),
                                         child: FadeInImage(
                                           fit: BoxFit.cover,
-                                          placeholder: AssetImage(
-                                              'images/loadingImage.gif'),
+                                          placeholder: AssetImage('images/loadingImage.gif'),
                                           image: FirebaseImage(event.imageURI),
                                         ),
                                       ),
@@ -98,13 +96,10 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                   flex: 5,
                                   child: Container(
                                       //color: Colors.deepPurple,
-                                      padding:
-                                          EdgeInsets.fromLTRB(10, 5, 0, 10),
+                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 10),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             validString(event.eventName),
@@ -119,8 +114,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            validLocation(
-                                                event.locationProperties),
+                                            validLocation(event.locationProperties),
                                             style: h2,
                                             textAlign: TextAlign.left,
                                             overflow: TextOverflow.ellipsis,
@@ -140,8 +134,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                 padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(left: 0),
@@ -155,11 +148,9 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                     ),
                                     if (widget.showDistance)
                                       Text(
-                                        "radial_distance",
+                                        "${widget.distanceLabel}",
                                         textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: p.fontSize + 2),
+                                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: p.fontSize + 2),
                                       )
                                   ],
                                 ),
@@ -207,8 +198,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    toggleLiked(
-                                        favEventList, currentUser, event);
+                                    toggleLiked(favEventList, currentUser, event);
                                   });
                                 },
                               ))
@@ -221,8 +211,7 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    toggleLiked(
-                                        favEventList, currentUser, event);
+                                    toggleLiked(favEventList, currentUser, event);
                                   });
                                 },
                               )),
@@ -277,17 +266,14 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
       return "Location Unavailable";
   }
 
-  void toggleLiked(
-      List<Events> moddedList, UserData currentUser, Events event) {
+  void toggleLiked(List<Events> moddedList, UserData currentUser, Events event) {
     try {
       if (moddedList.contains(event)) {
         currentUser.savedEvents.remove(event.ein);
-        FirestoreService(uid: currentUser.userId)
-            .updateUserPreferences({"savedEvents": currentUser.savedEvents});
+        FirestoreService(uid: currentUser.userId).updateUserPreferences({"savedEvents": currentUser.savedEvents});
       } else {
         currentUser.savedEvents.add(event.ein);
-        FirestoreService(uid: currentUser.userId)
-            .updateUserPreferences({"savedEvents": currentUser.savedEvents});
+        FirestoreService(uid: currentUser.userId).updateUserPreferences({"savedEvents": currentUser.savedEvents});
       }
     } catch (e) {
       print(e.toString());
