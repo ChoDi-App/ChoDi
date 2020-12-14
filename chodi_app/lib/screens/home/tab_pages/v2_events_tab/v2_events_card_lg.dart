@@ -240,10 +240,22 @@ class _v2_EventCard_lg extends State<v2_EventCard_lg> {
     return savedList;
   }
 
+  String formatName(String name) {
+    List<String> tokens = name.split(" ");
+    String formattedName = "";
+    for (String s in tokens) {
+      if (s.length > 1)
+        formattedName = formattedName + s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase() + " ";
+      else
+        formattedName = formattedName + s.toUpperCase() + " ";
+    }
+    return formattedName.trim();
+  }
+
   String validString(String s) {
-    if (s != null)
-      return s;
-    else
+    if (s != null) {
+      return formatName(s);
+    } else
       return "Not Available";
   }
 
