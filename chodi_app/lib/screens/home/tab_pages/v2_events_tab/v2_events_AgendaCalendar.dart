@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chodiapp/models/user.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_InfoPage.dart';
 import 'package:chodiapp/screens/home/tab_pages/v2_events_tab/v2_events_QRCodePage.dart';
@@ -9,6 +11,7 @@ import 'package:chodiapp/models/events.dart';
 
 class v2_AgendaCalendar extends StatefulWidget {
   var scrollController;
+  StartingDayOfWeek _startingDayOfWeek;
   v2_AgendaCalendar({this.scrollController});
 
   @override
@@ -17,7 +20,8 @@ class v2_AgendaCalendar extends StatefulWidget {
 
 class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
   CalendarController _controller;
-  Map<DateTime, List<dynamic>> _events;
+  Map<DateTime, List<dynamic>> _eventsByDay;
+
   List<dynamic> _selectedEvents;
   bool _monthView = false;
 
@@ -25,8 +29,9 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
   void initState() {
     super.initState();
     _controller = CalendarController();
-    _events = {};
+    _eventsByDay = {};
     _selectedEvents = [];
+    widget._startingDayOfWeek = StartingDayOfWeek.sunday;
   }
 
   @override
@@ -117,11 +122,12 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
     }
 
     for (Events e in regEventList) {
-      if (_events[DateTime.parse(e.eventDate.startStamp.toDate().toString())] != null &&
-          !_events[DateTime.parse(e.eventDate.startStamp.toDate().toString())].contains(e))
-        _events[DateTime.parse(e.eventDate.startStamp.toDate().toString())].add(e);
+      String s = e.eventDate.startStamp.toDate().toString();
+      log("adding $s -- > ${DateTime.parse(s)}");
+      if (_eventsByDay[DateTime.parse(s)] != null && !_eventsByDay[DateTime.parse(s)].contains(e))
+        _eventsByDay[DateTime.parse(s)].add(e);
       else
-        _events[DateTime.parse(e.eventDate.startStamp.toDate().toString())] = [e];
+        _eventsByDay[DateTime.parse(s)] = [e];
     }
 
     return Scaffold(
@@ -178,7 +184,8 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                     ),
                     SizedBox(height: 25),
                     TableCalendar(
-                      events: _events,
+                      startingDayOfWeek: widget._startingDayOfWeek,
+                      events: _eventsByDay,
                       availableGestures: AvailableGestures.horizontalSwipe,
                       calendarController: _controller,
                       initialCalendarFormat: CalendarFormat.week,
@@ -193,10 +200,12 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                           todayStyle: TextStyle()),
                       onDaySelected: (date, event, holidays) {
                         setState(() {
-                          if (!event.isEmpty)
-                            _selectedEvents = event;
-                          else
-                            _selectedEvents = [];
+                          _selectedEvents = [];
+                          getEventsThisWeek(date, _eventsByDay, _selectedEvents);
+                          // if (!event.isEmpty)
+                          //   _selectedEvents = event;
+                          // else
+                          //   _selectedEvents = [];
                         });
                       },
                     ),
@@ -227,5 +236,75 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
         ),
       ),
     );
+  }
+
+  getEventsThisWeek(DateTime day, Map<DateTime, List<dynamic>> eventsByDay, List<dynamic> allEvents) {
+    if (allEvents == null) allEvents = [];
+
+    switch (day.weekday) {
+      case DateTime.saturday:
+        {
+          getEventsThisWeek(day.subtract(Duration(days: 6)), eventsByDay, allEvents);
+          break;
+        }
+      case DateTime.friday:
+        {
+          getEventsThisWeek(day.subtract(Duration(days: 5)), eventsByDay, allEvents);
+          break;
+        }
+      case DateTime.thursday:
+        {
+          getEventsThisWeek(day.subtract(Duration(days: 4)), eventsByDay, allEvents);
+          break;
+        }
+      case DateTime.wednesday:
+        {
+          getEventsThisWeek(day.subtract(Duration(days: 3)), eventsByDay, allEvents);
+          break;
+        }
+      case DateTime.tuesday:
+        {
+          getEventsThisWeek(day.subtract(Duration(days: 2)), eventsByDay, allEvents);
+          break;
+        }
+      case DateTime.monday:
+        {
+          getEventsThisWeek(day.subtract(Duration(days: 1)), eventsByDay, allEvents);
+          break;
+        }
+      case DateTime.sunday:
+        {
+          log("this sunday: ${day}");
+          _addEventsToList(day, eventsByDay, allEvents);
+          _addEventsToList(day.add(Duration(days: 1)), eventsByDay, allEvents);
+          _addEventsToList(day.add(Duration(days: 2)), eventsByDay, allEvents);
+          _addEventsToList(day.add(Duration(days: 3)), eventsByDay, allEvents);
+          _addEventsToList(day.add(Duration(days: 4)), eventsByDay, allEvents);
+          _addEventsToList(day.add(Duration(days: 5)), eventsByDay, allEvents);
+          _addEventsToList(day.add(Duration(days: 6)), eventsByDay, allEvents);
+
+          log("final list: ${allEvents}");
+          break;
+        }
+    }
+    return allEvents;
+  }
+
+  _addEventsToList(DateTime day, Map<DateTime, List<dynamic>> eventsByDay, List<dynamic> target) {
+    DateTime datetime = _formatDayTime(day);
+    if (_eventsByDay[datetime] != null) {
+      log(" has events!");
+      for (dynamic d in _eventsByDay[datetime]) {
+        log(" adding ${_eventsByDay[datetime]}");
+        target.add(d);
+      }
+    }
+  }
+
+  DateTime _formatDayTime(DateTime day) {
+    String s = "${day.year}-";
+    s += (day.month > 9) ? "${day.month}-" : "0${day.month}-";
+    s += (day.day > 9) ? "${day.day} 00:00:00.000" : "0${day.day} 00:00:00.000";
+    return DateTime.parse(s);
   }
 }
