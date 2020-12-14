@@ -19,6 +19,7 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
   CalendarController _controller;
   Map<DateTime, List<dynamic>> _events;
   List<dynamic> _selectedEvents;
+  bool _monthView = false;
 
   @override
   void initState() {
@@ -160,9 +161,10 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                             style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
                           ),
                           IconButton(
-                            color: Colors.orange[400],
+                            color: (!_monthView) ? Colors.grey : Colors.orange[400],
                             onPressed: () {
                               setState(() {
+                                _monthView = !_monthView;
                                 if (_controller.calendarFormat == CalendarFormat.week)
                                   _controller.setCalendarFormat(CalendarFormat.month);
                                 else
