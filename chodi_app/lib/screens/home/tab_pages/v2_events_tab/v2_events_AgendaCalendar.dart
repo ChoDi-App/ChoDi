@@ -11,7 +11,6 @@ import 'package:chodiapp/models/events.dart';
 
 class v2_AgendaCalendar extends StatefulWidget {
   var scrollController;
-  StartingDayOfWeek _startingDayOfWeek;
   v2_AgendaCalendar({this.scrollController});
 
   @override
@@ -21,7 +20,7 @@ class v2_AgendaCalendar extends StatefulWidget {
 class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
   CalendarController _controller;
   Map<DateTime, List<dynamic>> _eventsByDay;
-
+  var _selectedDay;
   List<dynamic> _selectedEvents;
   bool _monthView = false;
 
@@ -31,7 +30,7 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
     _controller = CalendarController();
     _eventsByDay = {};
     _selectedEvents = [];
-    widget._startingDayOfWeek = StartingDayOfWeek.sunday;
+    _selectedDay = null;
   }
 
   @override
@@ -175,6 +174,14 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                                   _controller.setCalendarFormat(CalendarFormat.month);
                                 else
                                   _controller.setCalendarFormat(CalendarFormat.week);
+
+                                if (_selectedDay != null) {
+                                  _selectedEvents = [];
+                                  if (!_monthView)
+                                    getEventsThisWeek(_selectedDay, _eventsByDay, _selectedEvents);
+                                  else
+                                    getEventsThisMonth(_selectedDay, _eventsByDay, _selectedEvents);
+                                }
                               });
                             },
                             icon: Icon(Icons.calendar_today_rounded),
@@ -184,7 +191,6 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                     ),
                     SizedBox(height: 25),
                     TableCalendar(
-                      startingDayOfWeek: widget._startingDayOfWeek,
                       events: _eventsByDay,
                       availableGestures: AvailableGestures.horizontalSwipe,
                       calendarController: _controller,
@@ -200,8 +206,12 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
                           todayStyle: TextStyle()),
                       onDaySelected: (date, event, holidays) {
                         setState(() {
+                          _selectedDay = date;
                           _selectedEvents = [];
-                          getEventsThisWeek(date, _eventsByDay, _selectedEvents);
+                          if (!_monthView)
+                            getEventsThisWeek(date, _eventsByDay, _selectedEvents);
+                          else
+                            getEventsThisMonth(date, _eventsByDay, _selectedEvents);
                           // if (!event.isEmpty)
                           //   _selectedEvents = event;
                           // else
@@ -236,6 +246,17 @@ class _v2_AgendaCalendarState extends State<v2_AgendaCalendar> {
         ),
       ),
     );
+  }
+
+  getEventsThisMonth(DateTime day, Map<DateTime, List<dynamic>> eventsByDay, List<dynamic> allEvents) {
+    if (allEvents == null) allEvents = [];
+    for (DateTime datetime in eventsByDay.keys) {
+      log("${datetime.month} - ${day.month}");
+      if (datetime.month == day.month) {
+        for (dynamic d in eventsByDay[datetime]) allEvents.add(d);
+      }
+    }
+    return allEvents;
   }
 
   getEventsThisWeek(DateTime day, Map<DateTime, List<dynamic>> eventsByDay, List<dynamic> allEvents) {
